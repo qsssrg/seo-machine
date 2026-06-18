@@ -729,6 +729,23 @@ main.container {
   border: 2px solid var(--gold);
   background: var(--gold-light);
 }
+/* Supplementary Section */
+.supplementary-section {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+.supplementary-section h3 {
+  border-left: none;
+  padding-left: 0;
+  font-size: 1.05rem;
+}
+@media (max-width: 640px) {
+  .supplementary-section { padding: 1.2rem; }
+}
+
 /* Article Image Wrapper */
 .article-image {
   max-width: 920px;
