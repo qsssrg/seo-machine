@@ -2,13 +2,18 @@
 :root {
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
+  --cta-orange: #ea580c;
+  --cta-orange-dark: #c2410c;
+  --gold: #f59e0b;
+  --gold-light: #fffbeb;
   --text: #1e293b;
   --text-light: #64748b;
   --bg: #ffffff;
   --bg-light: #f8fafc;
   --bg-accent: #eff6ff;
   --border: #e2e8f0;
-  --radius: 8px;
+  --radius: 14px;
+  --radius-sm: 8px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -534,4 +539,203 @@ main.container {
     padding: 0.5rem 0.6rem;
   }
   .section h2 { font-size: 1.1rem; }
+  .first-view-card { padding: 1rem; }
+  .first-view-card h2 { font-size: 1.1rem; }
+  .recommendation-cards { grid-template-columns: 1fr; }
+}
+
+/* ===== P1: First View Recommendation Card ===== */
+.first-view-card {
+  background: linear-gradient(135deg, var(--gold-light) 0%, #fff7ed 100%);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.first-view-card .fv-label {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  margin-bottom: 0.6rem;
+}
+.first-view-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  border: none;
+  display: block;
+  padding: 0;
+}
+.first-view-card .fv-badges {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+.first-view-card .fv-badge {
+  display: inline-block;
+  background: var(--bg-accent);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+.first-view-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+/* Orange CTA Button */
+.affiliate-cta-primary {
+  display: inline-block;
+  background: var(--cta-orange);
+  color: #fff;
+  padding: 0.85rem 1.8rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background 0.2s, transform 0.1s;
+  min-height: 48px;
+  line-height: 1.4;
+}
+.affiliate-cta-primary:hover {
+  background: var(--cta-orange-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ===== P2: Recommendation Cards (Summary Section) ===== */
+.recommendation-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.rec-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.rec-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+}
+.rec-card.rec-top {
+  border-color: var(--gold);
+  background: var(--gold-light);
+}
+.rec-card h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+.rec-card .rec-service {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+.rec-card .rec-reason {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+
+/* ===== P3: Comparison Table Enhancements ===== */
+.comparison-table tr.highlight-first td {
+  background: var(--gold-light);
+  font-weight: 600;
+}
+.scroll-guide {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+  display: none;
+}
+@media (max-width: 640px) {
+  .scroll-guide { display: block; }
+}
+
+/* ===== Section Number Badge ===== */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* ===== P3: Score Bars ===== */
+.score-bars {
+  margin: 0.8rem 0;
+}
+.score-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.8rem;
+}
+.score-bar-label {
+  min-width: 7em;
+  color: var(--text-light);
+  text-align: right;
+  flex-shrink: 0;
+}
+.score-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--primary);
+  transition: width 0.3s;
+}
+.score-bar-fill.high { background: #16a34a; }
+.score-bar-fill.mid { background: var(--gold); }
+.score-bar-value {
+  min-width: 2em;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Ranking card 1st place enhancement */
+.ranking-item.rank-1 {
+  border: 2px solid var(--gold);
+  background: var(--gold-light);
+}
+.rank-1-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.4rem;
 }
