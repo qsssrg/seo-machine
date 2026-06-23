@@ -32,6 +32,37 @@ body {
   padding: 0 1rem;
 }
 
+/* Breadcrumb */
+.breadcrumb ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.breadcrumb li:not(:last-child)::after {
+  content: "›";
+  margin-left: 0.4rem;
+  color: var(--text-light);
+}
+.breadcrumb a {
+  color: var(--primary);
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+.breadcrumb li[aria-current="page"] {
+  color: var(--text);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 400px;
+}
+
 /* Header */
 .site-header {
   background: var(--bg);
