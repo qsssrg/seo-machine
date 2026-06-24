@@ -187,6 +187,27 @@ body {
   position: relative;
   line-height: 1.8;
 }
+.hero-cta {
+  margin-top: 1.5rem;
+  position: relative;
+}
+.btn-primary {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, var(--cta-orange) 0%, #f97316 100%);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 14px var(--cta-orange-glow);
+  transition: var(--transition);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--cta-orange-glow);
+  background: linear-gradient(135deg, var(--cta-orange-dark) 0%, var(--cta-orange) 100%);
+}
 
 /* ========================================
    Main Content Area
