@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Open WebUI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/open-webui/</link><description>Recent content in Open WebUI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 25 Jun 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/open-webui/index.xml" rel="self" type="application/rss+xml"/><item><title>【非エンジニア向け】Ollama＋Open WebUIをVPSに10分で立ち上げる魔法のコマンド集【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-ollama_openwebui/</link><pubDate>Thu, 25 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-ollama_openwebui/</guid><description>&lt;h1 id="非エンジニアでもokollamaopen-webuiで自分だけのchatgptを10分で構築"&gt;非エンジニアでもOK！Ollama＋Open WebUIで「自分だけのChatGPT」を10分で構築&lt;/h1&gt;
+&lt;h2 id="aiを自分のサーバーで動かすのは思ったより簡単"&gt;「AIを自分のサーバーで動かす」のは思ったより簡単&lt;/h2&gt;
+&lt;p&gt;「自分専用のAIが欲しいけど、プログラミングはできない…」&lt;/p&gt;
+&lt;p&gt;安心してください。&lt;strong&gt;この記事のコマンドを上から順にコピペするだけで、ChatGPTそっくりのAIチャット環境が完成します。&lt;/strong&gt; 所要時間は約10分です。&lt;/p&gt;
+&lt;p&gt;使うのは2つのオープンソースツール：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Ollama&lt;/strong&gt;: AIモデルを簡単に動かすツール（インストール1行）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Open WebUI&lt;/strong&gt;: ChatGPTそっくりのブラウザ画面（Docker 1行）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="完成イメージ"&gt;完成イメージ&lt;/h2&gt;
+&lt;p&gt;構築が完了すると、ブラウザから &lt;code&gt;http://あなたのサーバーのIPアドレス:3000&lt;/code&gt; にアクセスするだけで：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ChatGPTのような対話画面でAIと会話&lt;/li&gt;
+&lt;li&gt;複数のAIモデルを切り替えて使える&lt;/li&gt;
+&lt;li&gt;会話履歴が自動保存される&lt;/li&gt;
+&lt;li&gt;スマホからもアクセス可能&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;月額料金ゼロ（VPS代のみ）・メッセージ数無制限&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="準備するもの"&gt;準備するもの&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;VPS&lt;/strong&gt;（メモリ4GB以上推奨）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;パソコン&lt;/strong&gt;（Windows/Mac どちらでもOK）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="おすすめvps"&gt;おすすめVPS&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;◆ KAGOYA CLOUD VPS（月770円〜）&lt;/strong&gt; ← 最安&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+B7NWXE+7YE+NWRNM" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;KAGOYA CLOUD VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B614H+B7NWXE+7YE+NWRNM" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;◆ XServer VPS（月990円〜）&lt;/strong&gt; ← 高速&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
+&lt;h2 id="魔法のコマンド集コピペでok"&gt;魔法のコマンド集（コピペでOK）&lt;/h2&gt;
+&lt;h3 id="コマンドvpsに接続"&gt;コマンド①：VPSに接続&lt;/h3&gt;
+&lt;p&gt;ターミナル（Mac）またはPowerShell（Windows）を開いて：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ssh root@あなたのIPアドレス
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;パスワードを入力してEnter。&lt;/p&gt;
+&lt;h3 id="コマンド必要なソフトを一括インストール"&gt;コマンド②：必要なソフトを一括インストール&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;apt update &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt install -y curl docker.io docker-compose-v2
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;systemctl enable --now docker
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="コマンドollamaをインストール"&gt;コマンド③：Ollamaをインストール&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl -fsSL https://ollama.ai/install.sh | sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="コマンドaiモデルをダウンロード"&gt;コマンド④：AIモデルをダウンロード&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull llama3
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;※ ダウンロードに5〜10分かかります。待つだけでOK。&lt;/p&gt;</description></item></channel></rss>

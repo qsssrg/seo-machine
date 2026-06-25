@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# タグ・カテゴリの一覧ページはクロール不要（個別記事に集中）
+Disallow: /tags/
+Disallow: /categories/
+
 Sitemap: https://naruhodo-lab.uk/sitemap.xml
