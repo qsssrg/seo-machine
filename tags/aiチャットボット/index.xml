@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AIチャットボット on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/ai%E3%83%81%E3%83%A3%E3%83%83%E3%83%88%E3%83%9C%E3%83%83%E3%83%88/</link><description>Recent content in AIチャットボット on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 27 Jun 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/ai%E3%83%81%E3%83%A3%E3%83%83%E3%83%88%E3%83%9C%E3%83%83%E3%83%88/index.xml" rel="self" type="application/rss+xml"/><item><title>【非エンジニアOK】VPSとDifyで作る「LINE AIアシスタントbot」の作り方【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-line_ai_bot/</link><pubDate>Sat, 27 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-line_ai_bot/</guid><description>&lt;h1 id="非エンジニアでもできるvpsとdifyで作るline-aiアシスタントbot"&gt;非エンジニアでもできる！VPSとDifyで作る「LINE AIアシスタントbot」&lt;/h1&gt;
+&lt;h2 id="lineでaiと会話できたら便利じゃないですか"&gt;LINEでAIと会話できたら便利じゃないですか？&lt;/h2&gt;
+&lt;p&gt;「ChatGPTは便利だけど、毎回ブラウザを開くのが面倒…」
+「LINEで質問したら、AIが答えてくれたらいいのに」&lt;/p&gt;
+&lt;p&gt;そんな願い、&lt;strong&gt;VPS + Difyで実現できます。&lt;/strong&gt; しかもプログラミング不要。&lt;/p&gt;
+&lt;p&gt;完成すると、LINEのトーク画面でAIに質問するだけで、数秒で回答が返ってきます。友達追加するだけで誰でも使えるので、家族や同僚にも共有可能です。&lt;/p&gt;
+&lt;h2 id="完成イメージ"&gt;完成イメージ&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;LINEで「今日の天気は？」と送る → AIが回答&lt;/li&gt;
+&lt;li&gt;「この英文を翻訳して」と送る → AIが翻訳&lt;/li&gt;
+&lt;li&gt;「社内規定の有給休暇について教えて」→ 社内ドキュメントを元に回答（RAG）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;24時間自動応答、月額コストはVPS代のみ&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="必要なもの"&gt;必要なもの&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;VPS&lt;/strong&gt;（4GB以上推奨）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LINE公式アカウント&lt;/strong&gt;（無料で作成可能）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AIモデルのAPIキー&lt;/strong&gt;（OpenAI等、またはOllamaで無料）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="おすすめvps"&gt;おすすめVPS&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS（月990円〜）高性能で安定 →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;ConoHa VPS（時間課金対応）お試しに最適 →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt=""&gt;&lt;/p&gt;
+&lt;h2 id="構築手順"&gt;構築手順&lt;/h2&gt;
+&lt;h3 id="phase-1vpsにdifyをセットアップ20分"&gt;Phase 1：VPSにDifyをセットアップ（20分）&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# VPSに接続&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ssh root@あなたのIPアドレス
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Docker &amp;amp; Difyをインストール&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl -fsSL https://get.docker.com | sh
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/langgenius/dify.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd dify/docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cp .env.example .env
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;docker compose up -d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ブラウザで &lt;code&gt;http://あなたのIPアドレス&lt;/code&gt; にアクセスし、管理者アカウントを作成。&lt;/p&gt;
+&lt;h3 id="phase-2difyでチャットボットを作成10分"&gt;Phase 2：Difyでチャットボットを作成（10分）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Difyダッシュボードで「アプリを作成」&lt;/li&gt;
+&lt;li&gt;「チャットボット」を選択&lt;/li&gt;
+&lt;li&gt;プロンプトを設定（例: 「あなたは親切なAIアシスタントです。日本語で回答してください。」）&lt;/li&gt;
+&lt;li&gt;AIモデルを設定（OpenAI GPT-4o or Ollama）&lt;/li&gt;
+&lt;li&gt;「公開」→ APIキーを取得&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="phase-3line公式アカウントを作成5分"&gt;Phase 3：LINE公式アカウントを作成（5分）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;LINE Developersにアクセス&lt;/li&gt;
+&lt;li&gt;「新規プロバイダー作成」→「Messaging APIチャネル作成」&lt;/li&gt;
+&lt;li&gt;チャネルアクセストークンを発行&lt;/li&gt;
+&lt;li&gt;Webhook URLを設定: &lt;code&gt;https://あなたのドメイン/webhook&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="phase-4difyとlineを連携"&gt;Phase 4：DifyとLINEを連携&lt;/h3&gt;
+&lt;p&gt;DifyのAPI機能を使って、LINEのWebhookからDifyのチャットAPIを呼び出す中継スクリプトをVPS上に設置します。&lt;/p&gt;</description></item></channel></rss>
