@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>API on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/api/</link><description>Recent content in API on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 27 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/api/index.xml" rel="self" type="application/rss+xml"/><item><title>【API代ゼロ】OllamaをVPSに入れてローカルLLMを無料API化する方法【ChatGPT API代を節約】</title><link>https://naruhodo-lab.uk/usecase/guide-ollama_free_api/</link><pubDate>Sat, 27 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-ollama_free_api/</guid><description>&lt;h1 id="chatgpt-api代が高すぎるollamaでローカルllmを無料api化する方法"&gt;ChatGPT API代が高すぎる…OllamaでローカルLLMを無料API化する方法&lt;/h1&gt;
-&lt;h2 id="chatgpt-apiの料金気になっていませんか"&gt;ChatGPT APIの料金、気になっていませんか？&lt;/h2&gt;
-&lt;p&gt;ChatGPT API（OpenAI API）は従量課金制。使えば使うほどお金がかかります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="最初に結論これだけ読めば判断できます"&gt;【最初に結論】これだけ読めば判断できます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;「月に1万リクエスト以上投げるなら、OllamaをVPSに入れたほうが絶対に安い。」&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ChatGPT APIの従量課金、正直きつくないですか。ちょっと自動化スクリプトを走らせただけで月3,000〜5,000円飛ぶ。個人用途でこれは精神的によくない。&lt;/p&gt;
+&lt;p&gt;Ollamaを使えば、VPS代（月770円〜）だけでAPIが使い放題になります。コードの変更も &lt;code&gt;base_url&lt;/code&gt; を1行書き換えるだけ。自分もこれで乗り換えました。&lt;/p&gt;
+&lt;p&gt;ただし**「品質がChatGPT GPT-4と同じか？」と聞かれるとNO**です。その点は後で正直に書きます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="chatgpt-apiの料金本当に高い"&gt;ChatGPT APIの料金、本当に高い&lt;/h2&gt;
+&lt;p&gt;まず現実を直視しておきましょう。&lt;/p&gt;
 &lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -23,16 +30,20 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;個人で月に数千円、企業なら月に数万〜数十万円になることも珍しくありません。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;でも、VPSにOllamaを入れれば、API利用料ゼロで同等の機能が手に入ります。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;正直に言うと、&lt;strong&gt;個人開発や自動化スクリプトでこの従量課金モデルは合わない&lt;/strong&gt;と思っています。使うのが怖くなって、結局APIを積極的に呼ばなくなる。それじゃ意味がない。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPSにOllamaを入れれば、API利用料ゼロで同等の機能が手に入ります。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="ollamaのapiモードとは"&gt;Ollamaの「APIモード」とは&lt;/h2&gt;
 &lt;p&gt;OllamaにはOpenAI互換のAPIサーバー機能が内蔵されています。つまり：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;ChatGPT APIと同じ形式でリクエストを送れる&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;既存のコードの &lt;code&gt;api_base&lt;/code&gt; を変更するだけで移行可能&lt;/li&gt;
+&lt;li&gt;既存のコードの &lt;code&gt;base_url&lt;/code&gt; を変更するだけで移行可能&lt;/li&gt;
 &lt;li&gt;Python、JavaScript、curl、どの言語からも呼び出せる&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;月額料金はVPS代のみ。API利用料ゼロ。&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="コスト比較"&gt;コスト比較&lt;/h2&gt;
+&lt;p&gt;「OpenAI互換」というのがポイントで、既存のコードをほぼ触らずに移行できます。これが乗り換えのハードルを下げてくれる。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="コスト比較具体的に計算します"&gt;コスト比較（具体的に計算します）&lt;/h2&gt;
 &lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -70,15 +81,11 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;&lt;strong&gt;使えば使うほど差が開きます。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自分の場合、月1万リクエスト程度の使い方でChatGPT APIだと月4,000円前後かかっていました。KAGOYAの770円プランに乗り換えたら、&lt;strong&gt;月3,200円以上の節約&lt;/strong&gt;。年間で約38,000円。これはさすがに無視できない差です。&lt;/p&gt;
+&lt;p&gt;1日あたりに換算すると、VPS代は&lt;strong&gt;1日25円程度&lt;/strong&gt;。ChatGPT APIへの課金を続けるより、この25円を払い続けるほうが圧倒的に合理的。&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="導入手順"&gt;導入手順&lt;/h2&gt;
 &lt;h3 id="ステップ1vpsを用意"&gt;ステップ1：VPSを用意&lt;/h3&gt;
-&lt;p&gt;おすすめVPS：&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+B7NWXE+7YE+NWRNM" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;KAGOYA CLOUD VPS（月770円〜） →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B614H+B7NWXE+7YE+NWRNM" alt=""&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS（月990円〜） →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
-&lt;h3 id="ステップ2ollamaをインストール"&gt;ステップ2：Ollamaをインストール&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ssh root@あなたのIPアドレス
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl -fsSL https://ollama.ai/install.sh | sh
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="ステップ3モデルをダウンロード"&gt;ステップ3：モデルをダウンロード&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull llama3
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="ステップ4apiサーバーとして起動"&gt;ステップ4：APIサーバーとして起動&lt;/h3&gt;
-&lt;p&gt;Ollamaはインストール時点でAPIサーバーが自動起動しています。デフォルトでポート11434でリッスン。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;はっきり書いておきます。&lt;strong&gt;OllamaにGPUは不要です&lt;/strong&gt;。CPU推論で動きます。GPU付きVPSを勧めてくる記事を見かけたら、アフィリエイト報酬が高いGPUプランを売りたいだけの可能性を疑ってください。Ollamaの用途（自分でホストするAPIサーバー）にGPUは必要ありません。&lt;/p&gt;
+&lt;p&gt;自分のおすすめはKAGOYA。理由はシンプルで&lt;strong&gt;時間課金が安い&lt;/strong&gt;のと、&lt;strong&gt;14日間の無料お試しがある&lt;/strong&gt;こと。14日あれば週末が2回入ります。平日は仕事で触れなくても、2回の週末でセットアップと動作確認は十分できる。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+B7NWXE+7YE+NWRNM" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;KAGOYA CLOUD VPS（月770円〜・14日無料） →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B614H+B7NWXE+7YE+NWRNM" alt=""&gt;&lt;/p&gt;</description></item></channel></rss>

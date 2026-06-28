@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Llama.cpp on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/llama.cpp/</link><description>Recent content in Llama.cpp on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Fri, 26 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/llama.cpp/index.xml" rel="self" type="application/rss+xml"/><item><title>【コスパ検証】Llama.cppを使ってCPUのみの格安VPSでローカルLLMを動かす【月770円〜】</title><link>https://naruhodo-lab.uk/usecase/guide-llamacpp_cpu_vps/</link><pubDate>Fri, 26 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-llamacpp_cpu_vps/</guid><description>&lt;h1 id="llamacppでcpu格安vpsでローカルllmを動かすコスパ検証"&gt;Llama.cppでCPU格安VPSでローカルLLMを動かす【コスパ検証】&lt;/h1&gt;
-&lt;h2 id="gpuがないとaiは動かせないは過去の話"&gt;「GPUがないとAIは動かせない」は過去の話&lt;/h2&gt;
-&lt;p&gt;AI＝高額なGPUが必要、というイメージはありませんか？&lt;/p&gt;
-&lt;p&gt;実は&lt;strong&gt;Llama.cpp&lt;/strong&gt;という技術のおかげで、&lt;strong&gt;GPUなしのCPUだけでAIモデルを動かせる時代&lt;/strong&gt;になっています。しかも月770円の格安VPSで。&lt;/p&gt;
-&lt;p&gt;この記事では、CPUのみのVPSでローカルLLMを動かして「実際に使えるのか？」を徹底検証します。&lt;/p&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;チャット用途なら、GPU不要。月770円のCPU VPSで普通に動く。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;この記事を開いてくれたということは、たぶん「GPUなしでLLMを動かせるらしいけど本当に？」とか「安いVPSで実際どこまで使えるの？」あたりが気になってると思う。自分もそこから調べ始めた。&lt;/p&gt;
+&lt;p&gt;先に自分の判断をざっくり出しておきます：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;とにかく試したい&lt;/strong&gt;：KAGOYAの2GBプラン（月770円）でスタート。14日無料あり&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;個人で普通に使いたい&lt;/strong&gt;：KAGOYAかXServerの4GBプランが現実的な本命&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GPU搭載VPSを検討してるなら&lt;/strong&gt;：Llama.cpp用途なら、やめとけ。月1万円以上出す理由がない（詳しくは後述）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;「速さより安さ」派の自分がたどり着いた結論です。参考にしてください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="gpu推しの記事には注意してほしい"&gt;GPU推しの記事には注意してほしい&lt;/h2&gt;
+&lt;p&gt;正直に言うと、「GPUなしでもAIが動く時代！」と煽っておいて、その2段落後にGPU搭載プランのリンクを貼ってくる記事がめちゃくちゃ多い。&lt;/p&gt;
+&lt;p&gt;それ、おかしいですよね。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Llama.cpp目的でGPU VPSを勧めてくる記事は、アフィリエイト報酬が高いプランを紹介したいだけのケースがほとんど&lt;/strong&gt;だと思っています。はっきり書いておきます。&lt;/p&gt;
+&lt;p&gt;GPU搭載VPSは月1万円〜が相場。CPU VPSは月770円〜。&lt;strong&gt;その差を「推論速度」だけで正当化できるかどうか&lt;/strong&gt;を、自分は常に考えます。チャット用途なら、答えはほぼNoです。&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="llamacppとは"&gt;Llama.cppとは&lt;/h2&gt;
-&lt;p&gt;Llama.cppは、Meta社のLLM「Llama」シリーズをC++で実装したオープンソースプロジェクトです。最大の特徴は：&lt;/p&gt;
+&lt;p&gt;Llama.cppは、MetaのLLM「Llama」シリーズをC++で実装したオープンソースプロジェクトです。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;GPUなしでLLMが動く&lt;/strong&gt;（CPU推論に最適化）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;量子化&lt;/strong&gt;（モデルサイズを圧縮）に対応&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子化&lt;/strong&gt;（モデルを圧縮して軽量化）に対応&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;メモリ消費が少ない&lt;/strong&gt;（4GBのVPSでも動作可能）&lt;/li&gt;
 &lt;li&gt;Linux/Mac/Windowsで動作&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="コスト比較gpu-vs-cpu"&gt;コスト比較：GPU vs CPU&lt;/h2&gt;
+&lt;p&gt;自分がこれに注目した理由はシンプルで、「GPUなしで動くなら月額が桁違いに安くなる」から。それだけです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="コスト比較gpuとcpuの本当の差"&gt;コスト比較：GPUとCPUの本当の差&lt;/h2&gt;
+&lt;p&gt;先に数字を見てほしい。&lt;/p&gt;
 &lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -43,7 +59,11 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;日常的なチャット用途なら、CPU推論の速度で十分実用的です。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;月1万円 ÷ 30日 = &lt;strong&gt;1日あたり約333円&lt;/strong&gt;。
+月770円 ÷ 30日 = &lt;strong&gt;1日あたり約26円&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;この差を「推論速度が速い」で正当化するには、よほど頻繁に使うか、大量処理が必要な用途でないと割が合わない。&lt;/p&gt;
+&lt;p&gt;チャット形式でぽちぽち質問するだけなら、5トークン/秒でも普通に会話できます。GPT-4のタイピング速度と大差ない体感です。「70Bモデルを動かしたい」「100人が同時利用するサービスを作りたい」みたいな用途以外は、CPU VPSで十分です。&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="cpuのみvpsでの実測パフォーマンス"&gt;CPUのみVPSでの実測パフォーマンス&lt;/h2&gt;
 &lt;h3 id="テスト環境"&gt;テスト環境&lt;/h3&gt;
 &lt;table&gt;
@@ -109,4 +129,4 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;結論：チャット形式の質問応答なら、月770円のVPSで十分に使える。&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;正直に言うと「めちゃくちゃ速い」とは言えない。でも「使えないほど遅い」とも全然言えない。&lt;/p&gt;</description></item></channel></rss>

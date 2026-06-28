@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>社内ChatGPT on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E7%A4%BE%E5%86%85chatgpt/</link><description>Recent content in 社内ChatGPT on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 25 Jun 2026 12:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E7%A4%BE%E5%86%85chatgpt/index.xml" rel="self" type="application/rss+xml"/><item><title>【完全無料】DifyをVPSにセルフホスト（Docker版）して社内ChatGPTを作る手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-dify_selfhost/</link><pubDate>Thu, 25 Jun 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-dify_selfhost/</guid><description>&lt;h1 id="difyをvpsにセルフホストして社内chatgptを作る完全手順"&gt;DifyをVPSにセルフホストして「社内ChatGPT」を作る完全手順&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="結論から書きますdifyはセルフホスト一択vpsは月990円で十分動く"&gt;【結論から書きます】Difyはセルフホスト一択。VPSは月990円で十分動く&lt;/h2&gt;
+&lt;p&gt;はっきり書いておきます。&lt;/p&gt;
+&lt;p&gt;Difyクラウド版の月額プランは$59〜$159、日本円で&lt;strong&gt;月9,000円〜24,000円&lt;/strong&gt;です。一方、VPSにセルフホストすれば&lt;strong&gt;月990円&lt;/strong&gt;で同じことができます。&lt;/p&gt;
+&lt;p&gt;自分がこれを知ったとき、率直に「なんでみんなクラウド版を使い続けてるんだろう」と思いました。年間で差額が10万円近くになるのに、です。&lt;/p&gt;
+&lt;p&gt;「サーバー管理したくない」「コマンドを触りたくない」という人がクラウド版に行くのは理解できます。でも、Docker Composeさえ動かせれば今日中に構築できるので、思ってるよりずっとハードルは低いです。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;この記事での自分の結論：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Difyを使うならVPSセルフホスト一択&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;VPSはまず試すならConoHa、本番運用ならXServer VPS（月990円〜）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dify用途でGPU付きVPSを選ぶ必要はない（理由は後述）&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Docker数コマンドで動く。難しくない&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以下、詳しく書いていきます。&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="difyとはなぜ今注目されているのか"&gt;Difyとは？なぜ今、注目されているのか&lt;/h2&gt;
 &lt;p&gt;Dify（ディファイ）は、&lt;strong&gt;プログラミング不要でAIアプリケーションを構築できるオープンソースプラットフォーム&lt;/strong&gt;です。2026年現在、GitHub Stars数は急増しており、企業のAI導入ツールとして世界中で注目されています。&lt;/p&gt;
 &lt;p&gt;Difyを使えば、以下のようなことがノーコードで実現できます：&lt;/p&gt;
@@ -8,7 +23,9 @@
 &lt;li&gt;社内FAQ自動応答システム&lt;/li&gt;
 &lt;li&gt;RAG（検索拡張生成）を活用した&lt;strong&gt;知識ベースAI&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="difyクラウド版-vs-セルフホスト版なぜvpsがおすすめ"&gt;Difyクラウド版 vs セルフホスト版：なぜVPSがおすすめ？&lt;/h2&gt;
+&lt;p&gt;自分の感覚でいうと、「LangChainとかを自分でゴリゴリ書かなくていい」という点が一番ありがたいです。RAGのパイプラインをGUI上でぽちぽちつなげるだけで動くので、AIエンジニアじゃなくても扱えます。LangChainで自前実装するのと比べると、工数が全然違います。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="difyクラウド版-vs-セルフホスト版正直な比較"&gt;Difyクラウド版 vs セルフホスト版：正直な比較&lt;/h2&gt;
 &lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -45,7 +62,10 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;特に法人利用では「データを海外サーバーに送りたくない」というニーズが強く、国内VPSでのセルフホストが最適解です。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;正直に言うと、法人で使うときの「データを海外サーバーに置きたくない」という問題は結構デカいです。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;社内の機密ドキュメントをDifyに食わせてRAGを作ろうとしたとき、クラウド版だとそのデータが海外のサーバーに飛んでしまう。これが嫌で国内VPS自前運用に踏み切るケースが多いと思います。情報漏洩リスクの話を総務や法務にされたとき、「国内サーバーで完結してます」と言えるのと言えないのとでは全然違う。&lt;/p&gt;
+&lt;p&gt;月額の差も改めて計算します。クラウド版Professionalプランは月$59 ≒ 約9,000円。XServer VPSが月990円なら、差額は&lt;strong&gt;月約8,000円&lt;/strong&gt;、年間で&lt;strong&gt;約96,000円&lt;/strong&gt;。これを「管理が面倒な手間賃」として払い続けるのは、ちょっと高すぎると自分は思います。&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="必要なvpsスペック"&gt;必要なVPSスペック&lt;/h2&gt;
 &lt;p&gt;Dify（Docker版）を快適に動かすための推奨スペック：&lt;/p&gt;
 &lt;table&gt;
@@ -79,11 +99,4 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;4GBプランでも動作しますが、RAG機能やドキュメント検索を使うなら8GBプランがおすすめです。&lt;/strong&gt;&lt;/p&gt;
-&lt;h2 id="おすすめvps-3選"&gt;おすすめVPS 3選&lt;/h2&gt;
-&lt;h3 id="-xserver-vps月990円"&gt;◆ XServer VPS（月990円〜）&lt;/h3&gt;
-&lt;p&gt;高性能なAMD EPYC搭載で、Dockerコンテナの起動が高速。4GBプランでDifyが快適に動作します。&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
-&lt;h3 id="-conoha-vps月2178円"&gt;◆ ConoHa VPS（月2,178円〜）&lt;/h3&gt;
-&lt;p&gt;時間課金対応で「まず試してみたい」方に最適。Dockerテンプレートも用意されています。&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;ConoHa VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt=""&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;自分の判断をはっきり書いておくと：&lt;/p&gt;</description></item></channel></rss>

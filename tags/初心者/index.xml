@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>初心者 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E5%88%9D%E5%BF%83%E8%80%85/</link><description>Recent content in 初心者 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 24 Jun 2026 11:30:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E5%88%9D%E5%BF%83%E8%80%85/index.xml" rel="self" type="application/rss+xml"/><item><title>【超初心者向け】VPSの始め方完全ガイド｜申し込みからAIツール起動まで【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-vps_setup_beginner/</link><pubDate>Wed, 24 Jun 2026 11:30:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-vps_setup_beginner/</guid><description>&lt;h1 id="vpsの始め方完全ガイド申し込みからaiツール起動まで"&gt;VPSの始め方完全ガイド｜申し込みからAIツール起動まで&lt;/h1&gt;
+&lt;h2 id="結論から言います迷ってるならkagoya一択でいい"&gt;【結論から言います】迷ってるならKAGOYA一択でいい&lt;/h2&gt;
+&lt;p&gt;記事の最後まで読む時間がない人のために、最初に結論を書いておきます。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Claude CodeやAPIベースのAIツールを動かしたいだけなら、KAGOYAの2コア/2GBプラン（月770円）で十分です。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;GPUは要りません。本当に要りません。このあと詳しく書きますが、「GPU搭載VPSのほうが速い」みたいな記事を見かけたら、それはほぼアフィリエイト報酬目的だと思っていいです。Claude Codeの処理はAnthropicのサーバー側で走るので、VPS側にGPUがあっても何も変わりません。&lt;/p&gt;
+&lt;p&gt;あと「自宅PCでいいじゃん」という考えも一度捨てたほうがいい。PCつけっぱなしは精神的に気になるし、何か起きたらリモートデスクトップで入らなきゃいけないから、全然「手放し」にならないんです。その点VPSはほったらかしでOK。これがやっぱり大きい。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;※2026年6月時点の情報です。&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="vpsって難しそうと思っていませんか"&gt;「VPSって難しそう…」と思っていませんか？&lt;/h2&gt;
 &lt;p&gt;「VPSが良いのはわかったけど、どうやって始めればいいの？」
 「サーバーとかLinuxとか、自分には無理かも…」&lt;/p&gt;
-&lt;p&gt;そう思っている方、安心してください。&lt;strong&gt;VPSの初期設定は、実は30分もあれば終わります。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;この記事では、パソコンの基本操作ができる方なら誰でもVPSを使い始められるように、申し込みからAIツールの起動までをステップバイステップで解説します。&lt;/p&gt;
-&lt;p&gt;※2026年6月時点の情報です。&lt;/p&gt;
+&lt;p&gt;その気持ち、よくわかります。自分も最初はそうでした。でも実際やってみると、&lt;strong&gt;初期設定は30分もあれば終わります。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;この記事では、パソコンの基本操作ができる方なら誰でもVPSを使い始められるように、申し込みからAIツールの起動までをステップバイステップで解説します。コマンドはコピペすれば動くように書いてあります。&lt;/p&gt;
 &lt;h2 id="vpsを始める前に知っておくべき3つのこと"&gt;VPSを始める前に知っておくべき3つのこと&lt;/h2&gt;
 &lt;h3 id="1-vpsとはネット上の自分専用pc"&gt;1. VPSとは「ネット上の自分専用PC」&lt;/h3&gt;
 &lt;p&gt;VPS（Virtual Private Server）は、データセンターにある物理サーバーの一部を「自分専用」として借りるサービスです。自宅のPCと違って：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;24時間稼働&lt;/strong&gt;しても電気代がかからない&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;自宅PCに負担がかからない&lt;/strong&gt;（ブラウザだけで操作可能）&lt;/li&gt;
-&lt;li&gt;**月990円〜**と、カフェ1回分の費用で始められる&lt;/li&gt;
+&lt;li&gt;**月770円〜**と、カフェ1回分の費用で始められる&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;正直に言うと、この「自宅PCから解放される」というのが一番の理由です。Claude Codeを夜中も動かしたいとき、自分のPCをつけっぱなしにするのはどうしても気になる。翌朝起きたら落ちてた、なんてこともある。VPSならその心配がない。&lt;/p&gt;
 &lt;h3 id="2-必要なのはパソコンとクレジットカードだけ"&gt;2. 必要なのは「パソコン」と「クレジットカード」だけ&lt;/h3&gt;
 &lt;p&gt;特別な機材やソフトは不要です。WindowsでもMacでも、ブラウザとターミナル（コマンド入力画面）があればOKです。&lt;/p&gt;
 &lt;h3 id="3-失敗しても大丈夫"&gt;3. 失敗しても大丈夫&lt;/h3&gt;
-&lt;p&gt;VPSは月単位の契約が主流です。「やっぱり違うな」と思ったら翌月に解約できます。初期費用無料のサービスも多いので、気軽に試せます。&lt;/p&gt;
+&lt;p&gt;これ、一番伝えたいことかもしれません。VPSは月単位の契約が主流で、「やっぱり違うな」と思ったら翌月に解約できます。KAGOYAには14日間の無料試用期間もあります。週末が2回入るので、平日は仕事で触れなくても「2回の週末で試せる」と考えれば十分な猶予です。&lt;/p&gt;
+&lt;p&gt;この記事で紹介する選択が「最終回答」ではありません。まず触ってみることが大事です。&lt;/p&gt;
 &lt;h2 id="ステップ1vpsサービスを選ぶ"&gt;ステップ1：VPSサービスを選ぶ&lt;/h2&gt;
 &lt;p&gt;AIツール（Claude Code、Codex、ChatGPT API等）を動かすなら、以下の条件を満たすプランを選びましょう。&lt;/p&gt;
 &lt;table&gt;
@@ -50,13 +59,8 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;GPUについてはっきり書いておきます。Claude Code用途ではGPUは不要です。&lt;/strong&gt; Claude Codeの推論処理はAnthropicのクラウド側で動いています。VPS側のGPUは一切関係ありません。GPU搭載VPSは月数万円になることもあって、Stable Diffusionのような画像生成ならまだ話はわかりますが、それでも月数万はなかなか高い。Claude Code目的でGPU VPSを勧めてくる記事は、単純にアフィリエイト報酬が高いプランを売りたいだけです。&lt;/p&gt;
 &lt;h3 id="初心者におすすめのvps-3選"&gt;初心者におすすめのVPS 3選&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;◆ KAGOYA CLOUD VPS（月770円〜）&lt;/strong&gt;
-最安値でAI開発を始められます。2コア/2GBプランが月770円。管理画面がシンプルで初心者にも使いやすい。&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+B7NWXE+7YE+NWRNM" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;KAGOYA CLOUD VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B614H+B7NWXE+7YE+NWRNM" alt=""&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;◆ XServer VPS（月990円〜）&lt;/strong&gt;
-国内最速級の処理性能。安定性を重視するならこちら。初期費用無料、管理画面も日本語で安心。&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;◆ ConoHa VPS（月2,178円〜）&lt;/strong&gt;
-時間課金に対応。「まず数時間だけ試したい」という方に最適。使った分だけの料金体系。&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;ConoHa VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt=""&gt;&lt;/p&gt;</description></item></channel></rss>
+自分が一番オススメするのはここ。2コア/2GBプランが月770円で最安値。管理画面がシンプルで初心者にも使いやすい。時間課金もあるので「まず数時間試したい」にも対応している。14日間の無料試用期間があるのも大きい。週末2回で試せます。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+B7NWXE+7YE+NWRNM" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;KAGOYA CLOUD VPS 公式サイトを見る →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B614H+B7NWXE+7YE+NWRNM" alt=""&gt;&lt;/p&gt;</description></item></channel></rss>
