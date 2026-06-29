@@ -16,7 +16,7 @@
 &lt;li&gt;いつサービス終了するかわからない&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;VPSで自分専用サーバーを立てれば、好きな設定で24時間いつでも友達と遊べます。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;正直に言うと、「自分のPCをサーバーにすればいいじゃん」という話も出てくるんですが、これが思ったより不便。PCつけっぱなしは気になるし、何かあったときにリモートデスクトップで入り直さないといけないので、全然手放しにならない。月3,000円前後でそのストレスがなくなるなら、VPSにしたほうがいい。&lt;/p&gt;
+&lt;p&gt;率直に言うと、「自分のPCをサーバーにすればいいじゃん」という話も出てくるんですが、これが思ったより不便。PCつけっぱなしは気になるし、何かあったときにリモートデスクトップで入り直さないといけないので、全然手放しにならない。月3,000円前後でそのストレスがなくなるなら、VPSにしたほうがいい。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="必要なvpsスペック"&gt;必要なVPSスペック&lt;/h2&gt;
 &lt;table&gt;
@@ -136,7 +136,7 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;正直に言うと、Professionalの$59（約9,000円/月）は高いです。&lt;/strong&gt; 年間にすると約108,000円。1日あたり約300円。VPSセルフホストなら同じ期間を年間18,000〜23,000円で回せる計算になります。差額が年間85,000円以上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本音を言えば、Professionalの$59（約9,000円/月）は高いです。&lt;/strong&gt; 年間にすると約108,000円。1日あたり約300円。VPSセルフホストなら同じ期間を年間18,000〜23,000円で回せる計算になります。差額が年間85,000円以上。&lt;/p&gt;
 &lt;p&gt;この数字を見て「それでもクラウド版にします」という人は、よほど運用の手間を嫌がっているか、Dockerを触ったことがない人だと思います。それはそれで正直な理由なので否定はしません。ただ、金額の差は実態として存在するので、把握した上で選ぶべきだと思っています。&lt;/p&gt;
 &lt;h3 id="vpsセルフホスト版のコスト"&gt;VPSセルフホスト版のコスト&lt;/h3&gt;
 &lt;table&gt;
@@ -270,7 +270,7 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;自分の判断をはっきり書いておくと：&lt;/p&gt;</description></item><item><title>【検証】ChatGPT Plus（月3,000円）を解約してVPS＋オープンLLMで代用できるか？【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-chatgpt_alternative/</link><pubDate>Thu, 25 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-chatgpt_alternative/</guid><description>&lt;h1 id="chatgpt-plusを解約してvpsオープンllmで代用できるか徹底検証"&gt;ChatGPT Plusを解約してVPS＋オープンLLMで代用できるか？【徹底検証】&lt;/h1&gt;
+&lt;p&gt;自分の判断を遠回しに言っても仕方ないので。と：&lt;/p&gt;</description></item><item><title>【検証】ChatGPT Plus（月3,000円）を解約してVPS＋オープンLLMで代用できるか？【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-chatgpt_alternative/</link><pubDate>Thu, 25 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-chatgpt_alternative/</guid><description>&lt;h1 id="chatgpt-plusを解約してvpsオープンllmで代用できるか徹底検証"&gt;ChatGPT Plusを解約してVPS＋オープンLLMで代用できるか？【徹底検証】&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;テキスト生成がメインなら、解約していい。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;月3,000円のChatGPT Plusを払い続けているなら、VPS（月770円〜990円）にOllamaを入れる構成で日常業務の8割はカバーできます。年間で2万円以上の差が出ます。&lt;/p&gt;
@@ -280,7 +280,7 @@
 &lt;h2 id="chatgpt-plus月3000円は本当に必要"&gt;ChatGPT Plus、月3,000円は本当に必要？&lt;/h2&gt;
 &lt;p&gt;2026年現在、ChatGPT Plusの月額は約3,000円。年間にすると36,000円です。&lt;/p&gt;
 &lt;p&gt;「GPT-4が使えるから仕方ない」と思っていませんか？&lt;/p&gt;
-&lt;p&gt;正直に言うと、その感覚は一度疑ってみる価値があります。オープンソースのAIモデル（Llama 3、Gemma 2など）は2026年時点でかなり進化していて、日常的な用途ならChatGPT Plusと遜色ないレベルに達しています。&lt;/p&gt;
+&lt;p&gt;使ってみた感想としては、その感覚は一度疑ってみる価値があります。オープンソースのAIモデル（Llama 3、Gemma 2など）は2026年時点でかなり進化していて、日常的な用途ならChatGPT Plusと遜色ないレベルに達しています。&lt;/p&gt;
 &lt;p&gt;自分も「さすがにChatGPT Plusには勝てないだろう」と思いながら試したら、文章校正もコード生成も普通に使えて拍子抜けしました。全部がGPT-4相当とは言わない。でも、毎月3,000円を払い続けるほどの差があるかというと、それは別の話です。&lt;/p&gt;
 &lt;p&gt;この記事では、&lt;strong&gt;月990円のVPSにオープンLLMを導入して、ChatGPT Plusの代わりになるか&lt;/strong&gt;を実際に検証します。&lt;/p&gt;
 &lt;hr&gt;
@@ -347,5 +347,5 @@
 &lt;li&gt;高度な数学・論理推論&lt;/li&gt;
 &lt;li&gt;プラグイン・GPTs&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;正直に言うと、「最新情報の検索」はChatGPT Plusでも精度が怪しいことが多い。そこに月3,000円払い続けるのはどう考えてもコスパが悪い。&lt;/p&gt;
+&lt;p&gt;自分の結論としては、「最新情報の検索」はChatGPT Plusでも精度が怪しいことが多い。そこに月3,000円払い続けるのはどう考えてもコスパが悪い。&lt;/p&gt;
 &lt;p&gt;結局「ChatGPT Plusを使い続けなきゃいけない明確な理由」として残るのは、画像生成くらいです。画像生成が本当に欠かせないならそれだけのために残すのもわかる。でも「なんとなく解約するのが怖い」という理由で払い続けているなら、一度立ち止まって考えてみてほしいです。&lt;/p&gt;</description></item></channel></rss>

@@ -30,7 +30,7 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;個人で月に数千円、企業なら月に数万〜数十万円になることも珍しくありません。&lt;/p&gt;
-&lt;p&gt;正直に言うと、&lt;strong&gt;個人開発や自動化スクリプトでこの従量課金モデルは合わない&lt;/strong&gt;と思っています。使うのが怖くなって、結局APIを積極的に呼ばなくなる。それじゃ意味がない。&lt;/p&gt;
+&lt;p&gt;使ってみた感想としては、&lt;strong&gt;個人開発や自動化スクリプトでこの従量課金モデルは合わない&lt;/strong&gt;と思っています。使うのが怖くなって、結局APIを積極的に呼ばなくなる。それじゃ意味がない。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;VPSにOllamaを入れれば、API利用料ゼロで同等の機能が手に入ります。&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="ollamaのapiモードとは"&gt;Ollamaの「APIモード」とは&lt;/h2&gt;

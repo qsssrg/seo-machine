@@ -31,8 +31,7 @@
 &lt;li&gt;&lt;strong&gt;LINE公式アカウント&lt;/strong&gt;（無料で作成可能）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;AIモデルのAPIキー&lt;/strong&gt;（OpenAI等、またはOllamaで無料）&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id="vps選び正直に言うと"&gt;VPS選び、正直に言うと&lt;/h3&gt;
-&lt;p&gt;ここで正直に言うと、&lt;strong&gt;選択肢は用途によってほぼ決まります。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id="vps選び本音を言えばここで体感として選択肢は用途によってほぼ決まります"&gt;VPS選び、本音を言えば、ここで体感として、&lt;strong&gt;選択肢は用途によってほぼ決まります。&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;「このボットをずっと動かすつもり」ならXServer VPS（月990円固定）が精神的にラク。&lt;/strong&gt;
 毎月いくらかかったか計算しなくていい。「今月何時間使ったっけ？」という計算が発生しないのは、地味に大事なことです。固定料金は精神衛生上かなりいい。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;「まず動くか試したい、やめるかもしれない」ならConoHa VPS（時間課金）。&lt;/strong&gt;

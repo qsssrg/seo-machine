@@ -31,8 +31,7 @@
 &lt;li&gt;&lt;strong&gt;LINE公式アカウント&lt;/strong&gt;（無料で作成可能）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;AIモデルのAPIキー&lt;/strong&gt;（OpenAI等、またはOllamaで無料）&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id="vps選び正直に言うと"&gt;VPS選び、正直に言うと&lt;/h3&gt;
-&lt;p&gt;ここで正直に言うと、&lt;strong&gt;選択肢は用途によってほぼ決まります。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id="vps選び本音を言えばここで体感として選択肢は用途によってほぼ決まります"&gt;VPS選び、本音を言えば、ここで体感として、&lt;strong&gt;選択肢は用途によってほぼ決まります。&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;「このボットをずっと動かすつもり」ならXServer VPS（月990円固定）が精神的にラク。&lt;/strong&gt;
 毎月いくらかかったか計算しなくていい。「今月何時間使ったっけ？」という計算が発生しないのは、地味に大事なことです。固定料金は精神衛生上かなりいい。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;「まず動くか試したい、やめるかもしれない」ならConoHa VPS（時間課金）。&lt;/strong&gt;
@@ -111,7 +110,7 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;正直に言うと、Professionalの$59（約9,000円/月）は高いです。&lt;/strong&gt; 年間にすると約108,000円。1日あたり約300円。VPSセルフホストなら同じ期間を年間18,000〜23,000円で回せる計算になります。差額が年間85,000円以上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本音を言えば、Professionalの$59（約9,000円/月）は高いです。&lt;/strong&gt; 年間にすると約108,000円。1日あたり約300円。VPSセルフホストなら同じ期間を年間18,000〜23,000円で回せる計算になります。差額が年間85,000円以上。&lt;/p&gt;
 &lt;p&gt;この数字を見て「それでもクラウド版にします」という人は、よほど運用の手間を嫌がっているか、Dockerを触ったことがない人だと思います。それはそれで正直な理由なので否定はしません。ただ、金額の差は実態として存在するので、把握した上で選ぶべきだと思っています。&lt;/p&gt;
 &lt;h3 id="vpsセルフホスト版のコスト"&gt;VPSセルフホスト版のコスト&lt;/h3&gt;
 &lt;table&gt;
@@ -245,4 +244,4 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;自分の判断をはっきり書いておくと：&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;自分の判断を遠回しに言っても仕方ないので。と：&lt;/p&gt;</description></item></channel></rss>

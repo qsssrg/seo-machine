@@ -55,7 +55,7 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;正直に言うと、&lt;strong&gt;回答の精度だけで比べたらChatGPT（特にGPT-4o）の方が上&lt;/strong&gt;。これは否定しない。ただ、「プライベートな情報を扱いたい」「メッセージ制限に引っかかりたくない」「チームで使いたい」という場面では、Open WebUIの方が明らかに向いている。&lt;/p&gt;
+&lt;p&gt;実際のところ、&lt;strong&gt;回答の精度だけで比べたらChatGPT（特にGPT-4o）の方が上&lt;/strong&gt;。これは否定しない。ただ、「プライベートな情報を扱いたい」「メッセージ制限に引っかかりたくない」「チームで使いたい」という場面では、Open WebUIの方が明らかに向いている。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="open-webuiの主な機能"&gt;Open WebUIの主な機能&lt;/h2&gt;
 &lt;h3 id="1-複数モデルの切り替え"&gt;1. 複数モデルの切り替え&lt;/h3&gt;
@@ -103,7 +103,7 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;個人で月に数千円、企業なら月に数万〜数十万円になることも珍しくありません。&lt;/p&gt;
-&lt;p&gt;正直に言うと、&lt;strong&gt;個人開発や自動化スクリプトでこの従量課金モデルは合わない&lt;/strong&gt;と思っています。使うのが怖くなって、結局APIを積極的に呼ばなくなる。それじゃ意味がない。&lt;/p&gt;
+&lt;p&gt;使ってみた感想としては、&lt;strong&gt;個人開発や自動化スクリプトでこの従量課金モデルは合わない&lt;/strong&gt;と思っています。使うのが怖くなって、結局APIを積極的に呼ばなくなる。それじゃ意味がない。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;VPSにOllamaを入れれば、API利用料ゼロで同等の機能が手に入ります。&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="ollamaのapiモードとは"&gt;Ollamaの「APIモード」とは&lt;/h2&gt;
@@ -171,7 +171,7 @@
 &lt;h2 id="chatgpt-plus月3000円は本当に必要"&gt;ChatGPT Plus、月3,000円は本当に必要？&lt;/h2&gt;
 &lt;p&gt;2026年現在、ChatGPT Plusの月額は約3,000円。年間にすると36,000円です。&lt;/p&gt;
 &lt;p&gt;「GPT-4が使えるから仕方ない」と思っていませんか？&lt;/p&gt;
-&lt;p&gt;正直に言うと、その感覚は一度疑ってみる価値があります。オープンソースのAIモデル（Llama 3、Gemma 2など）は2026年時点でかなり進化していて、日常的な用途ならChatGPT Plusと遜色ないレベルに達しています。&lt;/p&gt;
+&lt;p&gt;使ってみた感想としては、その感覚は一度疑ってみる価値があります。オープンソースのAIモデル（Llama 3、Gemma 2など）は2026年時点でかなり進化していて、日常的な用途ならChatGPT Plusと遜色ないレベルに達しています。&lt;/p&gt;
 &lt;p&gt;自分も「さすがにChatGPT Plusには勝てないだろう」と思いながら試したら、文章校正もコード生成も普通に使えて拍子抜けしました。全部がGPT-4相当とは言わない。でも、毎月3,000円を払い続けるほどの差があるかというと、それは別の話です。&lt;/p&gt;
 &lt;p&gt;この記事では、&lt;strong&gt;月990円のVPSにオープンLLMを導入して、ChatGPT Plusの代わりになるか&lt;/strong&gt;を実際に検証します。&lt;/p&gt;
 &lt;hr&gt;
@@ -238,5 +238,5 @@
 &lt;li&gt;高度な数学・論理推論&lt;/li&gt;
 &lt;li&gt;プラグイン・GPTs&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;正直に言うと、「最新情報の検索」はChatGPT Plusでも精度が怪しいことが多い。そこに月3,000円払い続けるのはどう考えてもコスパが悪い。&lt;/p&gt;
+&lt;p&gt;自分の結論としては、「最新情報の検索」はChatGPT Plusでも精度が怪しいことが多い。そこに月3,000円払い続けるのはどう考えてもコスパが悪い。&lt;/p&gt;
 &lt;p&gt;結局「ChatGPT Plusを使い続けなきゃいけない明確な理由」として残るのは、画像生成くらいです。画像生成が本当に欠かせないならそれだけのために残すのもわかる。でも「なんとなく解約するのが怖い」という理由で払い続けているなら、一度立ち止まって考えてみてほしいです。&lt;/p&gt;</description></item></channel></rss>

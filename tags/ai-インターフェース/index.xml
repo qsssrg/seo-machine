@@ -55,7 +55,7 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;正直に言うと、&lt;strong&gt;回答の精度だけで比べたらChatGPT（特にGPT-4o）の方が上&lt;/strong&gt;。これは否定しない。ただ、「プライベートな情報を扱いたい」「メッセージ制限に引っかかりたくない」「チームで使いたい」という場面では、Open WebUIの方が明らかに向いている。&lt;/p&gt;
+&lt;p&gt;実際のところ、&lt;strong&gt;回答の精度だけで比べたらChatGPT（特にGPT-4o）の方が上&lt;/strong&gt;。これは否定しない。ただ、「プライベートな情報を扱いたい」「メッセージ制限に引っかかりたくない」「チームで使いたい」という場面では、Open WebUIの方が明らかに向いている。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="open-webuiの主な機能"&gt;Open WebUIの主な機能&lt;/h2&gt;
 &lt;h3 id="1-複数モデルの切り替え"&gt;1. 複数モデルの切り替え&lt;/h3&gt;

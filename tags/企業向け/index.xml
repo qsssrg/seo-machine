@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>企業向け on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E4%BC%81%E6%A5%AD%E5%90%91%E3%81%91/</link><description>Recent content in 企業向け on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 29 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E4%BC%81%E6%A5%AD%E5%90%91%E3%81%91/index.xml" rel="self" type="application/rss+xml"/><item><title>【セキュリティ重視】機密情報を扱うAI環境を国内VPSで構築するメリットと手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-secure_ai_vps/</link><pubDate>Mon, 29 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-secure_ai_vps/</guid><description>&lt;h1 id="セキュリティ重視機密情報を扱うai環境を国内vpsで構築する"&gt;セキュリティ重視！機密情報を扱うAI環境を国内VPSで構築する&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="最初に結論機密データをchatgptに入れるのは正直やめたほうがいい"&gt;【最初に結論】機密データをChatGPTに入れるのは、正直やめたほうがいい&lt;/h2&gt;
+&lt;p&gt;はっきり書いておきます。&lt;/p&gt;
+&lt;p&gt;契約書、患者情報、顧客の資産データ——こういうものをChatGPTのチャット欄に貼り付けているなら、それはかなりリスクのある行為です。送信した瞬間、そのデータはOpenAIの米国サーバーに飛んでいます。&lt;/p&gt;
+&lt;p&gt;「学習には使われない設定にしている」という声もわかります。でも「設定を信じる」という前提に乗っている時点で、コンプライアンス的にはアウトになりうる。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解決策はシンプルで、AIを自分のVPSの中で動かすことです。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;国内VPS（月990円〜）にOllamaを入れれば、データは外に一切出ない。ChatGPTに劣る部分もあるけど、機密情報を扱う用途なら「外に出さないこと」のほうが圧倒的に重要です。&lt;/p&gt;
+&lt;p&gt;この記事では、セキュリティを最優先にしたい人向けに、具体的な構成と手順を書きます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="chatgptに機密データを入力していませんか"&gt;ChatGPTに機密データを入力していませんか？&lt;/h2&gt;
+&lt;p&gt;2026年現在、多くのビジネスパーソンがChatGPTを業務で活用しています。でも、こういうリスクを本当に理解したうえで使っている人がどれだけいるか。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;入力した情報がOpenAIのサーバー（海外）に送信される&lt;/li&gt;
+&lt;li&gt;学習データとして利用される可能性がある&lt;/li&gt;
+&lt;li&gt;社内の機密情報・個人情報が外部に漏洩するリスク&lt;/li&gt;
+&lt;li&gt;会社のセキュリティポリシーに抵触する可能性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;「API経由なら学習されない」「エンタープライズプランなら安全」という話もあります。それは一定正しい。でもそれでも「データが海外サーバーを経由する」という事実は変わらない。日本の個人情報保護法の観点からは、これは無視できない問題です。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;国内VPSにローカルAI環境を構築すれば、これらのリスクを完全に排除できます。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜ国内vpsなのか"&gt;なぜ「国内VPS」なのか&lt;/h2&gt;
+&lt;p&gt;正直に言うと、「セキュリティのために国内VPS」という選択はコスト的に見合うのか、最初は半信半疑でした。でも比較してみると、これ以外の選択肢がないことがわかります。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;ChatGPT&lt;/th&gt;
+					&lt;th&gt;海外クラウド&lt;/th&gt;
+					&lt;th&gt;国内VPS&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;データ保管場所&lt;/td&gt;
+					&lt;td&gt;米国&lt;/td&gt;
+					&lt;td&gt;海外各地&lt;/td&gt;
+					&lt;td&gt;日本国内&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;データ送信&lt;/td&gt;
+					&lt;td&gt;OpenAIに送信&lt;/td&gt;
+					&lt;td&gt;クラウドに送信&lt;/td&gt;
+					&lt;td&gt;送信なし&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;個人情報保護法&lt;/td&gt;
+					&lt;td&gt;米国法準拠&lt;/td&gt;
+					&lt;td&gt;各国法準拠&lt;/td&gt;
+					&lt;td&gt;日本法準拠&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;監査対応&lt;/td&gt;
+					&lt;td&gt;困難&lt;/td&gt;
+					&lt;td&gt;可能&lt;/td&gt;
+					&lt;td&gt;容易&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;レイテンシ&lt;/td&gt;
+					&lt;td&gt;やや遅い&lt;/td&gt;
+					&lt;td&gt;場所による&lt;/td&gt;
+					&lt;td&gt;高速&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;この表で「国内VPS」だけが全項目で問題なし、というのがわかります。AWSやGCPも「海外クラウド」に入るので、「クラウドだから安心」というのは機密情報の文脈では通用しない。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;日本の個人情報保護法・各種コンプライアンス要件に対応するには、国内VPSが実質唯一の選択肢です。&lt;/strong&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="セキュアai環境の構成"&gt;セキュアAI環境の構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[社内ネットワーク]
+ ↓ VPN / IPアドレス制限
+[国内VPS（XServer/さくら）]
+ ├── Ollama（AIモデル）
+ ├── Open WebUI（チャット画面）
+ └── AnythingLLM（RAG/社内文書検索）
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;全てのデータがVPS内で完結&lt;/li&gt;
+&lt;li&gt;外部APIへのデータ送信ゼロ&lt;/li&gt;
+&lt;li&gt;ファイアウォールで社内IPのみアクセス許可&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;この構成のポイントは「推論がVPS内で完結する」こと。OllamaはAPIを外に叩きに行かない。モデルがVPS上で動いていて、そこで答えが生成される。だからデータは物理的にVPSの外に出ようがない。&lt;/p&gt;
+&lt;p&gt;社内文書を検索させたいならAnythingLLMを追加すればいい。これも全部ローカルで動く。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="おすすめvpsセキュリティ重視"&gt;おすすめVPS（セキュリティ重視）&lt;/h2&gt;
+&lt;p&gt;自分の場合、セキュリティ用途のVPS選びは「国内データセンターであること」「固定料金で管理しやすいこと」を最優先にしました。&lt;/p&gt;
+&lt;h3 id="-xserver-vps月990円"&gt;◆ XServer VPS（月990円〜）&lt;/h3&gt;
+&lt;p&gt;国内データセンター、NVMe SSD、AMD EPYC搭載。企業利用に十分な性能と信頼性。&lt;/p&gt;</description></item></channel></rss>

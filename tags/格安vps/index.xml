@@ -11,7 +11,7 @@
 &lt;p&gt;「速さより安さ」派の自分がたどり着いた結論です。参考にしてください。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="gpu推しの記事には注意してほしい"&gt;GPU推しの記事には注意してほしい&lt;/h2&gt;
-&lt;p&gt;正直に言うと、「GPUなしでもAIが動く時代！」と煽っておいて、その2段落後にGPU搭載プランのリンクを貼ってくる記事がめちゃくちゃ多い。&lt;/p&gt;
+&lt;p&gt;本音を言えば、「GPUなしでもAIが動く時代！」と煽っておいて、その2段落後にGPU搭載プランのリンクを貼ってくる記事がめちゃくちゃ多い。&lt;/p&gt;
 &lt;p&gt;それ、おかしいですよね。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Llama.cpp目的でGPU VPSを勧めてくる記事は、アフィリエイト報酬が高いプランを紹介したいだけのケースがほとんど&lt;/strong&gt;だと思っています。はっきり書いておきます。&lt;/p&gt;
 &lt;p&gt;GPU搭載VPSは月1万円〜が相場。CPU VPSは月770円〜。&lt;strong&gt;その差を「推論速度」だけで正当化できるかどうか&lt;/strong&gt;を、自分は常に考えます。チャット用途なら、答えはほぼNoです。&lt;/p&gt;
@@ -129,4 +129,4 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;正直に言うと「めちゃくちゃ速い」とは言えない。でも「使えないほど遅い」とも全然言えない。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;本音を言えば、「めちゃくちゃ速い」とは言えない。でも「使えないほど遅い」とも全然言えない。&lt;/p&gt;</description></item></channel></rss>
