@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docker on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/docker/</link><description>Recent content in Docker on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 28 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>【無料】Open WebUIをVPSに導入して「自分だけの高機能ChatGPT」を作る方法【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docker on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/docker/</link><description>Recent content in Docker on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Tue, 30 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>【保存版】Difyのバージョンアップに備える！VPS上のDockerコンテナ運用・バックアップ術【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-dify_backup/</link><pubDate>Tue, 30 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-dify_backup/</guid><description>&lt;h1 id="difyのバージョンアップに備えるvps上のdockerコンテナ運用バックアップ術"&gt;Difyのバージョンアップに備える！VPS上のDockerコンテナ運用・バックアップ術&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="結論バックアップの仕組みを先に作るアップデートはその後"&gt;【結論】バックアップの仕組みを先に作る。アップデートはその後。&lt;/h2&gt;
+&lt;p&gt;はっきり書いておきます。&lt;/p&gt;
+&lt;p&gt;Difyをセルフホストで使い続けるなら、&lt;strong&gt;バックアップの自動化は「いつかやろう」じゃなくて初日にやること&lt;/strong&gt;です。&lt;/p&gt;
+&lt;p&gt;アップデートで詰んだ、という話はDifyコミュニティでも定期的に出てきます。自分もDify以外のDocker運用で「git pullしたら設定が吹っ飛んだ」という経験があるので、まったく他人事じゃない。&lt;/p&gt;
+&lt;p&gt;この記事で伝えたいのはたった一つで、「cron1行仕込んでおくだけで毎日自動バックアップができる」ということです。難しくないので、Difyを立ち上げたその日にやってしまってください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜバックアップが重要なのか"&gt;なぜバックアップが重要なのか&lt;/h2&gt;
+&lt;p&gt;Difyをセルフホストしていると、アップデートやサーバートラブルでデータを失うリスクがあります。特に以下のデータは失うと復旧が困難です：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;チャットボットの設定・プロンプト&lt;/li&gt;
+&lt;li&gt;RAGに登録したドキュメント&lt;/li&gt;
+&lt;li&gt;ユーザーアカウント情報&lt;/li&gt;
+&lt;li&gt;会話履歴&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;正直に言うと、チャットボットの設定やRAGのドキュメントは「もう一度作ればいい」ではすまない量になってきます。試行錯誤して育てたプロンプトを全ロストするのはかなりきつい。&lt;/p&gt;
+&lt;p&gt;「まぁ最悪作り直せばいいか」と思えるうちはまだいいんですが、RAGにドキュメントを積み上げて使い込んでくると、それが段々通用しなくなってくる。だから&lt;strong&gt;定期バックアップの仕組みを先に作る&lt;/strong&gt;、これが鉄則です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="バックアップ手順"&gt;バックアップ手順&lt;/h2&gt;
+&lt;h3 id="データベースのバックアップ"&gt;データベースのバックアップ&lt;/h3&gt;
+&lt;p&gt;まずデータベース（PostgreSQL）のダンプ。これが一番大事なデータの塊です。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd dify/docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;docker compose exec db pg_dump -U postgres dify &amp;gt; backup_&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date +%Y%m%d&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;.sql
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;日付入りのファイル名で出力されるので、バックアップが溜まっていっても「どれが最新か」が一目でわかります。&lt;/p&gt;
+&lt;h3 id="ボリュームの一括バックアップ"&gt;ボリュームの一括バックアップ&lt;/h3&gt;
+&lt;p&gt;DBダンプだけでは足りないケースもあります。RAGに登録した生ファイルなどはボリュームに入っているので、こちらも一緒に取っておくと安心です。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;docker run --rm -v dify_data:/data -v &lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;pwd&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;:/backup alpine &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; tar czf /backup/dify_volumes_&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date +%Y%m%d&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;.tar.gz /data
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="自動バックアップcron設定ここが本命"&gt;自動バックアップ（cron設定）──ここが本命&lt;/h3&gt;
+&lt;p&gt;正直、手動バックアップは絶対に忘れます。自分の経験上、「アップデートしようとした瞬間にバックアップを取ってなかったことに気づく」というパターンが一番多い。気づいたときには手遅れ、というのがいちばんまずい。&lt;/p&gt;
+&lt;p&gt;cron1行で毎日深夜3時に自動実行するようにしてしまいましょう。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;crontab -e
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 毎日3時にバックアップ実行&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt; * * * cd /root/dify/docker &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; docker compose exec -T db pg_dump -U postgres dify &amp;gt; /root/backups/dify_&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date +&lt;span style="color:#ae81ff"&gt;\%&lt;/span&gt;Y&lt;span style="color:#ae81ff"&gt;\%&lt;/span&gt;m&lt;span style="color:#ae81ff"&gt;\%&lt;/span&gt;d&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;.sql
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;VPSで動かす最大のメリットがここで活きます。&lt;strong&gt;VPSはサーバーが24時間稼働しているので、cronがちゃんと動く&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>【無料】Open WebUIをVPSに導入して「自分だけの高機能ChatGPT」を作る方法【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="-最初に結論を書いておきます"&gt;🔍 最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;「ChatGPTに毎月お金払うのがバカらしくなってきた」と思ったなら、Open WebUIを試す価値はある。&lt;/strong&gt;&lt;/p&gt;
