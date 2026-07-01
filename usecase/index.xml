@@ -1,4 +1,255 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>用途別おすすめレンタルサーバー on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/usecase/</link><description>Recent content in 用途別おすすめレンタルサーバー on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Tue, 30 Jun 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/usecase/index.xml" rel="self" type="application/rss+xml"/><item><title>【容量計算表】RAG環境をVPSに構築する際のストレージ容量の目安と拡張しやすいサーバー選び【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-rag_storage/</link><pubDate>Tue, 30 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-rag_storage/</guid><description>&lt;h1 id="rag環境のストレージ容量目安と拡張しやすいvps選び"&gt;RAG環境のストレージ容量目安と拡張しやすいVPS選び&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>用途別おすすめレンタルサーバー on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/usecase/</link><description>Recent content in 用途別おすすめレンタルサーバー on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 01 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/usecase/index.xml" rel="self" type="application/rss+xml"/><item><title>ローカルLLMに必要なVRAM容量とVPSのGPU対応表【2026年最新】</title><link>https://naruhodo-lab.uk/usecase/guide-vram_gpu_vps/</link><pubDate>Wed, 01 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-vram_gpu_vps/</guid><description>&lt;h1 id="ローカルllmを動かすのに必要なvram容量とvpsのメモリgpu対応表"&gt;ローカルLLMを動かすのに必要なVRAM容量と、VPSのメモリ・GPU対応表&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;【最初に結論を書いておきます】&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;何をやりたいかによって、GPUが必要かどうかはっきり変わります。&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Claude CodeやChatGPTのAPIを使う自動化がやりたい → GPUは不要。CPUのVPSで十分。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Llama・Mistralなどのモデルをローカルで動かしたい → GPUがあると快適。ただしモデルサイズ次第。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Stable Diffusionで画像生成したい → GPUほぼ必須。ただし月数万円かかる覚悟が必要。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;正直に言うと、世の中には「とりあえずGPU搭載VPSを勧める」記事が多いです。アフィリエイト報酬が高いGPUプランに誘導したい、という動機が透けて見えるものもある。この記事では用途別にGPUが本当に必要なのかを整理します。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="vram不足でllmが動かないその原因と解決策"&gt;「VRAM不足」でLLMが動かない！その原因と解決策&lt;/h2&gt;
+&lt;p&gt;ローカルLLMに挑戦したものの「CUDA out of memory」「メモリ不足で起動できない」と詰まった経験はありませんか？&lt;/p&gt;
+&lt;p&gt;ローカルLLM（Ollama・llama.cpp・vLLMなど）を動かす上で&lt;strong&gt;最大の壁がVRAM&lt;/strong&gt;です。モデルのパラメータ数と量子化レベルによって必要なVRAM容量が変わるため、事前に知っておかないとVPSを契約しても無駄になります。&lt;/p&gt;
+&lt;p&gt;ただし、ここで一度立ち止まって考えてほしい。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;「ローカルLLMを動かす」というのは、APIで外部のモデルを呼ぶこととは全然別の話です。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Claude CodeやOpenAI APIを使った自動化・コーディング補助がやりたいだけなら、GPUは1バイトも関係ない。APIを叩くのはCPUの仕事です。それなのに「AI開発にはGPUが必要」みたいなくくり方で高額プランへ誘導する記事は、正直あまり信用しないほうがいい。&lt;/p&gt;
+&lt;p&gt;この記事では「どのモデルに何GBのVRAMが必要か」を表で整理しつつ、&lt;strong&gt;あなたの用途でGPUが本当に必要なのか&lt;/strong&gt;も合わせて判断できるように書きます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="モデル別必要vram早見表"&gt;モデル別・必要VRAM早見表&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;モデル名&lt;/th&gt;
+					&lt;th&gt;パラメータ数&lt;/th&gt;
+					&lt;th&gt;量子化&lt;/th&gt;
+					&lt;th&gt;必要VRAM&lt;/th&gt;
+					&lt;th&gt;速度感&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Gemma 2B&lt;/td&gt;
+					&lt;td&gt;2B&lt;/td&gt;
+					&lt;td&gt;Q4&lt;/td&gt;
+					&lt;td&gt;約2GB&lt;/td&gt;
+					&lt;td&gt;爆速&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Llama 3.2 3B&lt;/td&gt;
+					&lt;td&gt;3B&lt;/td&gt;
+					&lt;td&gt;Q4&lt;/td&gt;
+					&lt;td&gt;約3GB&lt;/td&gt;
+					&lt;td&gt;高速&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Mistral 7B&lt;/td&gt;
+					&lt;td&gt;7B&lt;/td&gt;
+					&lt;td&gt;Q4&lt;/td&gt;
+					&lt;td&gt;約5GB&lt;/td&gt;
+					&lt;td&gt;快適&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Llama 3.1 8B&lt;/td&gt;
+					&lt;td&gt;8B&lt;/td&gt;
+					&lt;td&gt;Q4&lt;/td&gt;
+					&lt;td&gt;約6GB&lt;/td&gt;
+					&lt;td&gt;快適&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Llama 3.1 8B&lt;/td&gt;
+					&lt;td&gt;8B&lt;/td&gt;
+					&lt;td&gt;Q8（高精度）&lt;/td&gt;
+					&lt;td&gt;約10GB&lt;/td&gt;
+					&lt;td&gt;普通&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Llama 3.1 70B&lt;/td&gt;
+					&lt;td&gt;70B&lt;/td&gt;
+					&lt;td&gt;Q4&lt;/td&gt;
+					&lt;td&gt;約40GB&lt;/td&gt;
+					&lt;td&gt;遅め&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Llama 3.1 70B&lt;/td&gt;
+					&lt;td&gt;70B&lt;/td&gt;
+					&lt;td&gt;Q8&lt;/td&gt;
+					&lt;td&gt;約80GB&lt;/td&gt;
+					&lt;td&gt;低速&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Q4/Q8とは&lt;/strong&gt;：量子化の精度設定。数字が大きいほど高精度ですが、その分VRAMをより多く消費します。まず試すならQ4で十分です。&lt;/p&gt;</description></item><item><title>【全自動】Claude 3.5 Sonnet×VPSで「全自動リサーチAI」を作る方法【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-auto_research_ai/</link><pubDate>Wed, 01 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-auto_research_ai/</guid><description>&lt;h1 id="claude-35-sonnetvpsで全自動リサーチaiを作る"&gt;Claude 3.5 Sonnet×VPSで「全自動リサーチAI」を作る&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;正直に言うと、この仕組みを作る前は「競合調査・ニュース収集・市場分析」を毎日ちまちまブラウザで開いてコピペして…という時間をそこそこ使っていました。&lt;/p&gt;
+&lt;p&gt;VPS上にClaude APIと連携した自動リサーチを組んだら、&lt;strong&gt;朝起きたらSlackにレポートが届いている状態&lt;/strong&gt;になった。これ、一度やると戻れないです。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;自分の判断をまとめるとこうなります。&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;気になること&lt;/th&gt;
+					&lt;th&gt;自分の判断&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GPUは必要？&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;不要&lt;/strong&gt;。Claude APIはAPI経由なので一切関係ない&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;VPSは必要？&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;必要&lt;/strong&gt;。PCを24時間つけっぱなしにするのは精神的にキツい&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;月のコスト&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;VPS+API合わせて2,000円以内が目安&lt;/strong&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;難易度&lt;/td&gt;
+					&lt;td&gt;Pythonが少し読めるなら半日で動く&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ここで一つ、はっきり書いておきます。&lt;strong&gt;GPU推しのリサーチAI記事には気をつけてください。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Claude APIを使う構成にGPUは一切関係ありません。API経由でClaudeにリクエストを投げるだけなので、VPS側にGPUが乗ってるかどうかは完全に無関係です。それでもGPU VPSを推してくる記事があるとしたら、アフィリエイト報酬の単価が高いから、という理由以外に説明がつかない。月数万円のGPU VPSに誘導されないように。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="情報収集まだ手動でやっていますか"&gt;情報収集、まだ手動でやっていますか？&lt;/h2&gt;
+&lt;p&gt;競合調査、市場分析、ニュース収集…毎日のリサーチ業務に時間を取られていませんか？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPS上にClaude APIと連携する自動リサーチシステムを構築すれば、24時間自動で情報収集・分析・レポート生成が可能です。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自分がそれをローカルPC（自宅のMac）でやらずにVPSを使う理由はシンプルで、&lt;strong&gt;PCをつけっぱなしにするのが精神的に気になる&lt;/strong&gt;からです。&lt;/p&gt;
+&lt;p&gt;「なんか落ちてないかな」「外出中に何かあったらリモートデスクトップで入らないといけない」という状態は、全然「手放し」になっていない。結局PCのことが頭の片隅に残り続ける。&lt;/p&gt;
+&lt;p&gt;これ、実際にやってみるとわかるんですが、「自動化した」はずなのに自分の注意はまだそこに向いているという、ちょっと本末転倒な状態になる。VPSに任せて完全に忘れられるのが正解だと思っています。月830円〜でその精神的な余裕が買えるなら、安いもんです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="システム構成"&gt;システム構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[VPS（24時間稼働）]
+├── Webスクレイピング（定期実行）
+├── Claude API（分析・要約）
+├── レポート生成（Markdown/PDF）
+└── 通知（Slack/メール）
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;シンプルです。難しいことはほぼVPSとClaudeがやってくれます。自分で書くのはスクレイピング先のURLとプロンプトくらい。「難しそう」と思った人、後のコードを見てから判断してください。思ってたより短いです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="構築手順"&gt;構築手順&lt;/h2&gt;
+&lt;h3 id="ステップ1vpsを用意する"&gt;ステップ1：VPSを用意する&lt;/h3&gt;
+&lt;p&gt;この用途（Claude APIを使った自動リサーチ）の場合、&lt;strong&gt;CPUとメモリが最低限あれば動きます&lt;/strong&gt;。1コア・1GBメモリで十分です。スクレイピングしてAPIを叩くだけなので、重い処理は何もない。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;XServerかKAGOYAかで迷う人へ、損益分岐点を計算しました。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自動リサーチは24時間稼働が前提なので、月に換算すると&lt;strong&gt;720時間&lt;/strong&gt;動かすことになります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;XServer VPS：月830円（固定）&lt;/li&gt;
+&lt;li&gt;KAGOYA CLOUD VPS：1.76円/時間（最安プラン）× 720時間 = 月約1,267円&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;月76時間を超えるならXServer、未満ならKAGOYAが安い。&lt;/strong&gt; 24時間稼働なら計算するまでもなくXServerです。&lt;/p&gt;
+&lt;p&gt;加えて、「毎月いくらになるか計算したくない」という気持ちが少しでもあるなら、固定料金のほうが精神的にラクです。自分はそっち派。時間課金は安いときもあるけど、ちょっと触ったら請求額が気になって確認しに行く、あの感じが地味にストレスになる。830円という数字が頭にあれば、それ以上考えなくていい。それだけで十分な理由だと思っています。&lt;/p&gt;
+&lt;p&gt;初めて試すだけならKAGOYAの14日無料お試しもありです。理由は単純で、&lt;strong&gt;週末が2回入るから&lt;/strong&gt;。平日は仕事で触れなくても、2回の週末があれば「ちゃんと動くか」の確認は十分できます。「1週間じゃ短い」と感じがちな無料期間の中では、これはわりと良心的な設計だと思う。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS（月990円〜）→&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
+&lt;h3 id="ステップ2pythonスクリプトを作成"&gt;ステップ2：Pythonスクリプトを作成&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; anthropic
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; bs4 &lt;span style="color:#f92672"&gt;import&lt;/span&gt; BeautifulSoup
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;client &lt;span style="color:#f92672"&gt;=&lt;/span&gt; anthropic&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Anthropic(api_key&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;your-key&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 1. Webから情報収集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;url &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;https://example.com/news&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;html &lt;span style="color:#f92672"&gt;=&lt;/span&gt; requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(url)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;soup &lt;span style="color:#f92672"&gt;=&lt;/span&gt; BeautifulSoup(html, &lt;span style="color:#e6db74"&gt;&amp;#39;html.parser&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;articles &lt;span style="color:#f92672"&gt;=&lt;/span&gt; [a&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; a &lt;span style="color:#f92672"&gt;in&lt;/span&gt; soup&lt;span style="color:#f92672"&gt;.&lt;/span&gt;find_all(&lt;span style="color:#e6db74"&gt;&amp;#39;article&amp;#39;&lt;/span&gt;)]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 2. Claude APIで分析・要約&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; client&lt;span style="color:#f92672"&gt;.&lt;/span&gt;messages&lt;span style="color:#f92672"&gt;.&lt;/span&gt;create(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; model&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;claude-sonnet-4-20250514&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; max_tokens&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1024&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; messages&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;user&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;以下のニュース記事を分析して、重要なポイントを3つにまとめてください:&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;chr(&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;join(articles)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;report &lt;span style="color:#f92672"&gt;=&lt;/span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;content[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 3. レポート保存&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;with&lt;/span&gt; open(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;report_&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now()&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strftime(&lt;span style="color:#e6db74"&gt;&amp;#39;%Y%m&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%d&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;.md&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;w&amp;#34;&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; f:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; f&lt;span style="color:#f92672"&gt;.&lt;/span&gt;write(report)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;コード量でいうとこれだけです。URLとプロンプトを自分の用途に書き換えるだけで動き始めます。&lt;/p&gt;</description></item><item><title>【埋め込みガイド】AIチャットボットを自社サイトに組み込む！VPS×Difyのセキュアな実装例【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-embed_chatbot/</link><pubDate>Wed, 01 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-embed_chatbot/</guid><description>&lt;h1 id="aiチャットボットを自社サイトに組み込む方法"&gt;AIチャットボットを自社サイトに組み込む方法&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="-筆者の結論最初に読んでください"&gt;🗣️ 筆者の結論（最初に読んでください）&lt;/h2&gt;
+&lt;p&gt;正直に言うと、この構成は&lt;strong&gt;思ったよりシンプルに動く&lt;/strong&gt;。VPS上でDifyを立ち上げて、生成されたコードをサイトに貼るだけ。「AIチャットボット導入」というと大げさに聞こえるけど、やることはiframe一枚だったりする。&lt;/p&gt;
+&lt;p&gt;VPS選びで迷ってる人向けにも先に書いておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;24時間稼働させたいなら固定料金のVPSが精神的にラク&lt;/strong&gt;。自分のPCを立ち上げっぱなしにする運用は、何かあったときにリモートデスクトップで入らなきゃいけないし、全然手放しにならない。VPSにして正解だったと思ってる。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GPU付きVPSは、Dify用途では完全に不要&lt;/strong&gt;。DifyはLLM APIを外部（OpenAIやAnthropicなど）に投げる構成なので、VPS側のGPUは1ミリも関係ない。GPU付きプランをすすめてくる記事は、アフィリエイト報酬が高いプランを売りたいだけの場合がほとんどなので注意してください。はっきり書いておきます。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;月額の目安&lt;/strong&gt;：常時稼働ならXServer VPSの固定プラン（最安830円台〜）が断然ラク。「まず試したい」ならConoHaの時間課金から始めればいい。自分の場合は先に時間課金で動作確認してから固定プランに移した。その流れが一番無駄がなかった。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="自社サイトにaiチャットボットを追加するメリット"&gt;自社サイトにAIチャットボットを追加するメリット&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;24時間自動で顧客対応できる（深夜の問い合わせも拾える）&lt;/li&gt;
+&lt;li&gt;FAQ対応の人件費を削減できる&lt;/li&gt;
+&lt;li&gt;ユーザー体験が上がる（待たせない）&lt;/li&gt;
+&lt;li&gt;問い合わせの初期対応を自動化して、担当者は本質的な対応だけに集中できる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;チャットボット導入のコスパが一番出るのは「同じ質問が繰り返し来るサイト」&lt;/strong&gt;。FAQが10個以上あって、毎月同じ内容のメールが来てるなら、導入の優先度は高い。そうじゃないサイトにとりあえず入れても、維持コストが無駄になりやすい。「なんとなく入れたい」だけなら、一回立ち止まって考えたほうがいい。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="difyのチャットボット埋め込み方法"&gt;Difyのチャットボット埋め込み方法&lt;/h2&gt;
+&lt;p&gt;Difyでチャットボットを作ると、公開設定から埋め込みコードが取得できる。方法は3つあって、それぞれ用途が違う。自分が試した順番に書くと、「iframe → JSウィジェット → API連携」の順でステップアップしていく感じ。最初から全部理解しようとしなくていい。&lt;/p&gt;
+&lt;h3 id="方法1iframeで埋め込み"&gt;方法1：iframeで埋め込み&lt;/h3&gt;
+&lt;p&gt;一番手軽。Difyが生成するiframeコードをそのまま貼るだけ。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-html" data-lang="html"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;iframe&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;src&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;http://あなたのVPS/chatbot/xxxx&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;style&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;width: 400px; height: 600px; border: none;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;gt;&amp;lt;/&lt;span style="color:#f92672"&gt;iframe&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;自分の場合&lt;/strong&gt;、最初はこれで確認した。5分で動く。「とにかく動作確認したい」という段階ではiframeで十分すぎる。デザインにこだわらないサイトならiframeのまま本番運用してもいい。「サイトのデザインに馴染ませたい」「スマホ対応を細かく調整したい」という具体的な要件が出てきてから、次の方法を検討すればいい。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="方法2javascriptウィジェット"&gt;方法2：JavaScriptウィジェット&lt;/h3&gt;
+&lt;p&gt;ページ右下にフローティングボタンとして表示されるやつ。よくECサイトやSaaSの右下に出てる形。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-html" data-lang="html"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;script&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; window.&lt;span style="color:#a6e22e"&gt;difyChatbotConfig&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;token&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;あなたのトークン&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;baseUrl&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;http://あなたのVPS&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;/&lt;span style="color:#f92672"&gt;script&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;script&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;src&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;http://あなたのVPS/embed.min.js&amp;#34;&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;async&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style="color:#f92672"&gt;script&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;「邪魔にならないけど、必要なときにすぐ呼び出せる」というUXを作りたいならこっち。iframeよりも見た目がスマートになるし、実装の手間もほとんど変わらない。本番運用を見据えるならJSウィジェットから始めるのもあり。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="方法3api連携カスタムui"&gt;方法3：API連携（カスタムUI）&lt;/h3&gt;
+&lt;p&gt;DifyのAPIを直接叩いて、UIを自分で全部作る方法。自由度は一番高いけど、実装コストも一番かかる。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;率直に言うと、最初からこれを選ぶ必要はない&lt;/strong&gt;。まずiframeかJSウィジェットで動かして、「もっとUIをカスタムしたい」「他のシステムと連携したい」という具体的な要件が出てきてから検討すればいい。最初から完璧な実装を目指すと、途中で疲弊する。これは経験則として言っておく。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="vps選びdifyの常時稼働に必要なスペックと費用"&gt;VPS選び：Difyの常時稼働に必要なスペックと費用&lt;/h2&gt;
+&lt;p&gt;Dify用途で抑えておきたいポイントを整理する。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;GPU：不要。&lt;/strong&gt; 繰り返しになるけど、DifyはLLMのAPIを外部サービスに投げる仕組みなので、VPS側のGPUは使わない。CPU・メモリ・ストレージで選べばいい。GPU付きプランは固定費が跳ね上がるだけで、Difyには何のメリットもない。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;必要スペックの目安：&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;最低ライン&lt;/th&gt;
+					&lt;th&gt;余裕を持つなら&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CPU&lt;/td&gt;
+					&lt;td&gt;2コア&lt;/td&gt;
+					&lt;td&gt;4コア&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;メモリ&lt;/td&gt;
+					&lt;td&gt;4GB&lt;/td&gt;
+					&lt;td&gt;8GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ストレージ&lt;/td&gt;
+					&lt;td&gt;50GB&lt;/td&gt;
+					&lt;td&gt;100GB&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;費用の計算：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;XServer VPS（固定プラン、2GBプラン）：&lt;strong&gt;月830円台〜&lt;/strong&gt;。1日あたり約27円。毎月いくら払うかが固定でわかるのは精神的にラク。「今月何時間使ったっけ」を気にしなくていいのは思った以上にストレスフリー。&lt;/li&gt;
+&lt;li&gt;ConoHa VPS（時間課金）：&lt;strong&gt;1時間あたり約1.3円〜&lt;/strong&gt;（2GBプラン目安）。月換算すると約950円前後になるケースが多い。試用段階では断然こっちが安く済む。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;損益分岐点を計算すると：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>【容量計算表】RAG環境をVPSに構築する際のストレージ容量の目安と拡張しやすいサーバー選び【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-rag_storage/</link><pubDate>Tue, 30 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-rag_storage/</guid><description>&lt;h1 id="rag環境のストレージ容量目安と拡張しやすいvps選び"&gt;RAG環境のストレージ容量目安と拡張しやすいVPS選び&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;ストレージの見積もりは「元データ×10倍」で計算しておけば、まず困らない。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;1,000ページのドキュメントなら元データ約500MB、ベクトルDB込みで5GB前後。50GBのVPSプランで十分スタートできます。&lt;/p&gt;

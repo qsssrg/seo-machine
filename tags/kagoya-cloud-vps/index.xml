@@ -1,4 +1,93 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>KAGOYA CLOUD VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/kagoya-cloud-vps/</link><description>Recent content in KAGOYA CLOUD VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Tue, 30 Jun 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/kagoya-cloud-vps/index.xml" rel="self" type="application/rss+xml"/><item><title>【容量計算表】RAG環境をVPSに構築する際のストレージ容量の目安と拡張しやすいサーバー選び【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-rag_storage/</link><pubDate>Tue, 30 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-rag_storage/</guid><description>&lt;h1 id="rag環境のストレージ容量目安と拡張しやすいvps選び"&gt;RAG環境のストレージ容量目安と拡張しやすいVPS選び&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>KAGOYA CLOUD VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/kagoya-cloud-vps/</link><description>Recent content in KAGOYA CLOUD VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 01 Jul 2026 12:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/kagoya-cloud-vps/index.xml" rel="self" type="application/rss+xml"/><item><title>【全自動】Claude 3.5 Sonnet×VPSで「全自動リサーチAI」を作る方法【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-auto_research_ai/</link><pubDate>Wed, 01 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-auto_research_ai/</guid><description>&lt;h1 id="claude-35-sonnetvpsで全自動リサーチaiを作る"&gt;Claude 3.5 Sonnet×VPSで「全自動リサーチAI」を作る&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;正直に言うと、この仕組みを作る前は「競合調査・ニュース収集・市場分析」を毎日ちまちまブラウザで開いてコピペして…という時間をそこそこ使っていました。&lt;/p&gt;
+&lt;p&gt;VPS上にClaude APIと連携した自動リサーチを組んだら、&lt;strong&gt;朝起きたらSlackにレポートが届いている状態&lt;/strong&gt;になった。これ、一度やると戻れないです。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;自分の判断をまとめるとこうなります。&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;気になること&lt;/th&gt;
+					&lt;th&gt;自分の判断&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GPUは必要？&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;不要&lt;/strong&gt;。Claude APIはAPI経由なので一切関係ない&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;VPSは必要？&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;必要&lt;/strong&gt;。PCを24時間つけっぱなしにするのは精神的にキツい&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;月のコスト&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;VPS+API合わせて2,000円以内が目安&lt;/strong&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;難易度&lt;/td&gt;
+					&lt;td&gt;Pythonが少し読めるなら半日で動く&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ここで一つ、はっきり書いておきます。&lt;strong&gt;GPU推しのリサーチAI記事には気をつけてください。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Claude APIを使う構成にGPUは一切関係ありません。API経由でClaudeにリクエストを投げるだけなので、VPS側にGPUが乗ってるかどうかは完全に無関係です。それでもGPU VPSを推してくる記事があるとしたら、アフィリエイト報酬の単価が高いから、という理由以外に説明がつかない。月数万円のGPU VPSに誘導されないように。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="情報収集まだ手動でやっていますか"&gt;情報収集、まだ手動でやっていますか？&lt;/h2&gt;
+&lt;p&gt;競合調査、市場分析、ニュース収集…毎日のリサーチ業務に時間を取られていませんか？&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPS上にClaude APIと連携する自動リサーチシステムを構築すれば、24時間自動で情報収集・分析・レポート生成が可能です。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自分がそれをローカルPC（自宅のMac）でやらずにVPSを使う理由はシンプルで、&lt;strong&gt;PCをつけっぱなしにするのが精神的に気になる&lt;/strong&gt;からです。&lt;/p&gt;
+&lt;p&gt;「なんか落ちてないかな」「外出中に何かあったらリモートデスクトップで入らないといけない」という状態は、全然「手放し」になっていない。結局PCのことが頭の片隅に残り続ける。&lt;/p&gt;
+&lt;p&gt;これ、実際にやってみるとわかるんですが、「自動化した」はずなのに自分の注意はまだそこに向いているという、ちょっと本末転倒な状態になる。VPSに任せて完全に忘れられるのが正解だと思っています。月830円〜でその精神的な余裕が買えるなら、安いもんです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="システム構成"&gt;システム構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[VPS（24時間稼働）]
+├── Webスクレイピング（定期実行）
+├── Claude API（分析・要約）
+├── レポート生成（Markdown/PDF）
+└── 通知（Slack/メール）
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;シンプルです。難しいことはほぼVPSとClaudeがやってくれます。自分で書くのはスクレイピング先のURLとプロンプトくらい。「難しそう」と思った人、後のコードを見てから判断してください。思ってたより短いです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="構築手順"&gt;構築手順&lt;/h2&gt;
+&lt;h3 id="ステップ1vpsを用意する"&gt;ステップ1：VPSを用意する&lt;/h3&gt;
+&lt;p&gt;この用途（Claude APIを使った自動リサーチ）の場合、&lt;strong&gt;CPUとメモリが最低限あれば動きます&lt;/strong&gt;。1コア・1GBメモリで十分です。スクレイピングしてAPIを叩くだけなので、重い処理は何もない。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;XServerかKAGOYAかで迷う人へ、損益分岐点を計算しました。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自動リサーチは24時間稼働が前提なので、月に換算すると&lt;strong&gt;720時間&lt;/strong&gt;動かすことになります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;XServer VPS：月830円（固定）&lt;/li&gt;
+&lt;li&gt;KAGOYA CLOUD VPS：1.76円/時間（最安プラン）× 720時間 = 月約1,267円&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;月76時間を超えるならXServer、未満ならKAGOYAが安い。&lt;/strong&gt; 24時間稼働なら計算するまでもなくXServerです。&lt;/p&gt;
+&lt;p&gt;加えて、「毎月いくらになるか計算したくない」という気持ちが少しでもあるなら、固定料金のほうが精神的にラクです。自分はそっち派。時間課金は安いときもあるけど、ちょっと触ったら請求額が気になって確認しに行く、あの感じが地味にストレスになる。830円という数字が頭にあれば、それ以上考えなくていい。それだけで十分な理由だと思っています。&lt;/p&gt;
+&lt;p&gt;初めて試すだけならKAGOYAの14日無料お試しもありです。理由は単純で、&lt;strong&gt;週末が2回入るから&lt;/strong&gt;。平日は仕事で触れなくても、2回の週末があれば「ちゃんと動くか」の確認は十分できます。「1週間じゃ短い」と感じがちな無料期間の中では、これはわりと良心的な設計だと思う。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS（月990円〜）→&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
+&lt;h3 id="ステップ2pythonスクリプトを作成"&gt;ステップ2：Pythonスクリプトを作成&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; anthropic
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; bs4 &lt;span style="color:#f92672"&gt;import&lt;/span&gt; BeautifulSoup
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;client &lt;span style="color:#f92672"&gt;=&lt;/span&gt; anthropic&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Anthropic(api_key&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;your-key&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 1. Webから情報収集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;url &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;https://example.com/news&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;html &lt;span style="color:#f92672"&gt;=&lt;/span&gt; requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(url)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;soup &lt;span style="color:#f92672"&gt;=&lt;/span&gt; BeautifulSoup(html, &lt;span style="color:#e6db74"&gt;&amp;#39;html.parser&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;articles &lt;span style="color:#f92672"&gt;=&lt;/span&gt; [a&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; a &lt;span style="color:#f92672"&gt;in&lt;/span&gt; soup&lt;span style="color:#f92672"&gt;.&lt;/span&gt;find_all(&lt;span style="color:#e6db74"&gt;&amp;#39;article&amp;#39;&lt;/span&gt;)]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 2. Claude APIで分析・要約&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; client&lt;span style="color:#f92672"&gt;.&lt;/span&gt;messages&lt;span style="color:#f92672"&gt;.&lt;/span&gt;create(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; model&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;claude-sonnet-4-20250514&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; max_tokens&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1024&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; messages&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[{
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;user&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;以下のニュース記事を分析して、重要なポイントを3つにまとめてください:&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;chr(&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;join(articles)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;report &lt;span style="color:#f92672"&gt;=&lt;/span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;content[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 3. レポート保存&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;with&lt;/span&gt; open(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;report_&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now()&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strftime(&lt;span style="color:#e6db74"&gt;&amp;#39;%Y%m&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%d&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;.md&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;w&amp;#34;&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; f:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; f&lt;span style="color:#f92672"&gt;.&lt;/span&gt;write(report)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;コード量でいうとこれだけです。URLとプロンプトを自分の用途に書き換えるだけで動き始めます。&lt;/p&gt;</description></item><item><title>【容量計算表】RAG環境をVPSに構築する際のストレージ容量の目安と拡張しやすいサーバー選び【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-rag_storage/</link><pubDate>Tue, 30 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-rag_storage/</guid><description>&lt;h1 id="rag環境のストレージ容量目安と拡張しやすいvps選び"&gt;RAG環境のストレージ容量目安と拡張しやすいVPS選び&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;ストレージの見積もりは「元データ×10倍」で計算しておけば、まず困らない。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;1,000ページのドキュメントなら元データ約500MB、ベクトルDB込みで5GB前後。50GBのVPSプランで十分スタートできます。&lt;/p&gt;
