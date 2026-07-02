@@ -1,4 +1,145 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ConoHa VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/conoha-vps/</link><description>Recent content in ConoHa VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 01 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/conoha-vps/index.xml" rel="self" type="application/rss+xml"/><item><title>【埋め込みガイド】AIチャットボットを自社サイトに組み込む！VPS×Difyのセキュアな実装例【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-embed_chatbot/</link><pubDate>Wed, 01 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-embed_chatbot/</guid><description>&lt;h1 id="aiチャットボットを自社サイトに組み込む方法"&gt;AIチャットボットを自社サイトに組み込む方法&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ConoHa VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/conoha-vps/</link><description>Recent content in ConoHa VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 02 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/conoha-vps/index.xml" rel="self" type="application/rss+xml"/><item><title>Macユーザー必見！M1/M2がなくても画像生成AIを爆速で使うVPS活用術</title><link>https://naruhodo-lab.uk/usecase/guide-mac_image_gen_vps/</link><pubDate>Thu, 02 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-mac_image_gen_vps/</guid><description>&lt;h1 id="macユーザー必見m1m2じゃなくても画像生成aiを爆速で使うvps活用術"&gt;Macユーザー必見！M1/M2じゃなくても画像生成AIを爆速で使うVPS活用術&lt;/h1&gt;
+&lt;h2 id="最初に結論intel-macユーザーはvps一択m2-macに買い替える前に読んでほしい"&gt;【最初に結論】Intel MacユーザーはVPS一択。M2 Macに買い替える前に読んでほしい&lt;/h2&gt;
+&lt;p&gt;正直に言います。「画像生成AIはApple Siliconじゃないと無理」というの、かなり誇張されています。&lt;/p&gt;
+&lt;p&gt;VPS（NVIDIA L4搭載）を使えば、M2 Macで1024×1024の画像を30〜60秒かけて生成していたのが、&lt;strong&gt;3〜5秒&lt;/strong&gt;になります。約10倍速。しかも手元のMacは熱くならない、ファンも回らない。Macへのインストールも不要。&lt;/p&gt;
+&lt;p&gt;自分が試してみた感覚としては、&lt;strong&gt;「GPUを買うよりVPSを時間借りする方が、ライトな使い方には明らかに合理的」&lt;/strong&gt; です。&lt;/p&gt;
+&lt;p&gt;週末2日×3時間の利用なら月3,600円（L4換算・150円/h）。これが現実的なラインです。&lt;/p&gt;
+&lt;p&gt;Intel Macを使っていて「画像生成、自分には無理かな」と思っていた人は、この記事を最後まで読んでから判断してください。答えは「全然無理じゃない」です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="m1m2-macじゃないと画像生成できないは誤解"&gt;「M1/M2 Macじゃないと画像生成できない」は誤解&lt;/h2&gt;
+&lt;p&gt;「画像生成AIはApple Silicon Mac（M1/M2/M3）じゃないと動かない」と思っていませんか？&lt;/p&gt;
+&lt;p&gt;確かに、MacでStable Diffusionをローカル実行するにはApple Siliconが有利です。でもはっきり書いておきます。&lt;strong&gt;Intel MacでもMacBook Airでも、VPSのGPUを使えばApple Silicon Mac以上の速度で画像生成できます。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;しかもVPSを使えば、MacへのインストールやPython環境の構築も一切不要。ブラウザかSSHトンネル経由でアクセスするだけです。&lt;/p&gt;
+&lt;p&gt;「新しいMacに買い替えようか迷ってる」という人、少し待ってください。VPSを週末数時間試してから決めても全然遅くないです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="macユーザーがvpsを使うメリット"&gt;MacユーザーがVPSを使うメリット&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;比較項目&lt;/th&gt;
+					&lt;th&gt;M2 Mac（ローカル）&lt;/th&gt;
+					&lt;th&gt;GPU VPS（ConoHa/XServer）&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;初期コスト&lt;/td&gt;
+					&lt;td&gt;Mac本体 20万円〜&lt;/td&gt;
+					&lt;td&gt;0円（時間課金）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GPU性能&lt;/td&gt;
+					&lt;td&gt;Apple M2 GPU&lt;/td&gt;
+					&lt;td&gt;NVIDIA L4（約5〜10倍速）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;VRAM&lt;/td&gt;
+					&lt;td&gt;最大24GB（統合メモリ）&lt;/td&gt;
+					&lt;td&gt;24GB 専用VRAM&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;自分のMacへの負荷&lt;/td&gt;
+					&lt;td&gt;大（発熱・ファン）&lt;/td&gt;
+					&lt;td&gt;ゼロ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;持ち出し先でも使える&lt;/td&gt;
+					&lt;td&gt;Macを持ち歩く必要あり&lt;/td&gt;
+					&lt;td&gt;どこからでもアクセス可&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;維持費&lt;/td&gt;
+					&lt;td&gt;ほぼ0円&lt;/td&gt;
+					&lt;td&gt;使った時間分&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;自分の場合、「Macが熱くなる・ファンがうるさい・その間は他の作業がもたつく」というのがローカル生成のいちばんのストレスでした。VPSにしてからそのストレスがまるごとなくなったので、もうローカルには戻れないなと思っています。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;既にMacを持っているなら、GPU VPSを時間借りする方がコスパで圧勝します。&lt;/strong&gt; 20万円出してMacを買い替える前に、月3,600円で試してみてください。話はそれからです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="conoha-vps-gpuプランがmacユーザーに最適な理由"&gt;ConoHa VPS GPUプランがMacユーザーに最適な理由&lt;/h2&gt;
+&lt;p&gt;ConoHa VPSのGPUプランはL4（VRAM 24GB）搭載で時間課金です。「週末に数時間だけ大量生成したい」というMacユーザーのニーズにぴったりで、使わない日はゼロコスト。コントロールパネルがシンプルで直感的に操作できるのも特徴です。&lt;/p&gt;
+&lt;p&gt;正直、GPU VPS選びで最初に詰まるのは「何時間使うかわからないのに月額プランに縛られたくない」という気持ちだと思います。全くその通りで、時間課金スタートで様子を見てから判断するのが精神的にいちばんラクです。使い過ぎたら月額に切り替えればいい。それだけです。&lt;/p&gt;
+&lt;div class="cta-section"&gt;
+ &lt;span class="ad-label"&gt;広告&lt;/span&gt;
+ &lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;ConoHa VPS →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt=""&gt;
+&lt;/div&gt;
+&lt;hr&gt;
+&lt;h2 id="方法1-ブラウザから直接アクセス最も簡単"&gt;方法1: ブラウザから直接アクセス（最も簡単）&lt;/h2&gt;
+&lt;p&gt;VPS上でWebUI（Stable Diffusion AUTOMATIC1111 UI）を起動し、ブラウザから操作します。&lt;/p&gt;</description></item><item><title>ローカルLLMをMake/ZapierからAPI経由で呼び出す自動化サーバー構築手順</title><link>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</link><pubDate>Thu, 02 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</guid><description>&lt;h1 id="ローカルllmを外部サービスmakezapierと連携させるapiサーバー構築手順"&gt;ローカルLLMを外部サービス（Make/Zapier）と連携させるAPIサーバー構築手順&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="最初に結論を書きます"&gt;【最初に結論を書きます】&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;OpenAI APIの月額が気になりはじめたなら、VPS+Ollamaで自前APIサーバーを立てるのは十分ありです。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ただし、最初にはっきり書いておきます。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;「ローカルLLMのAPI化にGPU VPS必須」と書いてある記事は疑ってください。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;OllamaはゲームエンジンじゃないのでCPUで動きます。GPUがあれば速くなるのは事実ですが、「MakeやZapierとつないでAI自動化したい」という用途で月数万円のGPUプランを最初から勧めてくるのは、アフィ報酬目的の可能性が高い。CPUプランで試して、速度が実際に不満だったら検討する——この順番が正しい。&lt;/p&gt;
+&lt;p&gt;自分の判断をまとめると：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;用途&lt;/th&gt;
+					&lt;th&gt;判断&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;テスト・開発中&lt;/td&gt;
+					&lt;td&gt;CPUプランで十分。ConoHa時間課金で最小コストから始める&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;本番運用（応答速度が厳しい）&lt;/td&gt;
+					&lt;td&gt;GPUプランを検討。ただし月3,000円台のCPU VPSで7Bモデルを動かすのが現実的な第一歩&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OpenAI APIの代替として固定費化したい&lt;/td&gt;
+					&lt;td&gt;VPS固定費 &amp;lt; API従量課金になるか先に自分の月間呼び出し回数で計算する&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="chatgpt-apiの代わりに自分のllmを使えたら"&gt;ChatGPT APIの代わりに「自分のLLM」を使えたら？&lt;/h2&gt;
+&lt;p&gt;Make（旧Integromat）やZapierでAI自動化ワークフローを組んでいると、月末にOpenAIのダッシュボードを開くのがちょっと怖くなってくる。あの感覚、あります。&lt;/p&gt;
+&lt;p&gt;GPT-4oは入力1Mトークンあたり$2.50。月に10万回呼び出したら数万円になることもある。しかも「今月何回呼んだっけ」って毎月気にしないといけないのが地味にストレスです。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPS上にOllamaをAPIサーバーとして立ち上げ、MakeやZapierから呼び出せば、月額固定コストでAI自動化が使い放題になります。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;具体的には：VPS月額 + ドメイン代 = &lt;strong&gt;月3,000〜5,000円で固定。&lt;/strong&gt; 呼び出し回数がどれだけ増えても料金は変わらない。「毎月いくらか計算したくない」という人には精神的にかなりラクです。これが自分がVPS+Ollamaを選ぶ一番の理由です。&lt;/p&gt;
+&lt;p&gt;この記事では、VPSにOllamaをセットアップし、HTTPSのAPIエンドポイントとして外部公開し、MakeのHTTPモジュール・ZapierのWebhooksアクションから呼び出す具体的な手順を解説します。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="全体アーキテクチャ"&gt;全体アーキテクチャ&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[Make/Zapier]
+ ↓ HTTPS POST
+[VPS: Nginx リバースプロキシ]
+ ↓ HTTP
+[Ollama APIサーバー :11434]
+ ↓ 推論
+[ローカルLLM (Llama3 / Mistral等)]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;VPS上でOllamaがポート11434でAPIを待ち受けており、Nginxがそれを443(HTTPS)でラップして外部公開します。MakeやZapierからはHTTPSのURLを叩くだけでLLMの応答が得られます。&lt;/p&gt;
+&lt;p&gt;構造はシンプルです。図だけ見ると難しそうに感じるかもしれないけど、1つ1つ順番にやれば詰まるポイントはそんなに多くない。実際、自分が最初にこれを試したとき、一番時間がかかったのはドメインのDNS設定が反映されるまで待つ時間でした（作業自体じゃなかった）。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="step-1-vps上でollamaをセットアップ"&gt;Step 1: VPS上でOllamaをセットアップ&lt;/h2&gt;
+&lt;p&gt;VPSにSSH接続したら以下を実行します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Ubuntu 22.04 前提&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Ollamaをインストール&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl -fsSL https://ollama.com/install.sh | sh
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 外部からのAPI接続を許可する設定&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo mkdir -p /etc/systemd/system/ollama.service.d
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo tee /etc/systemd/system/ollama.service.d/override.conf &lt;span style="color:#e6db74"&gt;&amp;lt;&amp;lt; &amp;#39;EOF&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;[Service]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;Environment=&amp;#34;OLLAMA_HOST=0.0.0.0:11434&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# サービス再起動&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo systemctl daemon-reload
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo systemctl restart ollama
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# モデルをダウンロード（7Bモデルが使いやすい）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull llama3.1:8b
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull mistral:7b
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# APIが動作しているか確認&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl http://localhost:11434/api/tags
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;モデル選びについて正直に言うと：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>【埋め込みガイド】AIチャットボットを自社サイトに組み込む！VPS×Difyのセキュアな実装例【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-embed_chatbot/</link><pubDate>Wed, 01 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-embed_chatbot/</guid><description>&lt;h1 id="aiチャットボットを自社サイトに組み込む方法"&gt;AIチャットボットを自社サイトに組み込む方法&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="-筆者の結論最初に読んでください"&gt;🗣️ 筆者の結論（最初に読んでください）&lt;/h2&gt;
 &lt;p&gt;正直に言うと、この構成は&lt;strong&gt;思ったよりシンプルに動く&lt;/strong&gt;。VPS上でDifyを立ち上げて、生成されたコードをサイトに貼るだけ。「AIチャットボット導入」というと大げさに聞こえるけど、やることはiframe一枚だったりする。&lt;/p&gt;

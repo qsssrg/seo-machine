@@ -1,4 +1,77 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ローカルLLM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm/</link><description>Recent content in ローカルLLM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 01 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm/index.xml" rel="self" type="application/rss+xml"/><item><title>ローカルLLMに必要なVRAM容量とVPSのGPU対応表【2026年最新】</title><link>https://naruhodo-lab.uk/usecase/guide-vram_gpu_vps/</link><pubDate>Wed, 01 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-vram_gpu_vps/</guid><description>&lt;h1 id="ローカルllmを動かすのに必要なvram容量とvpsのメモリgpu対応表"&gt;ローカルLLMを動かすのに必要なVRAM容量と、VPSのメモリ・GPU対応表&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ローカルLLM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm/</link><description>Recent content in ローカルLLM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 02 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABllm/index.xml" rel="self" type="application/rss+xml"/><item><title>ローカルLLMをMake/ZapierからAPI経由で呼び出す自動化サーバー構築手順</title><link>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</link><pubDate>Thu, 02 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</guid><description>&lt;h1 id="ローカルllmを外部サービスmakezapierと連携させるapiサーバー構築手順"&gt;ローカルLLMを外部サービス（Make/Zapier）と連携させるAPIサーバー構築手順&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="最初に結論を書きます"&gt;【最初に結論を書きます】&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;OpenAI APIの月額が気になりはじめたなら、VPS+Ollamaで自前APIサーバーを立てるのは十分ありです。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ただし、最初にはっきり書いておきます。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;「ローカルLLMのAPI化にGPU VPS必須」と書いてある記事は疑ってください。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;OllamaはゲームエンジンじゃないのでCPUで動きます。GPUがあれば速くなるのは事実ですが、「MakeやZapierとつないでAI自動化したい」という用途で月数万円のGPUプランを最初から勧めてくるのは、アフィ報酬目的の可能性が高い。CPUプランで試して、速度が実際に不満だったら検討する——この順番が正しい。&lt;/p&gt;
+&lt;p&gt;自分の判断をまとめると：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;用途&lt;/th&gt;
+					&lt;th&gt;判断&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;テスト・開発中&lt;/td&gt;
+					&lt;td&gt;CPUプランで十分。ConoHa時間課金で最小コストから始める&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;本番運用（応答速度が厳しい）&lt;/td&gt;
+					&lt;td&gt;GPUプランを検討。ただし月3,000円台のCPU VPSで7Bモデルを動かすのが現実的な第一歩&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OpenAI APIの代替として固定費化したい&lt;/td&gt;
+					&lt;td&gt;VPS固定費 &amp;lt; API従量課金になるか先に自分の月間呼び出し回数で計算する&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="chatgpt-apiの代わりに自分のllmを使えたら"&gt;ChatGPT APIの代わりに「自分のLLM」を使えたら？&lt;/h2&gt;
+&lt;p&gt;Make（旧Integromat）やZapierでAI自動化ワークフローを組んでいると、月末にOpenAIのダッシュボードを開くのがちょっと怖くなってくる。あの感覚、あります。&lt;/p&gt;
+&lt;p&gt;GPT-4oは入力1Mトークンあたり$2.50。月に10万回呼び出したら数万円になることもある。しかも「今月何回呼んだっけ」って毎月気にしないといけないのが地味にストレスです。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPS上にOllamaをAPIサーバーとして立ち上げ、MakeやZapierから呼び出せば、月額固定コストでAI自動化が使い放題になります。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;具体的には：VPS月額 + ドメイン代 = &lt;strong&gt;月3,000〜5,000円で固定。&lt;/strong&gt; 呼び出し回数がどれだけ増えても料金は変わらない。「毎月いくらか計算したくない」という人には精神的にかなりラクです。これが自分がVPS+Ollamaを選ぶ一番の理由です。&lt;/p&gt;
+&lt;p&gt;この記事では、VPSにOllamaをセットアップし、HTTPSのAPIエンドポイントとして外部公開し、MakeのHTTPモジュール・ZapierのWebhooksアクションから呼び出す具体的な手順を解説します。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="全体アーキテクチャ"&gt;全体アーキテクチャ&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[Make/Zapier]
+ ↓ HTTPS POST
+[VPS: Nginx リバースプロキシ]
+ ↓ HTTP
+[Ollama APIサーバー :11434]
+ ↓ 推論
+[ローカルLLM (Llama3 / Mistral等)]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;VPS上でOllamaがポート11434でAPIを待ち受けており、Nginxがそれを443(HTTPS)でラップして外部公開します。MakeやZapierからはHTTPSのURLを叩くだけでLLMの応答が得られます。&lt;/p&gt;
+&lt;p&gt;構造はシンプルです。図だけ見ると難しそうに感じるかもしれないけど、1つ1つ順番にやれば詰まるポイントはそんなに多くない。実際、自分が最初にこれを試したとき、一番時間がかかったのはドメインのDNS設定が反映されるまで待つ時間でした（作業自体じゃなかった）。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="step-1-vps上でollamaをセットアップ"&gt;Step 1: VPS上でOllamaをセットアップ&lt;/h2&gt;
+&lt;p&gt;VPSにSSH接続したら以下を実行します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Ubuntu 22.04 前提&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Ollamaをインストール&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl -fsSL https://ollama.com/install.sh | sh
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 外部からのAPI接続を許可する設定&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo mkdir -p /etc/systemd/system/ollama.service.d
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo tee /etc/systemd/system/ollama.service.d/override.conf &lt;span style="color:#e6db74"&gt;&amp;lt;&amp;lt; &amp;#39;EOF&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;[Service]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;Environment=&amp;#34;OLLAMA_HOST=0.0.0.0:11434&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# サービス再起動&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo systemctl daemon-reload
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo systemctl restart ollama
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# モデルをダウンロード（7Bモデルが使いやすい）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull llama3.1:8b
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull mistral:7b
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# APIが動作しているか確認&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl http://localhost:11434/api/tags
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;モデル選びについて正直に言うと：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>ローカルLLMに必要なVRAM容量とVPSのGPU対応表【2026年最新】</title><link>https://naruhodo-lab.uk/usecase/guide-vram_gpu_vps/</link><pubDate>Wed, 01 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-vram_gpu_vps/</guid><description>&lt;h1 id="ローカルllmを動かすのに必要なvram容量とvpsのメモリgpu対応表"&gt;ローカルLLMを動かすのに必要なVRAM容量と、VPSのメモリ・GPU対応表&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;【最初に結論を書いておきます】&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;何をやりたいかによって、GPUが必要かどうかはっきり変わります。&lt;/strong&gt;&lt;/p&gt;
