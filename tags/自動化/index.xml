@@ -1,4 +1,57 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/</link><description>Recent content in 自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 02 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>ローカルLLMをMake/ZapierからAPI経由で呼び出す自動化サーバー構築手順</title><link>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</link><pubDate>Thu, 02 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</guid><description>&lt;h1 id="ローカルllmを外部サービスmakezapierと連携させるapiサーバー構築手順"&gt;ローカルLLMを外部サービス（Make/Zapier）と連携させるAPIサーバー構築手順&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/</link><description>Recent content in 自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 04 Jul 2026 12:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】AI画像の自動生成システムをVPSで24時間稼働させるための完全ロードマップ</title><link>https://naruhodo-lab.uk/usecase/guide-ai_image_automation/</link><pubDate>Sat, 04 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-ai_image_automation/</guid><description>&lt;h1 id="ai画像の自動生成システムをvpsで24時間稼働させる完全ロードマップ"&gt;AI画像の自動生成システムをVPSで24時間稼働させる完全ロードマップ&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておく"&gt;最初に結論を書いておく&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;GPU VPSは「用途が合えば強い」。でも月額コストはまぁまぁ高い。先にコスト計算してから読んでほしい。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;正直に言うと、世の中の「GPU VPS最高！」系の記事はアフィ報酬目的で書かれているケースが多い。GPU積んだプランはそれだけ単価が高いから、紹介料もでかい。だから無条件に「GPU VPSを使いましょう」と押してくる記事は一旦疑ってかかってほしい。&lt;/p&gt;
+&lt;p&gt;ただ——Stable Diffusionに限っては、GPUは本当に必要。これは正当な理由がある。Claude Codeみたいに「API経由で外部のモデルに投げる」タイプのAIツールとは根本的に違って、SDは自分のマシンでモデルを動かす必要がある。ここだけはGPUから逃げられない。「Claude CodeにもGPUが要る」と言ってくる記事があったら、それは単純に間違いか、あるいはわかってて書いてるかのどちらかだ。&lt;/p&gt;
+&lt;p&gt;具体的なコスト感から先に書くと——&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;XServer VPS（GPU搭載プラン）&lt;/strong&gt;: 月額2〜5万円台が中心&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;さくらのVPS（GPU）&lt;/strong&gt;: 構成によるが同じく数万円帯&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;月30日・24時間フル稼働で1日あたり1,000〜1,600円&lt;/strong&gt;かかる計算になる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;1日1,500円 × 30日 = &lt;strong&gt;月45,000円&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;これが高いか安いかは、生成した画像でどれだけ稼げるかによる。ストックフォトで月5〜10万の収益が見込めるなら十分ペイする。「SNSのアイキャッチをちょっと自動化したい」程度なら、はっきり言って割に合わない。自分も最初「なんとなくかっこいい」でやりかけたことがあるので、これは身をもって言える。&lt;/p&gt;
+&lt;p&gt;その判断を先にしてから、以下の手順を読んでもらえれば。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;「毎日SNS用の画像を大量生成したい」「ストックフォトを自動で量産したい」——そういう明確な目的があるなら、&lt;strong&gt;VPS上でのAI画像自動生成システム&lt;/strong&gt;は確かに強い選択肢になる。&lt;/p&gt;
+&lt;p&gt;手元のPCを占有せず、cronで決まった時間に自動実行し、生成した画像をクラウドストレージへ自動転送。このパイプラインをVPS上に構築すれば、寝ている間にも画像が量産され続ける。&lt;/p&gt;
+&lt;p&gt;自分がこれを調べ始めたとき、「仕組みの解説」より「実際いくらかかるのか」が一番知りたかった。だからその話を先にした。以下は実際の構築手順。&lt;/p&gt;
+&lt;h2 id="自動生成システムの全体像"&gt;自動生成システムの全体像&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[cronジョブ] → [生成スクリプト] → [SD WebUI API] → [GPU VPS]
+ ↓
+ [画像ファイル出力] → [Google Drive / S3 転送]
+ ↓
+ [Slack通知 / メール通知]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;シンプルに言うと「cronがスクリプトを叩く → GPUが画像を生成する → どこかに保存する → 通知が来る」という流れ。一度組んでしまえば手放しで動く。&lt;/p&gt;
+&lt;p&gt;手元のPCでやるのと何が違うかというと——電源を切れる、落ちても自動復帰する、朝起きたら画像が揃ってる。この3点が地味に大きい。「PCつけっぱなしにして外出する」のは精神的に気になる。何かあったらリモートデスクトップで入らないといけないから、全然手放しにならない。VPSにする意味はここにある。家のPCを「サーバー代わり」にしてる間は、本当の意味での自動化とは言えないと思っている。&lt;/p&gt;
+&lt;h2 id="必要なvpsスペックの目安"&gt;必要なVPSスペックの目安&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;用途&lt;/th&gt;
+					&lt;th&gt;最小構成&lt;/th&gt;
+					&lt;th&gt;推奨構成&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;SD 1.5ベース・1枚/分&lt;/td&gt;
+					&lt;td&gt;VRAM 8GB / RAM 16GB&lt;/td&gt;
+					&lt;td&gt;VRAM 16GB / RAM 32GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;SDXLベース・1枚/2分&lt;/td&gt;
+					&lt;td&gt;VRAM 16GB / RAM 32GB&lt;/td&gt;
+					&lt;td&gt;VRAM 24GB / RAM 64GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;並列生成（複数ワーカー）&lt;/td&gt;
+					&lt;td&gt;VRAM 24GB / RAM 64GB&lt;/td&gt;
+					&lt;td&gt;GPU複数台構成&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;自分の結論としては、SDXLで「1日1,000枚」はかなりハードルが高い。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>ローカルLLMをMake/ZapierからAPI経由で呼び出す自動化サーバー構築手順</title><link>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</link><pubDate>Thu, 02 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-llm_api_make_zapier/</guid><description>&lt;h1 id="ローカルllmを外部サービスmakezapierと連携させるapiサーバー構築手順"&gt;ローカルLLMを外部サービス（Make/Zapier）と連携させるAPIサーバー構築手順&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="最初に結論を書きます"&gt;【最初に結論を書きます】&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;OpenAI APIの月額が気になりはじめたなら、VPS+Ollamaで自前APIサーバーを立てるのは十分ありです。&lt;/strong&gt;&lt;/p&gt;
