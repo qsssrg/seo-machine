@@ -602,6 +602,24 @@ main.container {
   margin-left: auto;
   margin-right: auto;
 }
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.4rem;
+  margin-bottom: 1rem;
+}
+.footer-nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+.footer-nav a:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
 
 /* ========================================
    Affiliate CTA Buttons
