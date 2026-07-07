@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>セキュリティ on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/</link><description>Recent content in セキュリティ on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 29 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/index.xml" rel="self" type="application/rss+xml"/><item><title>【セキュリティ重視】機密情報を扱うAI環境を国内VPSで構築するメリットと手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-secure_ai_vps/</link><pubDate>Mon, 29 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-secure_ai_vps/</guid><description>&lt;h1 id="セキュリティ重視機密情報を扱うai環境を国内vpsで構築する"&gt;セキュリティ重視！機密情報を扱うAI環境を国内VPSで構築する&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>セキュリティ on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/</link><description>Recent content in セキュリティ on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Tue, 07 Jul 2026 12:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】VPSで構築する「自分専用画像生成サーバー」のセキュリティ対策とアクセス制限</title><link>https://naruhodo-lab.uk/usecase/guide-image_gen_security/</link><pubDate>Tue, 07 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-image_gen_security/</guid><description>&lt;h1 id="vpsで構築する自分専用画像生成サーバーのセキュリティ対策とアクセス制限"&gt;VPSで構築する「自分専用画像生成サーバー」のセキュリティ対策とアクセス制限&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;SD WebUIをVPSに立てたら、セキュリティ対策だけはさぼるな。これだけは絶対。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;理由はシンプルです。IPアドレスをそのままさらした状態で公開すると、世界中の誰でもアクセスしてGPUリソースをタダ乗りできます。GPU VPSは時間課金のものも多い。誰かに使い倒されて、自分に請求だけ来る、という状況は笑えない。&lt;/p&gt;
+&lt;p&gt;正直に言うと、最初に自分がSD WebUIを立てたとき「まぁ自分のIPアドレスなんて誰も知らないし大丈夫でしょ」と思っていました。でもボットはそんなの関係なく、常時ポートスキャンしています。「知られていないから安全」は通用しない。実際にBAN前のアクセスログを見たら、立ち上げてから数時間でポートスキャンの痕跡がありました。&lt;/p&gt;
+&lt;p&gt;このガイドでは、自分が実際に使っている多層防御の手順をそのまま共有します。難しそうに見えるけど、コマンドをコピペで進めるだけなので、一度やれば「ああこんなもんか」ってなります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="セキュリティリスクの全体像"&gt;セキュリティリスクの全体像&lt;/h2&gt;
+&lt;p&gt;まず何が怖いのかを整理しておきます。怖いものを知らずに対策だけ覚えても、どこかで手を抜きがちになるので。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;リスク&lt;/th&gt;
+					&lt;th&gt;影響&lt;/th&gt;
+					&lt;th&gt;対策&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;無断アクセス・不正利用&lt;/td&gt;
+					&lt;td&gt;GPUリソース枯渇・課金&lt;/td&gt;
+					&lt;td&gt;IPホワイトリスト&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;盗聴・通信傍受&lt;/td&gt;
+					&lt;td&gt;プロンプト・画像の流出&lt;/td&gt;
+					&lt;td&gt;HTTPS (Let&amp;rsquo;s Encrypt)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ブルートフォース攻撃&lt;/td&gt;
+					&lt;td&gt;認証突破&lt;/td&gt;
+					&lt;td&gt;Basic認証 + fail2ban&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ポートスキャン&lt;/td&gt;
+					&lt;td&gt;サービス発見&lt;/td&gt;
+					&lt;td&gt;UFW + 非標準ポート&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;WebUI脆弱性悪用&lt;/td&gt;
+					&lt;td&gt;サーバー乗っ取り&lt;/td&gt;
+					&lt;td&gt;定期アップデート&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;自分が特に気にしているのは「GPUリソース枯渇・課金」です。GPU VPSは月数万円かかるものも多い。正直、立ち上げが楽ならありだとは思うけど、まぁまぁ高い。だからこそ、その費用を見知らぬ誰かのために払う羽目になるのは絶対に避けたい。ここだけは妥協しないでください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="step-1-ufwファイアウォールの設定"&gt;Step 1: UFWファイアウォールの設定&lt;/h2&gt;
+&lt;p&gt;まず不要なポートを全部閉じます。「必要なものだけ開ける」の発想で進めてください。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# UFWを有効化（SSH接続が切れないようにSSHを先に許可）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ufw allow OpenSSH
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ufw enable
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ufw status
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# WebUIポートは最初は閉じておく（nginxで代理する）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ufw deny 7860/tcp
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ufw deny 7865/tcp
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# HTTPSのみ開放&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ufw allow 80/tcp
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ufw allow 443/tcp
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;WebUIのポート（7860）を直接開けないのがポイントです。外からnginxを通らずに直アクセスされる経路を最初から塞いでおく。&lt;/p&gt;</description></item><item><title>【セキュリティ重視】機密情報を扱うAI環境を国内VPSで構築するメリットと手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-secure_ai_vps/</link><pubDate>Mon, 29 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-secure_ai_vps/</guid><description>&lt;h1 id="セキュリティ重視機密情報を扱うai環境を国内vpsで構築する"&gt;セキュリティ重視！機密情報を扱うAI環境を国内VPSで構築する&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="最初に結論機密データをchatgptに入れるのは正直やめたほうがいい"&gt;【最初に結論】機密データをChatGPTに入れるのは、正直やめたほうがいい&lt;/h2&gt;
 &lt;p&gt;はっきり書いておきます。&lt;/p&gt;
