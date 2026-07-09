@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AutoGPT on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/autogpt/</link><description>Recent content in AutoGPT on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 09 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/autogpt/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】AutoGPTをVPSで放置稼働させてブログ記事を完全自動生成させる手順</title><link>https://naruhodo-lab.uk/usecase/guide-autogpt_vps/</link><pubDate>Thu, 09 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-autogpt_vps/</guid><description>&lt;h1 id="autogptをvpsで放置稼働させてブログ記事を完全自動生成させる手順"&gt;AutoGPTをVPSで放置稼働させてブログ記事を完全自動生成させる手順&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;VPSはいる。GPUはいらない。ローカルPCで動かすのはやめた方がいい。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;この3行が全部です。以上です。&lt;/p&gt;
+&lt;p&gt;「PCを立ち上げっぱなしにすれば同じじゃないか」と思うかもしれないけど、それは全然手放しにならない。何か止まったらリモートデスクトップで入らなきゃいけないし、PCが気になって精神的に落ち着かない。自分も最初そっちで試したけど、「動いてるかな」って何度もPC確認しに行く時点で放置稼働じゃなかった。VPSに逃がしてtmuxで常駐させた方が、心理的コストがぜんぜん違う。これは使ってみるとわかる。&lt;/p&gt;
+&lt;p&gt;それと、GPU搭載VPSを推してくる記事を見かけたらアフィリエイト報酬目的を疑った方がいい。AutoGPTにGPUが必要な処理は一切ない。理由は後で詳しく書くけど、月数万円のGPU VPSを借りる理由がどこにもない。&lt;/p&gt;
+&lt;p&gt;VPS選びの損益分岐点の計算は後のセクションでやるので、先に知りたい人は「VPS選び」まで飛んでください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;AutoGPTは「ゴールを与えると自律的にタスクを分解・実行するAIエージェント」として2023年に登場し、現在も活発に開発が続いています。VPS上でDockerを使って常駐させることで、&lt;strong&gt;就寝中・外出中もブログ記事を生成し続ける環境&lt;/strong&gt;が作れます。&lt;/p&gt;
+&lt;h2 id="autogptのブログ自動生成フロー"&gt;AutoGPTのブログ自動生成フロー&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;ゴール設定（例: 「VPS比較ブログの記事を10本生成」）
+ ↓
+AutoGPTがタスクを自動分解
+ ↓
+Web検索（SerpAPI / Tavily）
+ ↓
+情報収集・整理（内部メモリ）
+ ↓
+記事本文をGPT-4o / Claudeで生成
+ ↓
+ファイルに保存（Markdownなど）
+ ↓
+次のタスクへ自律的に移行（Continuousモード）
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;このフローを見れば一目瞭然なんだけど、&lt;strong&gt;GPUが必要な処理がどこにもない&lt;/strong&gt;。Web検索、API呼び出し、ファイル保存。全部CPUで回る処理ばかり。&lt;/p&gt;
+&lt;p&gt;GPU搭載VPSを推してくる記事を見かけたら、正直アフィリエイト報酬目的を疑った方がいい。GPU VPSは単価が高いから、紹介料も大きくなる。「念のため」とか「快適に動かすために」みたいな曖昧な理由でGPUを勧めてくる記事は、あなたのためじゃなく書いた人の懐のために書かれてる。はっきり書いておきます。&lt;/p&gt;
+&lt;h2 id="必要なvpsスペック"&gt;必要なVPSスペック&lt;/h2&gt;
+&lt;p&gt;AutoGPT自体は軽量ですが、複数のAIエージェントを並行動作させる場合はメモリを多く消費します。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;スペック&lt;/th&gt;
+					&lt;th&gt;最低ライン&lt;/th&gt;
+					&lt;th&gt;推奨（複数並行）&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;vCPU&lt;/td&gt;
+					&lt;td&gt;2コア&lt;/td&gt;
+					&lt;td&gt;4コア&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;RAM&lt;/td&gt;
+					&lt;td&gt;4GB&lt;/td&gt;
+					&lt;td&gt;8GB以上&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ストレージ&lt;/td&gt;
+					&lt;td&gt;30GB SSD&lt;/td&gt;
+					&lt;td&gt;50GB SSD&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;GPU&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;不要&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;不要&lt;/strong&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;正直に言うと、1エージェントで試すなら最低ラインの2コア・4GBで十分動く。最初から大きいプランを借りる必要はないし、「念のため」で高いプランにするのは無駄遣い。試して足りなければ後からスケールアップすればいい。それだけの話。&lt;/p&gt;
+&lt;p&gt;自分の場合も最初は2コア・4GBから始めて、複数エージェントを並行させたくなってから4コアに上げた。最初から8GB以上を借りてたら普通に無駄だった。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+B7NWXE+7YE+NWRNM" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;KAGOYA CLOUD VPS →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B614H+B7NWXE+7YE+NWRNM" alt=""&gt;&lt;/p&gt;
+&lt;h2 id="vps選びkagoyaかxserverか計算してから決めてほしい"&gt;VPS選び：KAGOYAかXServerか、計算してから決めてほしい&lt;/h2&gt;
+&lt;p&gt;ここは「どっちでもいいですよ」とは言わない。使い方によって答えがはっきり出るから、計算させてほしい。&lt;/p&gt;
+&lt;h3 id="月何時間使うかで損益分岐点がはっきり出る"&gt;月何時間使うかで損益分岐点がはっきり出る&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;KAGOYA CLOUD VPS（2コア/4GB）の場合&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;時間課金：約2.2円/時間&lt;/li&gt;
+&lt;li&gt;月744時間フル稼働：約1,637円&lt;/li&gt;
+&lt;li&gt;月20時間だけ使う：約44円&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;XServer VPS（2コア/4GB相当）の場合&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;月額固定：830円&lt;/li&gt;
+&lt;li&gt;何時間使っても：830円&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;計算すると、&lt;strong&gt;月76時間を境に逆転する&lt;/strong&gt;。&lt;/p&gt;</description></item></channel></rss>
