@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CI/CD on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/ci/cd/</link><description>Recent content in CI/CD on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Fri, 10 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/ci/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】GitHub ActionsとVPSを連携！AIに書かせたコードを自動デプロイするCI/CD超入門</title><link>https://naruhodo-lab.uk/usecase/guide-github_actions_vps/</link><pubDate>Fri, 10 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-github_actions_vps/</guid><description>&lt;h1 id="2026年版github-actionsとvpsを連携aiに書かせたコードを自動デプロイするcicd超入門"&gt;【2026年版】GitHub ActionsとVPSを連携！AIに書かせたコードを自動デプロイするCI/CD超入門&lt;/h1&gt;
+&lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;AIでコードを書き始めたなら、CI/CDは今すぐ入れてください。後回しにする理由がないです。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Claude CodeやChatGPTを使い始めると、コードの変更頻度が体感で3〜5倍になります。そのたびにSSHしてgit pullして…をやってると、AIで節約した時間を全部デプロイ作業で溶かします。本末転倒です。&lt;/p&gt;
+&lt;p&gt;Self-hosted RunnerをVPSに置いて、pushしたら終わり——これをやるかやらないかで、AI開発の体験がかなり変わります。セットアップ自体は30〜60分あれば終わるので、さっさとやってしまった方がいいです。&lt;/p&gt;
+&lt;p&gt;あと先に言っておくと、&lt;strong&gt;CI/CD用途にGPUは一切不要です&lt;/strong&gt;。ビルドとデプロイはCPU処理です。GPU付きプランに誘導してくる記事があったら、単純にアフィリエイト報酬が高いプランに誘導しているだけなので無視してください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="cicdとはaiコード開発での必要性"&gt;CI/CDとは？AIコード開発での必要性&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;用語&lt;/th&gt;
+					&lt;th&gt;意味&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CI（継続的インテグレーション）&lt;/td&gt;
+					&lt;td&gt;コードをpushするたびにテストを自動実行&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CD（継続的デリバリー）&lt;/td&gt;
+					&lt;td&gt;テスト通過後にサーバーへ自動デプロイ&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;AIにコードを生成させると&lt;strong&gt;変更頻度が格段に上がります&lt;/strong&gt;。手動でSSHしてgit pullするのは非効率です。CI/CDを組めば「AIに指示 → コード生成 → push → 自動デプロイ」が1〜2分で完結します。&lt;/p&gt;
+&lt;p&gt;正直に言うと、手動デプロイのしんどさはコード変更が少ないうちは気にならないんですよね。1日1〜2回のpushなら「まあいいか」で乗り越えられる。でもAIを使い始めたとたんに「あ、これ無理だ」ってなる。自分もそのタイミングで慌てて導入しました。最初からやっておけばよかった案件です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="アーキテクチャ全体像"&gt;アーキテクチャ全体像&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;ローカル or AI（Claude Code等）
+ ↓ git push
+ GitHub リポジトリ
+ ↓ Actions起動
+ Self-hosted Runner（VPS上）
+ ↓ ビルド・テスト
+ 本番環境（同VPS or 別サーバー）
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;VPSが1台の場合、RunnerもアプリもそのVPSに同居させるのが一番シンプルです。最初はこれで十分。スケールが必要になってから分ければいい。「きれいな構成」にこだわって始めるのが遅くなるよりも、シンプルに動かす方が100倍マシです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="step-1-vpsにself-hosted-runnerを設置する"&gt;Step 1: VPSにSelf-hosted Runnerを設置する&lt;/h2&gt;
+&lt;h3 id="なぜself-hosted"&gt;なぜSelf-hosted？&lt;/h3&gt;
+&lt;p&gt;GitHub提供のRunnerはパブリックリポジトリで無料ですが、&lt;strong&gt;プライベートリポジトリでは月2,000分の無料枠&lt;/strong&gt;があります。Self-hosted RunnerをVPSに置けば実行時間の制限なし、かつデプロイがVPS内で完結するため高速です。&lt;/p&gt;
+&lt;p&gt;月2,000分というのは、1回のデプロイに3分かかるとすると約666回分。毎日20回pushしたとして33日分。余裕そうに見えますが、AIを使い始めると平気で超えます。Self-hostedにしておく方が精神的にラクです。「今月の残り枠どのくらいだっけ」って気にしながら開発したくないですよね。自分は気にしたくないタイプなので、最初からSelf-hostedにしました。&lt;/p&gt;
+&lt;h3 id="runnerのインストール手順"&gt;Runnerのインストール手順&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# GitHubリポジトリ → Settings → Actions → Runners → New self-hosted runner&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 表示されるコマンドをそのまま実行（URLとトークンはリポジトリごとに異なる）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mkdir actions-runner &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; cd actions-runner
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl -o actions-runner-linux-x64-2.316.0.tar.gz -L &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; https://github.com/actions/runner/releases/download/v2.316.0/actions-runner-linux-x64-2.316.0.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tar xzf ./actions-runner-linux-x64-2.316.0.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;./config.sh --url https://github.com/your-org/your-repo --token YOUR_TOKEN
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# サービスとして常駐起動&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ./svc.sh install
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo ./svc.sh start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;sudo ./svc.sh install&lt;/code&gt; でサービス登録しておくのが重要です。これをやらないとVPS再起動のたびにRunnerが落ちて「なんかActionsが反応しない」ってなります。自分は最初これを忘れて30分無駄にしました。同じ轍を踏まないようにしてください。&lt;/p&gt;</description></item></channel></rss>
