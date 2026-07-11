@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/python/</link><description>Recent content in Python on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 11 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】PythonのAIスクレイピングツールをVPSで定期実行（cron）させる非エンジニア向けガイド</title><link>https://naruhodo-lab.uk/usecase/guide-python_scraping_cron/</link><pubDate>Sat, 11 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-python_scraping_cron/</guid><description>&lt;h1 id="2026年版pythonのaiスクレイピングツールをvpsで定期実行cronさせる非エンジニア向けガイド"&gt;【2026年版】PythonのAIスクレイピングツールをVPSで定期実行（cron）させる非エンジニア向けガイド&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="結論を先に書く自分がたどり着いた答え"&gt;【結論を先に書く】自分がたどり着いた答え&lt;/h2&gt;
+&lt;p&gt;スクレイピングの定期実行を「本当に自動化」したいなら、VPS一択です。ローカルPCでやろうとすると、スリープするたびに止まる。「じゃあスリープ切って24時間つけっぱなしに…」は精神的にずっと気になるし、何かあったらリモートデスクトップで入らなきゃいけないから全然手放しにならない。それで半年近く遠回りしました。&lt;/p&gt;
+&lt;p&gt;VPS選びについても先に書いておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;週数時間だけ動かす&lt;/strong&gt;なら → &lt;strong&gt;KAGOYA CLOUD VPS&lt;/strong&gt;（時間課金で安い）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;1日中ほぼ動かす&lt;/strong&gt;なら → &lt;strong&gt;XServer VPS&lt;/strong&gt;（月830円固定の安心感）&lt;/li&gt;
+&lt;li&gt;損益分岐点は「月76時間」。これ以上使うならXServer、未満ならKAGOYAのほうが安上がり&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;あと、&lt;strong&gt;このスクレイピング用途にGPUは完全に不要&lt;/strong&gt;です。ごくたまにGPU付きVPSを勧めてる記事を見かけますが、正直あれはアフィリエイト報酬が高い商品を売りたいだけだと思っています。テキスト取得とcron実行にGPUはいりません。無駄にお金を使わないでください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜvpsが必要なのか"&gt;なぜVPSが必要なのか&lt;/h2&gt;
+&lt;p&gt;実体験から言うと、自分も最初はローカルPCでやろうとしていました。でも結局、こういう問題にぶつかります。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;環境&lt;/th&gt;
+					&lt;th&gt;問題点&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ローカルPC&lt;/td&gt;
+					&lt;td&gt;PCがスリープ・シャットダウンで停止&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Google Colab&lt;/td&gt;
+					&lt;td&gt;無料プランは90分でセッション切れ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;VPS&lt;/td&gt;
+					&lt;td&gt;24時間365日、cronで自動実行できる&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;「PCつけっぱなしでいいじゃん」と思うかもしれないけど、寝てる間・外出中も何かあれば自分で対処しなきゃいけない。それって「自動化できてる」とは言えないんですよね。VPSに投げてしまえば、本当に放置できる。その差は体験してみないとわかりづらいんですが、一度やると戻れません。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="基本スクレイピングスクリプトを作る"&gt;基本スクレイピングスクリプトを作る&lt;/h2&gt;
+&lt;p&gt;AIに書いてもらったスクリプトをそのままコピペするのもOKです。ただ、&lt;strong&gt;ログの出力先だけは最初に確認しておいてください&lt;/strong&gt;。後で「動いてるのか動いてないのかわからない」という状況になりがちです。自分がそうでした。&lt;/p&gt;
+&lt;h3 id="beautifulsoupによるhtml解析静的サイト向け"&gt;BeautifulSoupによるHTML解析（静的サイト向け）&lt;/h3&gt;
+&lt;p&gt;JavaScriptを使っていないシンプルなサイトならBeautifulSoupで十分です。軽いし、エラーも少ない。最初はこっちから試してみることをすすめます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/usr/bin/env python3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# scraper.py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; bs4 &lt;span style="color:#f92672"&gt;import&lt;/span&gt; BeautifulSoup
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; logging
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ログ設定&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;basicConfig(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; filename&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;/var/log/scraper.log&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; level&lt;span style="color:#f92672"&gt;=&lt;/span&gt;logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;INFO,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; format&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%(asctime)s&lt;/span&gt;&lt;span style="color:#e6db74"&gt; &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%(levelname)s&lt;/span&gt;&lt;span style="color:#e6db74"&gt; &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%(message)s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;TARGET_URL &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;https://example.com/products&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;scrape&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; res &lt;span style="color:#f92672"&gt;=&lt;/span&gt; requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(TARGET_URL, timeout&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; headers&lt;span style="color:#f92672"&gt;=&lt;/span&gt;{&lt;span style="color:#e6db74"&gt;&amp;#34;User-Agent&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;Mozilla/5.0&amp;#34;&lt;/span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; res&lt;span style="color:#f92672"&gt;.&lt;/span&gt;raise_for_status()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; soup &lt;span style="color:#f92672"&gt;=&lt;/span&gt; BeautifulSoup(res&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text, &lt;span style="color:#e6db74"&gt;&amp;#34;html.parser&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; items &lt;span style="color:#f92672"&gt;=&lt;/span&gt; soup&lt;span style="color:#f92672"&gt;.&lt;/span&gt;select(&lt;span style="color:#e6db74"&gt;&amp;#34;.product-item&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; items:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; name &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item&lt;span style="color:#f92672"&gt;.&lt;/span&gt;select_one(&lt;span style="color:#e6db74"&gt;&amp;#34;.name&amp;#34;&lt;/span&gt;)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; price &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item&lt;span style="color:#f92672"&gt;.&lt;/span&gt;select_one(&lt;span style="color:#e6db74"&gt;&amp;#34;.price&amp;#34;&lt;/span&gt;)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;info(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;商品名: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;name&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; | 価格: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;price&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;[&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now()&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;] &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;len(items)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;件取得完了&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;except&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Exception&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; e:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;error(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;エラー: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;e&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;raise&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; scrape()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="seleniumによる動的サイトのスクレイピング"&gt;Seleniumによる動的サイトのスクレイピング&lt;/h3&gt;
+&lt;p&gt;Amazonの価格やログイン後のページなど、JavaScriptで描画されるサイトはBeautifulSoupでは取れません。そういうときはSeleniumを使います。ただ、&lt;strong&gt;Seleniumはセットアップがちょっと面倒で、VPS上でのメモリ消費も多め&lt;/strong&gt;。まずBeautifulSoupで試して、取れなかったときだけSeleniumに切り替えるのが現実的です。&lt;/p&gt;</description></item></channel></rss>

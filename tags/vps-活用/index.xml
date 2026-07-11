@@ -1,4 +1,234 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/</link><description>Recent content in VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Fri, 10 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】GitHub ActionsとVPSを連携！AIに書かせたコードを自動デプロイするCI/CD超入門</title><link>https://naruhodo-lab.uk/usecase/guide-github_actions_vps/</link><pubDate>Fri, 10 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-github_actions_vps/</guid><description>&lt;h1 id="2026年版github-actionsとvpsを連携aiに書かせたコードを自動デプロイするcicd超入門"&gt;【2026年版】GitHub ActionsとVPSを連携！AIに書かせたコードを自動デプロイするCI/CD超入門&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/</link><description>Recent content in VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 11 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】CrewAIを使って複数のAIエージェントをVPS上で連携・討論させる環境構築</title><link>https://naruhodo-lab.uk/usecase/guide-crewai_vps/</link><pubDate>Sat, 11 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-crewai_vps/</guid><description>&lt;h1 id="2026年版crewaiを使って複数のaiエージェントをvps上で連携討論させる環境構築"&gt;【2026年版】CrewAIを使って複数のAIエージェントをVPS上で連携・討論させる環境構築&lt;/h1&gt;
+&lt;h2 id="最初に結論自分ならこう選ぶ"&gt;【最初に結論】自分ならこう選ぶ&lt;/h2&gt;
+&lt;p&gt;はっきり書いておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;OpenAI API構成&lt;/strong&gt;：4GBのVPSで十分。月1,000〜1,500円で動く。&lt;strong&gt;GPUは完全に不要&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ollamaでローカルモデルを動かしたい&lt;/strong&gt;：8GBのVPS必須。月2,000円前後。それでもGPUは不要&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自宅PCで「常時稼働」は現実的じゃない&lt;/strong&gt;：ノートPCを閉じたら止まる、電気代が気になる、何かあったらリモートデスクトップで確認しに行かなきゃいけないから全然手放しにならない——これが正直なところ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;VPSに置いてしまえば、SSHを閉じてもエージェントが勝手に動いてる。そのラクさのために月1,000〜2,000円払う価値は十分ある。自分はそう判断してる。&lt;/p&gt;
+&lt;p&gt;ひとつ先に言っておきたいことがある。「GPU付きVPSでCrewAIを高速化しよう」みたいな記事をたまに見かける。あれはおかしい。&lt;strong&gt;OpenAI APIを使う構成でGPUは一切関係ない&lt;/strong&gt;。APIの処理はOpenAI側のサーバーでやってるんだから、こちら側にGPUがあっても何も変わらない。GPU推しの記事はアフィリエイト報酬が高いGPUプランに誘導したいだけのことが多い。そこは冷静に見てほしいし、ここではっきり言っておく。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="aiを1つ動かす時代からaiチームを組む時代へ"&gt;「AIを1つ動かす」時代から「AIチームを組む」時代へ&lt;/h2&gt;
+&lt;p&gt;ChatGPTに質問して満足していた時代は、もう終わりに近づいています。2026年現在、注目されているのは**複数のAIエージェントが役割分担しながら協力して仕事をこなす「マルチエージェントシステム」**です。&lt;/p&gt;
+&lt;p&gt;その中でも特に人気を集めているのが &lt;strong&gt;CrewAI&lt;/strong&gt;。「リサーチ担当AI」「文章作成AI」「品質チェックAI」といった役割を持つエージェントを作り、まるでチームのように働かせることができます。&lt;/p&gt;
+&lt;p&gt;正直に言うと、最初は「そんなのChatGPTで十分じゃないか」と思ってた。でも実際に複数エージェントを役割分担させてみると、1つのプロンプトで無理矢理やらせるよりも&lt;strong&gt;アウトプットの質がけっこう違う&lt;/strong&gt;。リサーチャーが集めた情報をライターが整理する、という流れにするだけで、記事の構成がずいぶんまともになる。「なるほど、1人に全部やらせるより分業した方がいいのは人間と同じか」と思った。&lt;/p&gt;
+&lt;p&gt;問題は、こうした仕組みを&lt;strong&gt;自宅PCで常時稼働させるのが難しい&lt;/strong&gt;という点です。ノートPCを閉じれば止まる、電気代がかかる、重くて他の作業ができない——VPS（クラウド上の仮想サーバー）を使えばこれらをまとめて解決できます。&lt;/p&gt;
+&lt;h2 id="crewai-とはvps-との相性が良い理由"&gt;CrewAI とは？VPS との相性が良い理由&lt;/h2&gt;
+&lt;p&gt;CrewAIはPythonで書かれたオープンソースのマルチエージェントフレームワークです。以下の特徴があります。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;エージェントに**役割（Role）・目標（Goal）・背景（Backstory）**を定義できる&lt;/li&gt;
+&lt;li&gt;タスクを順番に・並行に・条件分岐でこなす&lt;strong&gt;柔軟な実行フロー&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;OpenAIのAPIだけでなく、&lt;strong&gt;Ollamaによるローカルモデル連携&lt;/strong&gt;も対応&lt;/li&gt;
+&lt;li&gt;PythonスクリプトなのでLinux VPSとの相性が抜群&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;VPS上で動かすことで、&lt;strong&gt;PCを閉じても24時間エージェントが作業を続けてくれる&lt;/strong&gt;ようになります。&lt;/p&gt;
+&lt;p&gt;これが一番のメリット。自宅PCを立ち上げっぱなしにする方法もあるにはあるけど、「何かあったらリモートデスクトップで確認しに行かなきゃいけない」「寝てる間に止まってたらどうしよう」という精神的なストレスがじわじわ効いてくる。自分の場合、それが気になりだすと結局「手放した感」がまったくない。VPSに投げてしまえばそのストレスがなくなる。&lt;strong&gt;月2,000円でその精神的コストを消せるなら、払う価値はある&lt;/strong&gt;と思ってる。&lt;/p&gt;
+&lt;h2 id="必要なvpsスペック"&gt;必要なVPSスペック&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;最低ライン&lt;/th&gt;
+					&lt;th&gt;推奨&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CPU&lt;/td&gt;
+					&lt;td&gt;2コア&lt;/td&gt;
+					&lt;td&gt;4コア以上&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;メモリ&lt;/td&gt;
+					&lt;td&gt;4GB&lt;/td&gt;
+					&lt;td&gt;8GB以上（Ollama使用時）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ストレージ&lt;/td&gt;
+					&lt;td&gt;50GB&lt;/td&gt;
+					&lt;td&gt;100GB以上&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;ここは重要なので整理しておきます。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;OpenAI APIを使う構成（= 普通のCrewAI入門記事が想定している構成）なら、&lt;strong&gt;メモリ4GBのCPUのみVPSで問題なく動く&lt;/strong&gt;。月額で言うと1,000〜1,500円の帯域。1日あたり33〜50円。コーヒー1杯より安い。&lt;strong&gt;GPUは本当に必要ない&lt;/strong&gt;。もう一度言うけど、GPU不要。&lt;/p&gt;
+&lt;p&gt;Ollamaでローカルモデル（Llama 3 / Mistral等）を動かすなら&lt;strong&gt;メモリ8GB以上&lt;/strong&gt;が必要。これは実際に試したので断言できる。4GBだとモデルのロード中にOOM（メモリ不足）でプロセスが落ちる。経験済み。「月1,000円のプランで始めてOllamaも使おう」という欲張りは、最初の数時間で詰む。素直に8GBにしてください。&lt;/p&gt;
+&lt;div class="cta-section"&gt;
+ &lt;span class="ad-label"&gt;広告&lt;/span&gt;
+ &lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;ConoHa VPS →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt=""&gt;
+ &lt;p&gt;時間課金で試せるConoHa VPSなら、検証用に数時間だけ8GBプランを借りることも可能です。「壊したら消せばいい」くらいの気持ちで試せるのが時間課金のいいところ。&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id="環境構築ステップバイステップ"&gt;環境構築：ステップバイステップ&lt;/h2&gt;
+&lt;p&gt;手順は多く見えるけど、実際にやると30〜40分で終わる。初見で詰まるとしたらOllamaのメモリ周りくらい。そこだけ気をつけておけば、あとは流れ作業でいける。&lt;/p&gt;
+&lt;h3 id="step-1-python-環境を整える"&gt;Step 1: Python 環境を整える&lt;/h3&gt;
+&lt;p&gt;VPSにSSHログインしたら、まず Python 3.10 以上と venv を用意します。&lt;/p&gt;</description></item><item><title>【2026年版】24時間株価・仮想通貨を監視＆分析するAIシステムをVPS上に作る</title><link>https://naruhodo-lab.uk/usecase/guide-stock_crypto_ai/</link><pubDate>Sat, 11 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-stock_crypto_ai/</guid><description>&lt;h1 id="2026年版24時間株価仮想通貨を監視分析するaiシステムをvps上に作る"&gt;【2026年版】24時間株価・仮想通貨を監視＆分析するAIシステムをVPS上に作る&lt;/h1&gt;
+&lt;h2 id="最初に結論を言います"&gt;最初に結論を言います&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;VPSに置くべき。自分のPCに置くのはやめた方がいい。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;株価や仮想通貨の監視ボットって、「とりあえず自分のPCで動かしてみよう」から始める人が多い。自分もそうだった。でも正直、PCつけっぱなしは精神的に気になるし、何かあったときにリモートデスクトップで入らないといけないから結局手放しにならない。それって「自動化した」とは言えない。&lt;/p&gt;
+&lt;p&gt;VPSに乗せて初めて「本当に手放した」感覚になれる。月数百円〜1,000円台で動き続けてくれる環境が作れるんだから、ここはケチらなくていい。&lt;/p&gt;
+&lt;p&gt;もう一つ。&lt;strong&gt;このシステムにGPUは一切不要。&lt;/strong&gt;　LLMはOpenAI APIを叩くだけだから、GPU付きVPSを勧めてくる記事を見かけたら少し疑った方がいい。GPU VPSは月額が跳ね上がる。この用途では完全に過剰スペック。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="システム全体の構成"&gt;システム全体の構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;VPS（24時間稼働）
+├── price_monitor.py ← 価格データ取得（yfinance/ccxt）
+├── ai_analyzer.py ← LLMで市場コメント生成（OpenAI API）
+├── alert_sender.py ← Slack/LINE通知送信
+└── cron / systemd ← 定期実行・常駐管理
+&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;ツール&lt;/th&gt;
+					&lt;th&gt;役割&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;yfinance&lt;/td&gt;
+					&lt;td&gt;株価・ETFデータ取得（Yahoo Finance）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ccxt&lt;/td&gt;
+					&lt;td&gt;国内外の仮想通貨取引所API統合ライブラリ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OpenAI API&lt;/td&gt;
+					&lt;td&gt;価格変動のAI解説生成&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Slack Webhook&lt;/td&gt;
+					&lt;td&gt;通知送信先&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;構成としてはシンプル。Pythonスクリプトが数個あって、それをVPS上で定期実行するだけ。「AIシステム」と聞くと大げさに聞こえるけど、やることは地道なスクリプト管理だったりする。難しくはない。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="推奨vpsスペック"&gt;推奨VPSスペック&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;最小&lt;/th&gt;
+					&lt;th&gt;推奨&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;vCPU&lt;/td&gt;
+					&lt;td&gt;1コア&lt;/td&gt;
+					&lt;td&gt;2コア&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;メモリ&lt;/td&gt;
+					&lt;td&gt;2GB&lt;/td&gt;
+					&lt;td&gt;4GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;SSD&lt;/td&gt;
+					&lt;td&gt;20GB&lt;/td&gt;
+					&lt;td&gt;50GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;稼働率SLA&lt;/td&gt;
+					&lt;td&gt;99.9%&lt;/td&gt;
+					&lt;td&gt;99.99%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;固定IP&lt;/td&gt;
+					&lt;td&gt;必須&lt;/td&gt;
+					&lt;td&gt;必須&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;正直に言うと、メモリ2GBで十分動く。&lt;/strong&gt;　4GB推奨と書いたけど、監視対象の銘柄数が少なければ2GBで問題ない。最初は安いプランで始めて、重くなってきたらスケールアップする判断でいい。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;固定IPだけは絶対に妥協しないでほしい。&lt;/strong&gt;　取引所のAPIキーにIPホワイトリストを設定するとき、IPが変わるたびに設定し直しが発生する。これが地味に面倒で、セキュリティ上も良くない。固定IPはこの用途では必須条件と思ってください。&lt;/p&gt;
+&lt;p&gt;月額で計算すると、XServer VPSの2GBプランなら&lt;strong&gt;約830円/月 = 1日あたり約27円&lt;/strong&gt;。コーヒー1杯より安い。&lt;/p&gt;</description></item><item><title>【2026年版】PythonのAIスクレイピングツールをVPSで定期実行（cron）させる非エンジニア向けガイド</title><link>https://naruhodo-lab.uk/usecase/guide-python_scraping_cron/</link><pubDate>Sat, 11 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-python_scraping_cron/</guid><description>&lt;h1 id="2026年版pythonのaiスクレイピングツールをvpsで定期実行cronさせる非エンジニア向けガイド"&gt;【2026年版】PythonのAIスクレイピングツールをVPSで定期実行（cron）させる非エンジニア向けガイド&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="結論を先に書く自分がたどり着いた答え"&gt;【結論を先に書く】自分がたどり着いた答え&lt;/h2&gt;
+&lt;p&gt;スクレイピングの定期実行を「本当に自動化」したいなら、VPS一択です。ローカルPCでやろうとすると、スリープするたびに止まる。「じゃあスリープ切って24時間つけっぱなしに…」は精神的にずっと気になるし、何かあったらリモートデスクトップで入らなきゃいけないから全然手放しにならない。それで半年近く遠回りしました。&lt;/p&gt;
+&lt;p&gt;VPS選びについても先に書いておきます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;週数時間だけ動かす&lt;/strong&gt;なら → &lt;strong&gt;KAGOYA CLOUD VPS&lt;/strong&gt;（時間課金で安い）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;1日中ほぼ動かす&lt;/strong&gt;なら → &lt;strong&gt;XServer VPS&lt;/strong&gt;（月830円固定の安心感）&lt;/li&gt;
+&lt;li&gt;損益分岐点は「月76時間」。これ以上使うならXServer、未満ならKAGOYAのほうが安上がり&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;あと、&lt;strong&gt;このスクレイピング用途にGPUは完全に不要&lt;/strong&gt;です。ごくたまにGPU付きVPSを勧めてる記事を見かけますが、正直あれはアフィリエイト報酬が高い商品を売りたいだけだと思っています。テキスト取得とcron実行にGPUはいりません。無駄にお金を使わないでください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜvpsが必要なのか"&gt;なぜVPSが必要なのか&lt;/h2&gt;
+&lt;p&gt;実体験から言うと、自分も最初はローカルPCでやろうとしていました。でも結局、こういう問題にぶつかります。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;環境&lt;/th&gt;
+					&lt;th&gt;問題点&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ローカルPC&lt;/td&gt;
+					&lt;td&gt;PCがスリープ・シャットダウンで停止&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Google Colab&lt;/td&gt;
+					&lt;td&gt;無料プランは90分でセッション切れ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;VPS&lt;/td&gt;
+					&lt;td&gt;24時間365日、cronで自動実行できる&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;「PCつけっぱなしでいいじゃん」と思うかもしれないけど、寝てる間・外出中も何かあれば自分で対処しなきゃいけない。それって「自動化できてる」とは言えないんですよね。VPSに投げてしまえば、本当に放置できる。その差は体験してみないとわかりづらいんですが、一度やると戻れません。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="基本スクレイピングスクリプトを作る"&gt;基本スクレイピングスクリプトを作る&lt;/h2&gt;
+&lt;p&gt;AIに書いてもらったスクリプトをそのままコピペするのもOKです。ただ、&lt;strong&gt;ログの出力先だけは最初に確認しておいてください&lt;/strong&gt;。後で「動いてるのか動いてないのかわからない」という状況になりがちです。自分がそうでした。&lt;/p&gt;
+&lt;h3 id="beautifulsoupによるhtml解析静的サイト向け"&gt;BeautifulSoupによるHTML解析（静的サイト向け）&lt;/h3&gt;
+&lt;p&gt;JavaScriptを使っていないシンプルなサイトならBeautifulSoupで十分です。軽いし、エラーも少ない。最初はこっちから試してみることをすすめます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/usr/bin/env python3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# scraper.py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; bs4 &lt;span style="color:#f92672"&gt;import&lt;/span&gt; BeautifulSoup
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; logging
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ログ設定&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;basicConfig(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; filename&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;/var/log/scraper.log&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; level&lt;span style="color:#f92672"&gt;=&lt;/span&gt;logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;INFO,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; format&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%(asctime)s&lt;/span&gt;&lt;span style="color:#e6db74"&gt; &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%(levelname)s&lt;/span&gt;&lt;span style="color:#e6db74"&gt; &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%(message)s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;TARGET_URL &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;https://example.com/products&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;scrape&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; res &lt;span style="color:#f92672"&gt;=&lt;/span&gt; requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(TARGET_URL, timeout&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; headers&lt;span style="color:#f92672"&gt;=&lt;/span&gt;{&lt;span style="color:#e6db74"&gt;&amp;#34;User-Agent&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;Mozilla/5.0&amp;#34;&lt;/span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; res&lt;span style="color:#f92672"&gt;.&lt;/span&gt;raise_for_status()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; soup &lt;span style="color:#f92672"&gt;=&lt;/span&gt; BeautifulSoup(res&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text, &lt;span style="color:#e6db74"&gt;&amp;#34;html.parser&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; items &lt;span style="color:#f92672"&gt;=&lt;/span&gt; soup&lt;span style="color:#f92672"&gt;.&lt;/span&gt;select(&lt;span style="color:#e6db74"&gt;&amp;#34;.product-item&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; items:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; name &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item&lt;span style="color:#f92672"&gt;.&lt;/span&gt;select_one(&lt;span style="color:#e6db74"&gt;&amp;#34;.name&amp;#34;&lt;/span&gt;)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; price &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item&lt;span style="color:#f92672"&gt;.&lt;/span&gt;select_one(&lt;span style="color:#e6db74"&gt;&amp;#34;.price&amp;#34;&lt;/span&gt;)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;info(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;商品名: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;name&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; | 価格: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;price&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;[&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now()&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;] &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;len(items)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;件取得完了&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;except&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Exception&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; e:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; logging&lt;span style="color:#f92672"&gt;.&lt;/span&gt;error(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;エラー: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;e&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;raise&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; scrape()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="seleniumによる動的サイトのスクレイピング"&gt;Seleniumによる動的サイトのスクレイピング&lt;/h3&gt;
+&lt;p&gt;Amazonの価格やログイン後のページなど、JavaScriptで描画されるサイトはBeautifulSoupでは取れません。そういうときはSeleniumを使います。ただ、&lt;strong&gt;Seleniumはセットアップがちょっと面倒で、VPS上でのメモリ消費も多め&lt;/strong&gt;。まずBeautifulSoupで試して、取れなかったときだけSeleniumに切り替えるのが現実的です。&lt;/p&gt;</description></item><item><title>【2026年版】GitHub ActionsとVPSを連携！AIに書かせたコードを自動デプロイするCI/CD超入門</title><link>https://naruhodo-lab.uk/usecase/guide-github_actions_vps/</link><pubDate>Fri, 10 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-github_actions_vps/</guid><description>&lt;h1 id="2026年版github-actionsとvpsを連携aiに書かせたコードを自動デプロイするcicd超入門"&gt;【2026年版】GitHub ActionsとVPSを連携！AIに書かせたコードを自動デプロイするCI/CD超入門&lt;/h1&gt;
 &lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;AIでコードを書き始めたなら、CI/CDは今すぐ入れてください。後回しにする理由がないです。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Claude CodeやChatGPTを使い始めると、コードの変更頻度が体感で3〜5倍になります。そのたびにSSHしてgit pullして…をやってると、AIで節約した時間を全部デプロイ作業で溶かします。本末転倒です。&lt;/p&gt;
