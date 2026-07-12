@@ -1,4 +1,225 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/</link><description>Recent content in VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 11 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】CrewAIを使って複数のAIエージェントをVPS上で連携・討論させる環境構築</title><link>https://naruhodo-lab.uk/usecase/guide-crewai_vps/</link><pubDate>Sat, 11 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-crewai_vps/</guid><description>&lt;h1 id="2026年版crewaiを使って複数のaiエージェントをvps上で連携討論させる環境構築"&gt;【2026年版】CrewAIを使って複数のAIエージェントをVPS上で連携・討論させる環境構築&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/</link><description>Recent content in VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 12 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる</title><link>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</link><pubDate>Sun, 12 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</guid><description>&lt;h1 id="2026年版discordのaiチャットボットmidjourney風chatgpt風をvpsで24時間稼働させる"&gt;【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;テキスト生成だけのDiscord AIボットにGPUは不要。&lt;/strong&gt; これだけははっきり言いたい。&lt;/p&gt;
+&lt;p&gt;GPUプランを推してくる記事をたまに見かけますが、テキスト生成ならCPU+メモリ8GBのVPSで普通に動きます。GPU推しはほぼアフィリエイト報酬の単価が高いから、というのが本音だと思っています。単価が高いプランを売りたいから理由を後付けしてる構造。疑って読んでください。&lt;/p&gt;
+&lt;p&gt;自分の結論をまとめると：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;テキストボット（Ollama）だけ作りたい&lt;/strong&gt; → KAGOYAかXServerの8GBプランで十分。月2,000円台&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;24時間フル稼働が前提のDiscordボット&lt;/strong&gt; → XServerの月830円固定が損益分岐で有利。後で計算します&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;まず動くか試したい&lt;/strong&gt; → KAGOYAの14日無料から始める。週末が2回入るので確認には十分&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;画像生成（Stable Diffusion）も使いたい&lt;/strong&gt; → GPUプランが現実的。ただし月5,000円〜は覚悟して&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OpenAI APIをバックエンドにする&lt;/strong&gt; → 2GBのVPSで動く。月1,000円台 + API代&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自分のPCで動かし続けるのは？&lt;/strong&gt; → やめたほうがいい。PCが気になって全然手放しにならないし、何かあったときにリモートデスクトップで入り直す手間まで考えたら最初からVPSにすべき&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;VPS選びに迷っている人向けに、損益分岐点の計算は後のセクションで丁寧にやります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="discordに自前のaiボットを常設したい"&gt;Discordに自前のAIボットを常設したい&lt;/h2&gt;
+&lt;p&gt;DiscordサーバーにMidjourneyやChatGPT風のボットを置きたいと思ったことがある人、わりと多いんじゃないかと思います。自分もそのひとりでした。&lt;/p&gt;
+&lt;p&gt;MidjourneyもChatGPT系のサービスも月額費用がかかりますが、&lt;strong&gt;自分でdiscord.pyボットを作ってVPSに置けば、一度の構築コストだけで24時間稼働し続けるAIボットが手に入ります。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;しかもサーバーメンバー全員が使えるようになる。これが大きい。個人の月額サブスクを人数分払う必要がなくなる。&lt;/p&gt;
+&lt;p&gt;正直、最初の構築さえ乗り越えれば難しいことは何もないです。この記事ではdiscord.py + Ollamaバックエンドを組み合わせたAIチャットボットと、Stable Diffusionによる画像生成ボットの構築手順を解説します。自分が実際に試行錯誤した順番で書いているので、詰まりやすいポイントも都度コメントします。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="システム構成"&gt;システム構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[Discordユーザー] → /ask こんにちは
+ ↓
+[VPS上のdiscord.pyボット]
+ ↓
+[Ollama（Llama 3 / Mistral）]
+ ↓ 回答生成
+[Discordに返信]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;画像生成の場合：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[Discordユーザー] → /image 猫 水彩画風
+ ↓
+[VPS上のボット]
+ ↓
+[ComfyUI / Stable Diffusion API]
+ ↓ 画像生成
+[Discordに画像添付で返信]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;構成はシンプルです。ボット本体がVPS上で動き続けて、LLMのOllamaかAPIにリクエストを投げるだけ。難しいことは何もない。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="必要なvpsスペック"&gt;必要なVPSスペック&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;構成&lt;/th&gt;
+					&lt;th&gt;CPU&lt;/th&gt;
+					&lt;th&gt;メモリ&lt;/th&gt;
+					&lt;th&gt;ストレージ&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;テキスト生成のみ（Ollama）&lt;/td&gt;
+					&lt;td&gt;4コア&lt;/td&gt;
+					&lt;td&gt;8GB&lt;/td&gt;
+					&lt;td&gt;50GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;画像生成含む（SD + Ollama）&lt;/td&gt;
+					&lt;td&gt;8コア&lt;/td&gt;
+					&lt;td&gt;16GB以上&lt;/td&gt;
+					&lt;td&gt;100GB以上&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OpenAI API利用（外部API）&lt;/td&gt;
+					&lt;td&gt;2コア&lt;/td&gt;
+					&lt;td&gt;2GB&lt;/td&gt;
+					&lt;td&gt;20GB&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;テキスト生成だけなら8GBメモリのVPSで十分です。&lt;/strong&gt; Llama 3の4bit量子化モデルなら余裕で動く。1円の追加コストも払わなくていい。&lt;/p&gt;</description></item><item><title>【2026年版】ノートPCを閉じていてもAIが仕事を進めてくれる！「クラウド上のAIワーカー」構築術</title><link>https://naruhodo-lab.uk/usecase/guide-cloud_ai_worker/</link><pubDate>Sun, 12 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-cloud_ai_worker/</guid><description>&lt;h1 id="2026年版ノートpcを閉じていてもaiが仕事を進めてくれるクラウド上のaiワーカー構築術"&gt;【2026年版】ノートPCを閉じていてもAIが仕事を進めてくれる！「クラウド上のAIワーカー」構築術&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="先に結論を書きます読む前に判断できるように"&gt;先に結論を書きます（読む前に判断できるように）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;VPSを1台借りて、tmux + systemd + Slack通知を組む。以上です。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;月880円〜2,000円。「AIが動いてる間PCを開けっぱなし」問題は、これで完全に解消できます。&lt;/p&gt;
+&lt;p&gt;はっきり書いておくと、「スリープしないように設定する」とか「スクリーンセーバーをオフにする」方向で解決しようとするのは無理があります。自分もそこから入ったのでよくわかるんですが、結局PCが生きてるかどうかを監視する手段がないし、何かあったらリモートデスクトップで入り直さないといけない。それは全然「手放し」じゃない。「今PCどうなってるかな」が頭の片隅にずっと引っかかり続けます。&lt;/p&gt;
+&lt;p&gt;VPSに移してからようやく本当の意味で「あとはよろしく」ができるようになりました。この記事では、その構成を丸ごと書きます。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPS選びの結論だけ先に出しておきます：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;まず試したい・使用時間が読めない&lt;/strong&gt; → ConoHa VPS（時間課金）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;月76時間以上使う・料金を固定したい&lt;/strong&gt; → XServer VPS（830円〜固定）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;「本当に使えるか週末2回で確認したい」&lt;/strong&gt; → KAGOYA（14日無料）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;細かい理由は後ろで説明します。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="pcを閉じたらaiも止まるその悩みを解決する"&gt;PCを閉じたらAIも止まる——その悩みを解決する&lt;/h2&gt;
+&lt;p&gt;Claude CodeやCursorを使って作業していると、「この処理が終わるまでPCを開けっぱなしにしないといけない」という状況に直面します。長時間のAIタスク、夜間バッチ処理、海外APIへの定期アクセス——すべてがPCの稼働に依存してしまいます。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;正直に言うと、この問題をローカルPCで解決しようとするのは無理があります。&lt;/strong&gt; これはもう断言していいと思っています。&lt;/p&gt;
+&lt;p&gt;「寝る前にタスク投げて、起きたら確認すればいいか」でやってみたことがある人はわかると思うんですが、起きたら途中で止まってた、ということが普通に起きる。落ちたときのリカバリが全部手動。根本的な解決にならないんです。&lt;/p&gt;
+&lt;p&gt;ローカルPC依存の限界をまとめると：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PCが落ちたら全部止まる。気づくのは次に開いたとき&lt;/li&gt;
+&lt;li&gt;「今どうなってるか」が気になって、本当の意味で手放しにならない&lt;/li&gt;
+&lt;li&gt;何かあったらリモートデスクトップで入り直さなきゃいけない。それは監視してるのと変わらない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;VPSに「常時稼働のAI担当マシン」を持つのが、唯一まともな答えだと思っています。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="クラウドaiワーカーとは何か"&gt;クラウドAIワーカーとは何か&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[あなたのPC/スマホ]
+ ↓ SSH / Webhook / Slack
+[VPS上のAIワーカー]
+ ├─ tmux: セッション維持
+ ├─ systemd: プロセス死活監視
+ ├─ Pythonスクリプト: AI処理
+ └─ healthchecks.io: 死活監視
+ ↓ 完了通知
+[Slack / Discord]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;要するに、&lt;strong&gt;VPSを「常時稼働のAI担当PC」として使う&lt;/strong&gt;という発想です。&lt;/p&gt;
+&lt;p&gt;自分のイメージでは「夜間に仕事してくれるアルバイト」です。指示を出したら、あとは向こうが勝手に動いて、終わったらSlackで「できました」と報告してくれる。それがこの構成。「指示して、忘れて、通知を受け取る」。これができるようになると、AIツールの使い方が根本的に変わります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="必要なvpsスペック"&gt;必要なVPSスペック&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;推奨値&lt;/th&gt;
+					&lt;th&gt;理由&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CPU&lt;/td&gt;
+					&lt;td&gt;2〜4コア&lt;/td&gt;
+					&lt;td&gt;AI処理の並行実行&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;メモリ&lt;/td&gt;
+					&lt;td&gt;4〜8GB&lt;/td&gt;
+					&lt;td&gt;Ollama使用時は8GB必須&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ストレージ&lt;/td&gt;
+					&lt;td&gt;50GB以上&lt;/td&gt;
+					&lt;td&gt;ログ・モデルの保存&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+					&lt;td&gt;tmux/systemdが安定&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;一点だけ遠回しに言っても仕方ないので。Claude CodeやAPIベースのAIツールを動かすだけなら、GPUは絶対に不要です。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>【2026年版】AIを使った自動SEO記事生成システムをVPS上で構築し、WordPressに自動投稿する</title><link>https://naruhodo-lab.uk/usecase/guide-auto_seo_wordpress/</link><pubDate>Sun, 12 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-auto_seo_wordpress/</guid><description>&lt;h1 id="2026年版aiを使った自動seo記事生成システムをvps上で構築しwordpressに自動投稿する"&gt;【2026年版】AIを使った自動SEO記事生成システムをVPS上で構築し、WordPressに自動投稿する&lt;/h1&gt;
+&lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
+&lt;p&gt;記事を開いた瞬間に判断できるように、先に言っておく。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;OpenAI APIを使うなら、月1,000円台の2GBメモリVPSで動く。GPUは絶対に要らない。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;「AI記事生成にはGPU搭載VPS！」という記事をたまに見かける。はっきり書いておくと、OpenAI APIを使う前提でそれを勧めてくるのは完全に的外れ。APIは向こうのサーバーで処理されるので、こっちのVPSはPythonが動けばそれで十分。月数万円のGPUプランを勧めてくる記事は、アフィリエイト報酬単価の高いプランを売りたいだけの可能性が高い。自分はそういう記事を見るたびにうんざりする。騙されないでほしい。&lt;/p&gt;
+&lt;p&gt;ただし&lt;strong&gt;Ollamaでローカルにモデルを動かしたい場合は別の話&lt;/strong&gt;になる。8GBメモリが必要になるので、月2,000〜3,000円台のプランを選ぶことになる。このあと詳しく書く。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;自分が選ぶとしたら、迷わずこの2択：&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;構成&lt;/th&gt;
+					&lt;th&gt;選ぶVPS&lt;/th&gt;
+					&lt;th&gt;月額目安&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OpenAI API使用&lt;/td&gt;
+					&lt;td&gt;KAGOYA or XServer 2GBプラン&lt;/td&gt;
+					&lt;td&gt;1,000〜1,500円&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Ollama（ローカルLLM）&lt;/td&gt;
+					&lt;td&gt;KAGOYA 8GBプラン&lt;/td&gt;
+					&lt;td&gt;2,000〜3,000円台&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;損益分岐点の詳細はまとめに書いた。先に確認したい人はそっちを見てください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="記事を書き続けるという作業をvpsに丸投げする"&gt;「記事を書き続ける」という作業をVPSに丸投げする&lt;/h2&gt;
+&lt;p&gt;SEOブログの最大の壁は「記事を継続的に書き続けること」だと思う。キーワード選定、構成、本文、見出し整理——これを手作業で繰り返すのは、正直しんどい。自分も何度か「今週は書けなかった」を繰り返してきたので、その感覚はよくわかる。&lt;/p&gt;
+&lt;p&gt;VPS上にPythonスクリプトを置いて、&lt;strong&gt;OpenAIまたはOllamaのAPIと連携してSEO記事を生成し、WordPress REST APIで自動投稿する&lt;/strong&gt;仕組みを作れば、寝てる間も記事が増える状態を作れる。&lt;/p&gt;
+&lt;p&gt;「自宅PCを立ち上げっぱなしにすればいいのでは？」と思う人もいるかもしれない。ぶっちゃけ、自分はこれが精神的にしんどかった。何かあったらリモートデスクトップで入らなきゃいけないから全然手放しにならないし、電気代も気になるし、「自動化した感」がまるでない。VPSに置いてcronで回してしまえば、本当に放置できる。これが決定的な違い。「手放しで動いてる」という安心感は、やってみないとわからないけどかなり大きい。&lt;/p&gt;
+&lt;h2 id="システム全体の構成"&gt;システム全体の構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[キーワードリスト CSV]
+ ↓
+[Python: キーワード選定スクリプト]
+ ↓
+[OpenAI API / Ollama（ローカルLLM）]
+ ↓ 記事HTML生成
+[WordPress REST API 自動投稿]
+ ↓
+[cron: 毎日定時に自動実行]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;シンプルに見えるけど、これが実際にちゃんと動く。このパイプラインをVPSに置けば、自宅PCなしで24時間稼働する構成になる。難しそうに見えてもコードの中身は後述するのでそのままコピーして使ってほしい。&lt;/p&gt;
+&lt;h2 id="必要なvpsスペックここが一番記事によってバラつくポイント"&gt;必要なVPSスペック：ここが一番「記事によってバラつくポイント」&lt;/h2&gt;
+&lt;p&gt;体感として、スペック要件は使う構成によって全然違う。「AI記事生成に最適なスペックは？」という質問に対してひとつの答えを出せない理由がここにある。ざっくり整理する。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;OpenAI API使用&lt;/th&gt;
+					&lt;th&gt;Ollama使用&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CPU&lt;/td&gt;
+					&lt;td&gt;2コアで十分&lt;/td&gt;
+					&lt;td&gt;4コア推奨&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;メモリ&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;2GBで動く&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;8GB必要&lt;/strong&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ストレージ&lt;/td&gt;
+					&lt;td&gt;30GB&lt;/td&gt;
+					&lt;td&gt;50GB以上（モデルファイルが大きい）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;OpenAI API使用なら、スペックを上げてもほぼ意味がない。Pythonスクリプトを動かしてAPIを叩くだけなので、2GBメモリの最安プランで完全に足りる。GPU？要らない。本当に要らない。ここを強調しておかないと「念のため4GBにしようかな」「GPU付きのほうが安心かな」という方向に流れがちなので、もう一度言っておく。&lt;strong&gt;APIを使うなら2GBで十分、GPUは不要&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>【2026年版】CrewAIを使って複数のAIエージェントをVPS上で連携・討論させる環境構築</title><link>https://naruhodo-lab.uk/usecase/guide-crewai_vps/</link><pubDate>Sat, 11 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-crewai_vps/</guid><description>&lt;h1 id="2026年版crewaiを使って複数のaiエージェントをvps上で連携討論させる環境構築"&gt;【2026年版】CrewAIを使って複数のAIエージェントをVPS上で連携・討論させる環境構築&lt;/h1&gt;
 &lt;h2 id="最初に結論自分ならこう選ぶ"&gt;【最初に結論】自分ならこう選ぶ&lt;/h2&gt;
 &lt;p&gt;はっきり書いておきます。&lt;/p&gt;
 &lt;ul&gt;

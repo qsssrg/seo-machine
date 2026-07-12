@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Discord on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/discord/</link><description>Recent content in Discord on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 12 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/discord/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる</title><link>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</link><pubDate>Sun, 12 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</guid><description>&lt;h1 id="2026年版discordのaiチャットボットmidjourney風chatgpt風をvpsで24時間稼働させる"&gt;【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;テキスト生成だけのDiscord AIボットにGPUは不要。&lt;/strong&gt; これだけははっきり言いたい。&lt;/p&gt;
+&lt;p&gt;GPUプランを推してくる記事をたまに見かけますが、テキスト生成ならCPU+メモリ8GBのVPSで普通に動きます。GPU推しはほぼアフィリエイト報酬の単価が高いから、というのが本音だと思っています。単価が高いプランを売りたいから理由を後付けしてる構造。疑って読んでください。&lt;/p&gt;
+&lt;p&gt;自分の結論をまとめると：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;テキストボット（Ollama）だけ作りたい&lt;/strong&gt; → KAGOYAかXServerの8GBプランで十分。月2,000円台&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;24時間フル稼働が前提のDiscordボット&lt;/strong&gt; → XServerの月830円固定が損益分岐で有利。後で計算します&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;まず動くか試したい&lt;/strong&gt; → KAGOYAの14日無料から始める。週末が2回入るので確認には十分&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;画像生成（Stable Diffusion）も使いたい&lt;/strong&gt; → GPUプランが現実的。ただし月5,000円〜は覚悟して&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OpenAI APIをバックエンドにする&lt;/strong&gt; → 2GBのVPSで動く。月1,000円台 + API代&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自分のPCで動かし続けるのは？&lt;/strong&gt; → やめたほうがいい。PCが気になって全然手放しにならないし、何かあったときにリモートデスクトップで入り直す手間まで考えたら最初からVPSにすべき&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;VPS選びに迷っている人向けに、損益分岐点の計算は後のセクションで丁寧にやります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="discordに自前のaiボットを常設したい"&gt;Discordに自前のAIボットを常設したい&lt;/h2&gt;
+&lt;p&gt;DiscordサーバーにMidjourneyやChatGPT風のボットを置きたいと思ったことがある人、わりと多いんじゃないかと思います。自分もそのひとりでした。&lt;/p&gt;
+&lt;p&gt;MidjourneyもChatGPT系のサービスも月額費用がかかりますが、&lt;strong&gt;自分でdiscord.pyボットを作ってVPSに置けば、一度の構築コストだけで24時間稼働し続けるAIボットが手に入ります。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;しかもサーバーメンバー全員が使えるようになる。これが大きい。個人の月額サブスクを人数分払う必要がなくなる。&lt;/p&gt;
+&lt;p&gt;正直、最初の構築さえ乗り越えれば難しいことは何もないです。この記事ではdiscord.py + Ollamaバックエンドを組み合わせたAIチャットボットと、Stable Diffusionによる画像生成ボットの構築手順を解説します。自分が実際に試行錯誤した順番で書いているので、詰まりやすいポイントも都度コメントします。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="システム構成"&gt;システム構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[Discordユーザー] → /ask こんにちは
+ ↓
+[VPS上のdiscord.pyボット]
+ ↓
+[Ollama（Llama 3 / Mistral）]
+ ↓ 回答生成
+[Discordに返信]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;画像生成の場合：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[Discordユーザー] → /image 猫 水彩画風
+ ↓
+[VPS上のボット]
+ ↓
+[ComfyUI / Stable Diffusion API]
+ ↓ 画像生成
+[Discordに画像添付で返信]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;構成はシンプルです。ボット本体がVPS上で動き続けて、LLMのOllamaかAPIにリクエストを投げるだけ。難しいことは何もない。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="必要なvpsスペック"&gt;必要なVPSスペック&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;構成&lt;/th&gt;
+					&lt;th&gt;CPU&lt;/th&gt;
+					&lt;th&gt;メモリ&lt;/th&gt;
+					&lt;th&gt;ストレージ&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;テキスト生成のみ（Ollama）&lt;/td&gt;
+					&lt;td&gt;4コア&lt;/td&gt;
+					&lt;td&gt;8GB&lt;/td&gt;
+					&lt;td&gt;50GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;画像生成含む（SD + Ollama）&lt;/td&gt;
+					&lt;td&gt;8コア&lt;/td&gt;
+					&lt;td&gt;16GB以上&lt;/td&gt;
+					&lt;td&gt;100GB以上&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OpenAI API利用（外部API）&lt;/td&gt;
+					&lt;td&gt;2コア&lt;/td&gt;
+					&lt;td&gt;2GB&lt;/td&gt;
+					&lt;td&gt;20GB&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;テキスト生成だけなら8GBメモリのVPSで十分です。&lt;/strong&gt; Llama 3の4bit量子化モデルなら余裕で動く。1円の追加コストも払わなくていい。&lt;/p&gt;</description></item></channel></rss>

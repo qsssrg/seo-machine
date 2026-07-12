@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SEO on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/seo/</link><description>Recent content in SEO on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 12 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/seo/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】AIを使った自動SEO記事生成システムをVPS上で構築し、WordPressに自動投稿する</title><link>https://naruhodo-lab.uk/usecase/guide-auto_seo_wordpress/</link><pubDate>Sun, 12 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-auto_seo_wordpress/</guid><description>&lt;h1 id="2026年版aiを使った自動seo記事生成システムをvps上で構築しwordpressに自動投稿する"&gt;【2026年版】AIを使った自動SEO記事生成システムをVPS上で構築し、WordPressに自動投稿する&lt;/h1&gt;
+&lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
+&lt;p&gt;記事を開いた瞬間に判断できるように、先に言っておく。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;OpenAI APIを使うなら、月1,000円台の2GBメモリVPSで動く。GPUは絶対に要らない。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;「AI記事生成にはGPU搭載VPS！」という記事をたまに見かける。はっきり書いておくと、OpenAI APIを使う前提でそれを勧めてくるのは完全に的外れ。APIは向こうのサーバーで処理されるので、こっちのVPSはPythonが動けばそれで十分。月数万円のGPUプランを勧めてくる記事は、アフィリエイト報酬単価の高いプランを売りたいだけの可能性が高い。自分はそういう記事を見るたびにうんざりする。騙されないでほしい。&lt;/p&gt;
+&lt;p&gt;ただし&lt;strong&gt;Ollamaでローカルにモデルを動かしたい場合は別の話&lt;/strong&gt;になる。8GBメモリが必要になるので、月2,000〜3,000円台のプランを選ぶことになる。このあと詳しく書く。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;自分が選ぶとしたら、迷わずこの2択：&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;構成&lt;/th&gt;
+					&lt;th&gt;選ぶVPS&lt;/th&gt;
+					&lt;th&gt;月額目安&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OpenAI API使用&lt;/td&gt;
+					&lt;td&gt;KAGOYA or XServer 2GBプラン&lt;/td&gt;
+					&lt;td&gt;1,000〜1,500円&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Ollama（ローカルLLM）&lt;/td&gt;
+					&lt;td&gt;KAGOYA 8GBプラン&lt;/td&gt;
+					&lt;td&gt;2,000〜3,000円台&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;損益分岐点の詳細はまとめに書いた。先に確認したい人はそっちを見てください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="記事を書き続けるという作業をvpsに丸投げする"&gt;「記事を書き続ける」という作業をVPSに丸投げする&lt;/h2&gt;
+&lt;p&gt;SEOブログの最大の壁は「記事を継続的に書き続けること」だと思う。キーワード選定、構成、本文、見出し整理——これを手作業で繰り返すのは、正直しんどい。自分も何度か「今週は書けなかった」を繰り返してきたので、その感覚はよくわかる。&lt;/p&gt;
+&lt;p&gt;VPS上にPythonスクリプトを置いて、&lt;strong&gt;OpenAIまたはOllamaのAPIと連携してSEO記事を生成し、WordPress REST APIで自動投稿する&lt;/strong&gt;仕組みを作れば、寝てる間も記事が増える状態を作れる。&lt;/p&gt;
+&lt;p&gt;「自宅PCを立ち上げっぱなしにすればいいのでは？」と思う人もいるかもしれない。ぶっちゃけ、自分はこれが精神的にしんどかった。何かあったらリモートデスクトップで入らなきゃいけないから全然手放しにならないし、電気代も気になるし、「自動化した感」がまるでない。VPSに置いてcronで回してしまえば、本当に放置できる。これが決定的な違い。「手放しで動いてる」という安心感は、やってみないとわからないけどかなり大きい。&lt;/p&gt;
+&lt;h2 id="システム全体の構成"&gt;システム全体の構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[キーワードリスト CSV]
+ ↓
+[Python: キーワード選定スクリプト]
+ ↓
+[OpenAI API / Ollama（ローカルLLM）]
+ ↓ 記事HTML生成
+[WordPress REST API 自動投稿]
+ ↓
+[cron: 毎日定時に自動実行]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;シンプルに見えるけど、これが実際にちゃんと動く。このパイプラインをVPSに置けば、自宅PCなしで24時間稼働する構成になる。難しそうに見えてもコードの中身は後述するのでそのままコピーして使ってほしい。&lt;/p&gt;
+&lt;h2 id="必要なvpsスペックここが一番記事によってバラつくポイント"&gt;必要なVPSスペック：ここが一番「記事によってバラつくポイント」&lt;/h2&gt;
+&lt;p&gt;体感として、スペック要件は使う構成によって全然違う。「AI記事生成に最適なスペックは？」という質問に対してひとつの答えを出せない理由がここにある。ざっくり整理する。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;OpenAI API使用&lt;/th&gt;
+					&lt;th&gt;Ollama使用&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;CPU&lt;/td&gt;
+					&lt;td&gt;2コアで十分&lt;/td&gt;
+					&lt;td&gt;4コア推奨&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;メモリ&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;2GBで動く&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;8GB必要&lt;/strong&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ストレージ&lt;/td&gt;
+					&lt;td&gt;30GB&lt;/td&gt;
+					&lt;td&gt;50GB以上（モデルファイルが大きい）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;OpenAI API使用なら、スペックを上げてもほぼ意味がない。Pythonスクリプトを動かしてAPIを叩くだけなので、2GBメモリの最安プランで完全に足りる。GPU？要らない。本当に要らない。ここを強調しておかないと「念のため4GBにしようかな」「GPU付きのほうが安心かな」という方向に流れがちなので、もう一度言っておく。&lt;strong&gt;APIを使うなら2GBで十分、GPUは不要&lt;/strong&gt;。&lt;/p&gt;</description></item></channel></rss>
