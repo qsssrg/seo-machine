@@ -1,4 +1,249 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/</link><description>Recent content in VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 12 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる</title><link>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</link><pubDate>Sun, 12 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</guid><description>&lt;h1 id="2026年版discordのaiチャットボットmidjourney風chatgpt風をvpsで24時間稼働させる"&gt;【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/</link><description>Recent content in VPS 活用 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 13 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vps-%E6%B4%BB%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】音声合成AI（VOICEVOXなど）のAPIサーバーをVPSに立てて外部から利用する方法</title><link>https://naruhodo-lab.uk/usecase/guide-voicevox_vps/</link><pubDate>Mon, 13 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-voicevox_vps/</guid><description>&lt;h1 id="2026年版音声合成aivoicevoxなどのapiサーバーをvpsに立てて外部から利用する方法"&gt;【2026年版】音声合成AI（VOICEVOXなど）のAPIサーバーをVPSに立てて外部から利用する方法&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="筆者の結論先に言います"&gt;筆者の結論（先に言います）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;CPUプランのVPSで十分です。GPU VPSは不要。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;VOICEVOX EngineはCPUモードでも普通に動きます。4コア/4GBのVPSで1〜3秒/文くらいのペース。バッチ処理で事前に音声ファイルを作っておく使い方なら、多少遅くても全然問題ありません。&lt;/p&gt;
+&lt;p&gt;正直に言うと、「音声合成AIにGPU VPS」を強くすすめてくる記事は、GPU VPSのアフィリエイト報酬が高いからそうなっているケースが多いです。VOICEVOXの用途でわざわざ月数万円のGPUプランを選ぶ必要はほぼないので、そこは踏み込んで書いておきます。&lt;/p&gt;
+&lt;p&gt;月額1,000〜2,000円台のCPUプランで始めて、速度が本当に足りなくなってからプランアップを考えれば十分です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;VOICEVOX・COEIROINK・StyleBert-VITS2などの高品質な日本語音声合成AIは、通常ローカルPCで動かすことが前提です。でも正直、PCを立ち上げっぱなしにしておくのって精神的にずっと気になりませんか。何かあったらリモートデスクトップで入らなきゃいけないし、全然「手放し」にならない。&lt;/p&gt;
+&lt;p&gt;VPSにAPIサーバーとして常駐させれば、&lt;strong&gt;スマホ・スクリプト・CI/CDパイプラインから自由に音声生成&lt;/strong&gt;をリクエストできます。YouTubeゆっくり実況の自動化、Podcastの自動録音、Discord読み上げBotなど、用途は多岐にわたります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="ローカル実行-vs-vps常駐の違い"&gt;ローカル実行 vs VPS常駐の違い&lt;/h2&gt;
+&lt;p&gt;自分が最初にVPSに移そうと思ったのは「寝てる間にバッチ処理を終わらせたい」という理由でした。ローカルPCだとスリープ問題が必ず出てくる。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;比較軸&lt;/th&gt;
+					&lt;th&gt;ローカルPC&lt;/th&gt;
+					&lt;th&gt;VPS常駐&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;可用性&lt;/td&gt;
+					&lt;td&gt;PCが起動中のみ&lt;/td&gt;
+					&lt;td&gt;24時間365日&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;複数端末からのアクセス&lt;/td&gt;
+					&lt;td&gt;不可&lt;/td&gt;
+					&lt;td&gt;可能（HTTPS経由）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;バッチ生成&lt;/td&gt;
+					&lt;td&gt;手作業&lt;/td&gt;
+					&lt;td&gt;cronで自動化&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;リソース競合&lt;/td&gt;
+					&lt;td&gt;他アプリと競合&lt;/td&gt;
+					&lt;td&gt;専用リソース&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;PCを立ち上げっぱなしにする運用は、電気代もかかるし何より「何かあったら確認しに行かなきゃ」という状態が続くのがしんどい。VPSなら少なくともその精神的なコストはゼロになります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="推奨vpsスペック"&gt;推奨VPSスペック&lt;/h2&gt;
+&lt;h3 id="voicevoxcpuのみ"&gt;VOICEVOX（CPUのみ）&lt;/h3&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;プラン&lt;/th&gt;
+					&lt;th&gt;CPU&lt;/th&gt;
+					&lt;th&gt;RAM&lt;/th&gt;
+					&lt;th&gt;備考&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;最小構成&lt;/td&gt;
+					&lt;td&gt;2コア&lt;/td&gt;
+					&lt;td&gt;2GB&lt;/td&gt;
+					&lt;td&gt;生成速度は遅め（5〜10秒/文）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;推奨構成&lt;/td&gt;
+					&lt;td&gt;4コア&lt;/td&gt;
+					&lt;td&gt;4GB&lt;/td&gt;
+					&lt;td&gt;実用的な速度（1〜3秒/文）&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;はっきり書いておきます。VOICEVOXにGPUは必要ありません。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;CPUのみのVPSで十分動きます。GPU搭載VPSを使えば確かに速くなりますが、音声合成の場合「リアルタイムで会話に応答する」みたいな用途でない限り、1〜3秒/文で何も困らない。事前バッチ生成なら5〜10秒でも全然許容範囲です。&lt;/p&gt;
+&lt;p&gt;コスト感で言うと：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CPUプラン（4コア/4GB）&lt;/strong&gt;: 月1,000〜2,000円台 → 1日あたり33〜66円&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GPU VPS&lt;/strong&gt;: 月2万〜5万円台 → 1日あたり670〜1,660円&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;この差額でGPUの速度が必要かどうか、冷静に考えてみてください。バッチ処理なら答えはほぼ「No」です。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="ステップ1-dockerでvoicevox-engineを起動"&gt;ステップ1: DockerでVOICEVOX Engineを起動&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Docker・Docker Composeのインストール&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo apt update &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt install -y docker.io docker-compose
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo usermod -aG docker $USER
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# VOICEVOX Engine（CPUモード）をコンテナで起動&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;docker run -d &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --name voicevox-engine &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --restart unless-stopped &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; -p 127.0.0.1:50021:50021 &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; voicevox/voicevox_engine:cpu-ubuntu20.04-latest
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 起動確認（バージョン情報が返ってくればOK）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl http://localhost:50021/version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;--restart unless-stopped&lt;/code&gt; を付けておくと、VPSを再起動したときに自動で立ち上がります。これを忘れると「あれ、急に動かなくなった」ってなるので最初から入れておくのが吉。&lt;/p&gt;</description></item><item><title>【2026年版】LINE公式アカウントのAI自動応答システムをVPS上で安価に運用する手順</title><link>https://naruhodo-lab.uk/usecase/guide-line_official_ai/</link><pubDate>Mon, 13 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-line_official_ai/</guid><description>&lt;h1 id="2026年版line公式アカウントのai自動応答システムをvps上で安価に運用する手順"&gt;【2026年版】LINE公式アカウントのAI自動応答システムをVPS上で安価に運用する手順&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;LINE公式のスタンダードプラン（月1.5万円〜）は、VPS自前運用に切り替えれば月1,000〜3,000円で同等以上のことができます。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自分の結論としては、LINE公式の標準AI応答は「汎用的すぎて業種に合わない」「分岐ロジックを凝ろうとすると高額プランが必要になる」の二重苦があります。自分もそこでつまずいて、VPS上にWebhookサーバーを建てる構成に移行しました。&lt;/p&gt;
+&lt;p&gt;月額換算で言うと：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LINE公式スタンダード：&lt;strong&gt;約15,000円〜&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;VPS（2〜4GBプラン）：&lt;strong&gt;約1,000〜2,000円&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;差額：&lt;strong&gt;毎月1万円以上浮く&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;1日あたりに換算すると約330〜500円の節約。年間だと12万円以上変わります。これだけ差があるなら、セットアップに数時間かけても十分ペイします。&lt;/p&gt;
+&lt;p&gt;この記事では、VPS上にLINE Messaging API + FastAPI + Ollamaを構築する手順を、実際にやってみた目線でまとめます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="line公式アカウントの自動応答における課題"&gt;LINE公式アカウントの自動応答における課題&lt;/h2&gt;
+&lt;p&gt;まずここを整理しておかないと、「なぜVPSを使うのか」が曖昧になります。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;課題&lt;/th&gt;
+					&lt;th&gt;内容&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;コスト&lt;/td&gt;
+					&lt;td&gt;高機能プランは月額3,000〜32,000円以上&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;カスタマイズ制限&lt;/td&gt;
+					&lt;td&gt;標準UIを超えた分岐ロジックは実装不可&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;外部DB連携&lt;/td&gt;
+					&lt;td&gt;顧客情報・在庫・予約との連動は別途開発が必要&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AI応答品質&lt;/td&gt;
+					&lt;td&gt;標準AIは汎用的すぎて業種特化が難しい&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;はっきり書いておきます。&lt;/strong&gt;「ちょっと賢い返答がしたい」だけなら公式の無料プラン+簡単なシナリオ設定でも動きます。でも「予約システムと連動させたい」「顧客の過去データを参照して返答したい」「業種特化のトーンで話させたい」となった瞬間、公式のUIでは詰まります。そのための自前Webhookです。&lt;/p&gt;
+&lt;p&gt;自分が最初につまずいたのも「予約日時を聞いてカレンダーと連携させたい」という、一見シンプルな要件でした。公式UIでやろうとすると途端に高額プランの話になる。それならVPSに自前で建てた方が圧倒的に安い、という判断です。&lt;/p&gt;
+&lt;p&gt;VPSにWebhookサーバーを自前で構築すれば、これらすべてを&lt;strong&gt;月額固定費のみ&lt;/strong&gt;で解決できます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="全体アーキテクチャ"&gt;全体アーキテクチャ&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;LINEユーザー
+ ↓ メッセージ送信
+LINE Messaging API（Webhook）
+ ↓ HTTPS POST
+VPS（Flask/FastAPI）
+ ↓ テキスト解析
+Ollama（LLMローカル推論）
+ ↓ 回答生成
+LINE Messaging API（Reply API）
+ ↓
+LINEユーザーへ返信
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ポイントは「LLMをVPS上でローカル推論させる」部分です。OpenAI APIを使う構成にすれば実装は楽ですが、メッセージ量が増えるたびにAPIコストが積み上がります。Ollamaでローカル推論にすれば、何通返信しても&lt;strong&gt;VPSの月額以外のコストはゼロ&lt;/strong&gt;。ここが肝です。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;GPUは不要です。&lt;/strong&gt; これも先に言っておきます。LLMの推論にGPUがあれば速いのは事実ですが、LINE BOT程度のテキスト処理量ならCPUで十分間に合います。GPU VPSを勧めてくる記事は月数万円のコストを前提にしているので、この用途では完全に過剰スペックです。GPU代を払いたいならその分をシステムプロンプトを磨く時間に使った方がよほど効果があります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="ステップ1-vpsの準備と推奨スペック"&gt;ステップ1: VPSの準備と推奨スペック&lt;/h2&gt;
+&lt;h3 id="推奨スペックai応答込み"&gt;推奨スペック（AI応答込み）&lt;/h3&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;用途&lt;/th&gt;
+					&lt;th&gt;CPU&lt;/th&gt;
+					&lt;th&gt;RAM&lt;/th&gt;
+					&lt;th&gt;ストレージ&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Webhook only（外部API利用）&lt;/td&gt;
+					&lt;td&gt;1コア&lt;/td&gt;
+					&lt;td&gt;1GB&lt;/td&gt;
+					&lt;td&gt;20GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Ollama込み（ローカルLLM）&lt;/td&gt;
+					&lt;td&gt;4コア&lt;/td&gt;
+					&lt;td&gt;8GB&lt;/td&gt;
+					&lt;td&gt;50GB以上&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;自分の判断：Ollama込みで運用するなら8GBプラン一択です。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>【2026年版】X (Twitter) の自動リプライ＆投稿AI BotをVPSで運用してフォロワーを増やす方法</title><link>https://naruhodo-lab.uk/usecase/guide-x_twitter_ai_bot/</link><pubDate>Mon, 13 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-x_twitter_ai_bot/</guid><description>&lt;h1 id="2026年版x-twitter-の自動リプライ投稿ai-botをvpsで運用してフォロワーを増やす方法"&gt;【2026年版】X (Twitter) の自動リプライ＆投稿AI BotをVPSで運用してフォロワーを増やす方法&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="筆者の結論先に読んでください"&gt;筆者の結論（先に読んでください）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;VPSは月880円〜の2GBプランで十分です。GPUは不要。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;API経由でOpenAIを叩くだけなら、VPSに必要なのはCPUとメモリのみ。Ollama（ローカルLLM）を使いたいなら8GBに上げればいい。それだけの話です。&lt;/p&gt;
+&lt;p&gt;「X自動化にGPU付きVPSが必要」と書いてある記事を見たことがあるかもしれないけど、はっきり言うとあれはアフィリエイト報酬が高いプランを売りたいだけの可能性が高い。このボットの処理はAPI呼び出しとcron実行だけで、GPU演算は一切発生しません。&lt;/p&gt;
+&lt;p&gt;あと、「ローカルPCで動かせばいいのでは」という意見もあると思うけど、自分はVPS派です。PCを立ち上げっぱなしにするのが精神的に気になるし、何かあったときにリモートデスクトップで入らないといけないから、全然手放しにならない。月880円で24時間VPSに任せた方がメンタルコストが圧倒的に低い。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPS選びの結論だけ先に書くと：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;OpenAI API使用 → ConoHa VPS 2GBプラン（月880円）で十分&lt;/li&gt;
+&lt;li&gt;Ollama（ローカルLLM）使用 → 8GBプランが必要（月2,000円台）&lt;/li&gt;
+&lt;li&gt;「とにかく試してから決めたい」 → KAGOYA CLOUD VPSの14日無料トライアルがおすすめ（週末2回入るので確認には十分）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;では本編に入ります。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="x-twitter-自動化で差をつける時代"&gt;X (Twitter) 自動化で差をつける時代&lt;/h2&gt;
+&lt;p&gt;フォロワーを増やすにはコンスタントな投稿と反応速度が重要ですが、毎日手動でツイートし続けるのは現実的ではありません。2026年現在、&lt;strong&gt;X API v2 + AI（LLM）を組み合わせた自動投稿・自動リプライシステム&lt;/strong&gt;を持つアカウントが急増しています。&lt;/p&gt;
+&lt;p&gt;この記事では、VPS上にPythonボットを構築し、AIが文脈を読んだ自然なリプライを自動生成・投稿する仕組みを解説します。スパム的な運用ではなく、&lt;strong&gt;フォロワーにとって価値ある応答&lt;/strong&gt;を自動化することが目的です。&lt;/p&gt;
+&lt;p&gt;自分が実際に試行錯誤した経験をもとに、「これはいる・これはいらない」を正直に書いていきます。&lt;/p&gt;
+&lt;h2 id="システム構成"&gt;システム構成&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;[X APIからメンション/キーワードを取得]
+ ↓
+[tweepy: 投稿・リプライの送受信]
+ ↓
+[Ollama（Llama 3 / Mistral）で文章生成]
+ ↓
+[レートリミット管理（X API制限を守る）]
+ ↓
+[VPS上のcronで定期実行]
+ ↓
+[Slack通知（投稿ログ確認用）]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;シンプルです。重い処理は何もない。だからVPSは安いプランで十分と言っています。&lt;/p&gt;
+&lt;h2 id="x-api-v2-のレートリミット2026年時点"&gt;X API v2 のレートリミット（2026年時点）&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;プラン&lt;/th&gt;
+					&lt;th&gt;月額&lt;/th&gt;
+					&lt;th&gt;投稿上限/月&lt;/th&gt;
+					&lt;th&gt;読み取り&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Free&lt;/td&gt;
+					&lt;td&gt;$0&lt;/td&gt;
+					&lt;td&gt;500ツイート&lt;/td&gt;
+					&lt;td&gt;制限あり&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Basic&lt;/td&gt;
+					&lt;td&gt;$100&lt;/td&gt;
+					&lt;td&gt;3,000ツイート&lt;/td&gt;
+					&lt;td&gt;10,000/月&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Pro&lt;/td&gt;
+					&lt;td&gt;$5,000&lt;/td&gt;
+					&lt;td&gt;300,000ツイート&lt;/td&gt;
+					&lt;td&gt;1,000,000/月&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;自動化はBasicプラン以上が推奨&lt;/strong&gt;です。Freeプランは投稿数が少なく本格運用には向きません。&lt;/p&gt;</description></item><item><title>【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる</title><link>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</link><pubDate>Sun, 12 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-discord_ai_bot/</guid><description>&lt;h1 id="2026年版discordのaiチャットボットmidjourney風chatgpt風をvpsで24時間稼働させる"&gt;【2026年版】DiscordのAIチャットボット（Midjourney風・ChatGPT風）をVPSで24時間稼働させる&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;テキスト生成だけのDiscord AIボットにGPUは不要。&lt;/strong&gt; これだけははっきり言いたい。&lt;/p&gt;
 &lt;p&gt;GPUプランを推してくる記事をたまに見かけますが、テキスト生成ならCPU+メモリ8GBのVPSで普通に動きます。GPU推しはほぼアフィリエイト報酬の単価が高いから、というのが本音だと思っています。単価が高いプランを売りたいから理由を後付けしてる構造。疑って読んでください。&lt;/p&gt;

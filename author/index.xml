@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Authors on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/author/</link><description>Recent content in Authors on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 06 Jul 2026 00:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/author/index.xml" rel="self" type="application/rss+xml"/><item><title>著者プロフィール｜けせら（なるほどラボ 編集長）</title><link>https://naruhodo-lab.uk/author/kesera/</link><pubDate>Mon, 06 Jul 2026 00:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/author/kesera/</guid><description>&lt;h1 id="けせらなるほどラボ-編集長"&gt;けせら（なるほどラボ 編集長）&lt;/h1&gt;
+&lt;p&gt;当サイト「なるほどラボ」の記事を執筆・監修している &lt;strong&gt;けせら&lt;/strong&gt; です。プライバシー保護のため実名・住所は非公開としていますが、AIツールやVPS（仮想専用サーバー）を語るうえでの土台となる経歴は、事実の範囲で以下に記します。&lt;strong&gt;「どこの誰が書いているのか分からない情報は信用できない」&lt;/strong&gt;——その通りだと思うからこそ、書き手の背景を正直にお伝えします。&lt;/p&gt;
+&lt;h2 id="経歴"&gt;経歴&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;2000年代：ベンチャー企業で、企画から営業、開発までを一人で完結&lt;/strong&gt;
+サービスの企画を立て、お客様に売り、自分でコードを書いて作る——という一連の流れを一人で回していました。当時の主力言語は Perl と PHP で、数人月規模の開発を実際に手を動かしてやり切った経験があります。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;2010年代：大企業で、数百人月規模プロダクトのプロダクトマネージャー（PM）&lt;/strong&gt;
+規模の大きな会社へ移り、数百人月という単位のプロダクト開発でプロダクトマネージャーを担当。技術的な意思決定と、限られたリソースをどこに割くかという判断を日常的に求められる仕事です。「一番安いプランで十分なのか、上のプランに投資すべきか」を見極める感覚は、この立場で鍛えられました。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;プライベート：クラウドサーバを自前で構築・運用&lt;/strong&gt;
+仕事とは別に、個人でクラウド上にサーバーを立て、OSのセットアップからブログの運用まで自分の手で行ってきました。VPSの「申し込んでから実際に使えるようになるまで」に何がつまずきポイントになるか、月々のコストがどう効いてくるか——こうした実感は、実際に自分のお金で借りて運用していないと分かりません。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="なぜai--vpsを語れるのか"&gt;なぜ「AI × VPS」を語れるのか&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;開発の実務経験&lt;/strong&gt;（Perl/PHPでの開発、コマンドラインでの作業に馴染みがある）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;プロダクトマネジメントの判断力&lt;/strong&gt;（コストと効果のトレードオフを見極める）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;クラウドサーバの自前構築・運用の実体験&lt;/strong&gt;（VPSを実際に借りて動かしている）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;この3つが揃っているからこそ、「スペック表の数字」ではなく「実際に使うとどうなのか」という視点で書けると考えています。&lt;/p&gt;
+&lt;h2 id="編集方針"&gt;編集方針&lt;/h2&gt;
+&lt;p&gt;当サイトの記事は、&lt;strong&gt;AIを活用して作成し、編集部（人間）が内容を確認・監修&lt;/strong&gt;しています。AIは下書きや情報整理の効率化に使いますが、最終的な判断・事実確認・トーンの調整は人間が行っています。事実に基づかない誇張や、実在しない実績・資格を書くことは、方針として明確に禁止しています。&lt;/p&gt;
+&lt;p&gt;運営体制の詳細・免責事項は&lt;a href="https://naruhodo-lab.uk/about/"&gt;運営者情報&lt;/a&gt;を、情報の取り扱いは&lt;a href="https://naruhodo-lab.uk/privacy/"&gt;プライバシーポリシー&lt;/a&gt;をご覧ください。ご指摘・お問い合わせは&lt;a href="https://naruhodo-lab.uk/contact/"&gt;お問い合わせページ&lt;/a&gt;より承っています。&lt;/p&gt;</description></item></channel></rss>
