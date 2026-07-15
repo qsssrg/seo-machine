@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>環境構築 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E7%92%B0%E5%A2%83%E6%A7%8B%E7%AF%89/</link><description>Recent content in 環境構築 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 15 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E7%92%B0%E5%A2%83%E6%A7%8B%E7%AF%89/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】開発環境を汚さない！VPS上のDockerでAIツールを安全に動かすメリット</title><link>https://naruhodo-lab.uk/usecase/guide-docker_ai_vps/</link><pubDate>Wed, 15 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-docker_ai_vps/</guid><description>&lt;h1 id="2026年版開発環境を汚さないvps上のdockerでaiツールを安全に動かすメリット"&gt;【2026年版】開発環境を汚さない！VPS上のDockerでAIツールを安全に動かすメリット&lt;/h1&gt;
+&lt;h2 id="最初に結論を言う"&gt;最初に結論を言う&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;ローカルPCにAIツールを直接インストールするのは、もうやめたほうがいい。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;はっきり書いておきます。「Pythonのバージョンが競合した」「あのツール入れたら環境が壊れた」——これ、全部「ローカルに直接入れる」からです。VPS上のDockerで動かせば、この手のトラブルはほぼ消える。&lt;code&gt;docker rm&lt;/code&gt;一発で全部なかったことにできるし、ローカルPCには何も残らない。&lt;/p&gt;
+&lt;p&gt;自分もかつてローカルにpip installしまくって、半年後に「なんでこれ動いてるか分からない」状態になった経験がある。あの絶望感は二度と味わいたくない。だからこそ、今はVPS+Dockerに完全に移行している。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;この記事で言いたいことを先にまとめると：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Claude CodeにGPUは不要。GPU VPS推しの記事は読まなくていい&lt;/li&gt;
+&lt;li&gt;VPSなしでPC立ち上げっぱなしは「手放し感ゼロ」でしんどい&lt;/li&gt;
+&lt;li&gt;月76時間以下の使い方ならKAGOYA、以上ならXServerが安い&lt;/li&gt;
+&lt;li&gt;無料お試しはKAGOYAの14日がベスト（週末2回入る）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜローカルpcに直接aiツールを入れてはいけないか"&gt;なぜローカルPCに直接AIツールを入れてはいけないか&lt;/h2&gt;
+&lt;h3 id="環境汚染の典型パターン"&gt;環境汚染の典型パターン&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;pip install torch # PyTorch 2.3 インストール
+pip install diffusers # → PyTorch 2.1 に引きずり下ろされる
+pip install llama-cpp # → gccバージョン競合でビルドエラー
+conda create -n ai_env ... # → またenv増殖、管理が煩雑に
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;これ、笑い話じゃなくてほぼ全員通る道です。最初は「condaで管理すればいけるやろ」と思う。でもenvironmentが5個、10個と増えていくうちに何がどのenvに入ってるか分からなくなる。自分も経験済み。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数ヶ月後に「なぜ動いているか分からない環境」が出来上がります。&lt;/strong&gt; これが本当につらい。何か触るたびに壊れるんじゃないかとビクビクする。condaのenvを整理しようとして、必要なものまで消して詰む——あの虚無感、伝わりますか。&lt;/p&gt;
+&lt;h3 id="dockerコンテナが解決すること"&gt;Dockerコンテナが解決すること&lt;/h3&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;問題&lt;/th&gt;
+					&lt;th&gt;ローカル直接インストール&lt;/th&gt;
+					&lt;th&gt;Docker（VPS上）&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;依存関係の競合&lt;/td&gt;
+					&lt;td&gt;頻発&lt;/td&gt;
+					&lt;td&gt;コンテナ内に閉じ込め&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Pythonバージョン管理&lt;/td&gt;
+					&lt;td&gt;pyenv/conda必須&lt;/td&gt;
+					&lt;td&gt;イメージで固定&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;チーム共有&lt;/td&gt;
+					&lt;td&gt;「自分の環境では動く」&lt;/td&gt;
+					&lt;td&gt;compose.ymlで統一&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;削除・リセット&lt;/td&gt;
+					&lt;td&gt;残骸が残る&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;docker rm&lt;/code&gt;で完全削除&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;PCへの負荷&lt;/td&gt;
+					&lt;td&gt;常駐プロセスが増加&lt;/td&gt;
+					&lt;td&gt;VPSに完全オフロード&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;「自分の環境では動く」問題、チーム開発あるある。これがcompose.yml一個で解決するのはマジで快適。「動く状態をファイルとして保存できる」感覚は、一回体験したらローカル直インストールには戻れなくなる。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="vps選定docker運用に必要なスペック"&gt;VPS選定：Docker運用に必要なスペック&lt;/h2&gt;
+&lt;p&gt;正直に言うと、&lt;strong&gt;VPSを使わずにローカルPCを立ち上げっぱなしにするのは精神的にしんどい。&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>
