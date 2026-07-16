@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>容量不足 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E5%AE%B9%E9%87%8F%E4%B8%8D%E8%B6%B3/</link><description>Recent content in 容量不足 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 16 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E5%AE%B9%E9%87%8F%E4%B8%8D%E8%B6%B3/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】AIツールのログがストレージを圧迫！VPSの容量不足を防ぐログ管理・定期削除術</title><link>https://naruhodo-lab.uk/usecase/guide-ai_log_storage/</link><pubDate>Thu, 16 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-ai_log_storage/</guid><description>&lt;h1 id="2026年版aiツールのログがストレージを圧迫vpsの容量不足を防ぐログ管理定期削除術"&gt;【2026年版】AIツールのログがストレージを圧迫！VPSの容量不足を防ぐログ管理・定期削除術&lt;/h1&gt;
+&lt;hr&gt;
+&lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;VPS契約したら、AIツールを入れる前にdaemon.jsonとlogrotateを設定してください。これをやらないと数週間でディスクが死にます。自分が実際にやらかしました。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Ollamaを入れてOpen WebUIを動かして「いい感じじゃん」と思ってたら、2週間後にコンテナが全部落ちてた。原因は&lt;code&gt;df -h&lt;/code&gt;したら一発でわかった。使用率98%。ログが溜まってただけ。&lt;/p&gt;
+&lt;p&gt;設定で完全に防げる問題です。それでも「突然サービスが落ちた」って経験する人が後を絶たないのは、AIツールのログがどれくらい膨らむか、事前に知らないから。知ってれば最初に設定するだけの話。&lt;/p&gt;
+&lt;p&gt;この記事は「やった方がいいかも」じゃなくて「やってください」という話です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="どのくらい溜まるのかaiログのサイズ感"&gt;どのくらい溜まるのか？AIログのサイズ感&lt;/h2&gt;
+&lt;p&gt;正直に言うと、最初にこの表を見たとき「DockerのJSONログがコンテナ1個で最大500MB/日？」と思って半信半疑だった。でも実際にOpen WebUIとOllamaを並べて動かしてたら、1週間で&lt;code&gt;/var/lib&lt;/code&gt;の下が7GBになってた。半信半疑だった自分が甘かった。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;AIツール&lt;/th&gt;
+					&lt;th&gt;ログ種別&lt;/th&gt;
+					&lt;th&gt;1日あたりの増加量目安&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Ollama（LLM推論）&lt;/td&gt;
+					&lt;td&gt;systemdジャーナル&lt;/td&gt;
+					&lt;td&gt;10〜100MB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Open WebUI&lt;/td&gt;
+					&lt;td&gt;アプリログ&lt;/td&gt;
+					&lt;td&gt;1〜10MB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Stable Diffusion WebUI&lt;/td&gt;
+					&lt;td&gt;推論ログ + 出力画像&lt;/td&gt;
+					&lt;td&gt;100MB〜数GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Dockerデーモン&lt;/td&gt;
+					&lt;td&gt;/var/lib/docker/containers/&lt;/td&gt;
+					&lt;td&gt;10〜500MB/コンテナ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;nginxリバースプロキシ&lt;/td&gt;
+					&lt;td&gt;アクセスログ&lt;/td&gt;
+					&lt;td&gt;1〜50MB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;自作Pythonスクリプト&lt;/td&gt;
+					&lt;td&gt;print出力リダイレクト&lt;/td&gt;
+					&lt;td&gt;1〜100MB&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;月単位では数十GBになるケースも珍しくありません。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;はっきり書いておきます。Stable Diffusionを動かしてる人は特にやばい。出力画像が1枚2〜5MBだとして、1日100枚生成すれば200〜500MB。30日で6〜15GBが画像だけで消える。ログ込みだと月20GB超えは普通にある。&lt;/p&gt;
+&lt;p&gt;「50GBプランで余裕でしょ」と思ってた人、2ヶ月もたないかもしれない。&lt;/p&gt;
+&lt;p&gt;月換算で具体的に書くと、Dockerコンテナを5個動かして各500MB/日だとすると、それだけで月75GB。50GBプランはおろか100GBプランでも足りなくなる計算になる。設定で防げるのにプランアップグレードで対処しようとするのは完全に順番が逆です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="まず現状を把握するdfduコマンド"&gt;まず現状を把握する：df・duコマンド&lt;/h2&gt;
+&lt;p&gt;対策の前に、今の自分のVPSがどういう状態か確認してください。「なんか重い」と言っても現状を数字で把握しないと対処のしようがない。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ディスク使用量の全体確認&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;df -h
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 出力例&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Filesystem Size Used Avail Use% Mounted on&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# /dev/vda1 50G 43G 3.7G 93% / ← 危険域！&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 容量を食っているディレクトリをトップ10で表示&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;du -sh /* 2&amp;gt;/dev/null | sort -rh | head -10
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Dockerが使っているディスク容量の詳細&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;docker system df -v
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 特定ディレクトリの内訳&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;du -sh /var/log/* | sort -rh | head -20
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;du -sh /var/lib/docker/containers/*/ 2&amp;gt;/dev/null | sort -rh | head -10
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;自分の場合、&lt;code&gt;docker system df -v&lt;/code&gt;を最初に叩いたときに「BUILD CACHE: 4.2GB」という表示を見て固まった。何もしてないのに勝手に溜まってる。これを知らないままだと、どこが膨らんでるかすら分からない。まずここから始めてください。&lt;/p&gt;</description></item></channel></rss>
