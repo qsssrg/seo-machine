@@ -1,4 +1,56 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>さくらのVPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps/</link><description>Recent content in さくらのVPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Fri, 17 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する</title><link>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</link><pubDate>Fri, 17 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</guid><description>&lt;h1 id="動画の自動切り抜きaiをvps上で動かしてyoutube-shortsやtiktokを量産する"&gt;動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>さくらのVPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps/</link><description>Recent content in さくらのVPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 20 Jul 2026 12:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E3%81%95%E3%81%8F%E3%82%89%E3%81%AEvps/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】さくらのVPSでAIツールはどこまで動かせる？一番安いプランでの限界検証</title><link>https://naruhodo-lab.uk/review/sakura-vps-review/</link><pubDate>Mon, 20 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/review/sakura-vps-review/</guid><description>&lt;h1 id="2026年版さくらのvpsでaiツールはどこまで動かせる一番安いプランでの限界検証"&gt;【2026年版】さくらのVPSでAIツールはどこまで動かせる？一番安いプランでの限界検証&lt;/h1&gt;
+&lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Claude CodeやOpenAI APIを動かすだけなら880円プランで十分。ローカルLLM（Ollamaなど）を動かしたいなら最初から4GBプランを選んでください。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;よく「まず安いので試して後から上げればいい」という話を見かけるけど、ローカルLLMを目的にするなら最安プランは正直スタート地点にもなりません。時間をムダにするだけです。&lt;/p&gt;
+&lt;p&gt;一方で「APIを叩くだけ」「Jupyter使いたい」「軽いWebアプリを動かしたい」という用途なら、880円プランは普通に使えます。はっきりそこだけ言い切っておきます。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BNQM9E+D8Y+C7DWH" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;さくらのVPS →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B614H+BNQM9E+D8Y+C7DWH" alt=""&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="検証したプランのスペック"&gt;検証したプランのスペック&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;項目&lt;/th&gt;
+					&lt;th&gt;内容&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;プラン&lt;/td&gt;
+					&lt;td&gt;1GB / 1コア（最安クラス）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ストレージ&lt;/td&gt;
+					&lt;td&gt;SSD 25GB&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;月額料金&lt;/td&gt;
+					&lt;td&gt;約880円〜&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;OS&lt;/td&gt;
+					&lt;td&gt;Ubuntu 22.04 LTS&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;用途&lt;/td&gt;
+					&lt;td&gt;AI開発限界検証&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;880円 = 1日あたり約29円。この金額でどこまでできるかの話です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="検証pythonとデータ処理系ライブラリ"&gt;検証①：Pythonとデータ処理系ライブラリ&lt;/h2&gt;
+&lt;h3 id="結果問題なし"&gt;結果：問題なし&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo apt update &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt install -y python3 python3-pip
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip3 install numpy pandas scikit-learn
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;基本的なデータ処理ライブラリのインストールと動作は問題ありません。正直、ここは予想通りです。&lt;/p&gt;
+&lt;p&gt;ただしPyTorchは注意が必要で、実際に試してみるとこうなります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# PyTorch CPU版インストール（時間がかかる）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip3 install torch --index-url https://download.pytorch.org/whl/cpu
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# メモリ確認&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;free -h
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 結果: Mem: 992MB / Swap: 0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;PyTorchのインポートだけで約400MBのメモリを消費します。&lt;/strong&gt; 残り約600MBで実際の処理を回す必要があるので、ほぼほぼカツカツです。スワップ設定は最初の必須作業と思っておいてください。&lt;/p&gt;</description></item><item><title>【2026年版】動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する</title><link>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</link><pubDate>Fri, 17 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</guid><description>&lt;h1 id="動画の自動切り抜きaiをvps上で動かしてyoutube-shortsやtiktokを量産する"&gt;動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;VPSで動かす。GPUは要らない。CPUで十分。&lt;/strong&gt;&lt;/p&gt;
