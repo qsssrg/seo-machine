@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/ai/</link><description>Recent content in AI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 22 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】レンタルサーバーからVPSへ乗り換えるタイミング：AIやPythonを使いたくなったら？</title><link>https://naruhodo-lab.uk/usecase/guide-rental_to_vps/</link><pubDate>Wed, 22 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-rental_to_vps/</guid><description>&lt;h1 id="2026年版レンタルサーバーからvpsへ乗り換えるタイミングaiやpythonを使いたくなったら"&gt;【2026年版】レンタルサーバーからVPSへ乗り換えるタイミング：AIやPythonを使いたくなったら？&lt;/h1&gt;
+&lt;h2 id="はっきり書いておきますpip-install-したいと思った瞬間が乗り換えどきです"&gt;はっきり書いておきます：「pip install したい」と思った瞬間が乗り換えどきです&lt;/h2&gt;
+&lt;p&gt;「XServerやさくらのレンタルサーバーでWordPressを動かしてたけど、PythonスクリプトやAI APIを常時動かしたい」——この欲求が出た瞬間、共有レンタルサーバーの役目は終わりです。&lt;/p&gt;
+&lt;p&gt;自分も最初はレンタルサーバーで粘ろうとしました。cronでPythonを動かそうとして「pipが使えない」「パッケージが入れられない」で詰まる。あの感覚、経験した人にはわかると思います。&lt;/p&gt;
+&lt;p&gt;結論から言うと、&lt;strong&gt;PythonでAI系のことをやりたいなら迷わずVPSに移ってください&lt;/strong&gt;。管理コストは確かに増えますが、「できないことを無理やりやろうとする消耗」と比べたら全然マシです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="レンタルサーバー共有の限界何ができない"&gt;レンタルサーバー（共有）の限界：何ができない？&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;制限事項&lt;/th&gt;
+					&lt;th&gt;共有レンタルサーバー&lt;/th&gt;
+					&lt;th&gt;VPS&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;常駐プロセス（cron以外）&lt;/td&gt;
+					&lt;td&gt;❌ 不可&lt;/td&gt;
+					&lt;td&gt;✓ 可能&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Pythonバージョン指定&lt;/td&gt;
+					&lt;td&gt;△ 管理者依存&lt;/td&gt;
+					&lt;td&gt;✓ 自由にインストール&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;パッケージのインストール&lt;/td&gt;
+					&lt;td&gt;❌ pip install 不可&lt;/td&gt;
+					&lt;td&gt;✓ 自由&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Dockerコンテナ&lt;/td&gt;
+					&lt;td&gt;❌ 不可&lt;/td&gt;
+					&lt;td&gt;✓ 可能&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AI推論サーバー（FastAPI等）&lt;/td&gt;
+					&lt;td&gt;❌ 不可&lt;/td&gt;
+					&lt;td&gt;✓ 可能&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;WebSocket / gRPC&lt;/td&gt;
+					&lt;td&gt;❌ 非対応が多い&lt;/td&gt;
+					&lt;td&gt;✓ 可能&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Node.js・Deno・Go&lt;/td&gt;
+					&lt;td&gt;△ 制限あり&lt;/td&gt;
+					&lt;td&gt;✓ 自由&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;正直に言うと、この表を見て「自分がやりたいことは共有サーバーで全部できる」と思えるなら、今のままで構いません。無理に移行する必要はゼロです。&lt;/p&gt;
+&lt;p&gt;ただ、&lt;strong&gt;以下のうち1つでも当てはまったらVPS一択&lt;/strong&gt;です。これは断言できます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pip install&lt;/code&gt; したパッケージを使いたい&lt;/li&gt;
+&lt;li&gt;Pythonスクリプトを5分おき以上の頻度でcron動作させたい（しかも処理が重い）&lt;/li&gt;
+&lt;li&gt;FastAPI・Flaskでアプリを常時公開したい&lt;/li&gt;
+&lt;li&gt;LLM APIを叩くbotを24時間動かしたい&lt;/li&gt;
+&lt;li&gt;OpenAI APIや画像生成APIをサーバーサイドで処理したい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="vps移行が向いているユースケース"&gt;VPS移行が向いているユースケース&lt;/h2&gt;
+&lt;h3 id="ユースケース1python-bot自動化スクリプト"&gt;ユースケース1：Python bot・自動化スクリプト&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# レンタルサーバーではcronのみ。VPSならこれが常駐できる&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; asyncio
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; openai &lt;span style="color:#f92672"&gt;import&lt;/span&gt; AsyncOpenAI
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;monitor_loop&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; client &lt;span style="color:#f92672"&gt;=&lt;/span&gt; AsyncOpenAI()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;while&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# LLMで定期監視・通知&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; client&lt;span style="color:#f92672"&gt;.&lt;/span&gt;chat&lt;span style="color:#f92672"&gt;.&lt;/span&gt;completions&lt;span style="color:#f92672"&gt;.&lt;/span&gt;create(&lt;span style="color:#f92672"&gt;...&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; asyncio&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sleep(&lt;span style="color:#ae81ff"&gt;300&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;asyncio&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run(monitor_loop())
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これ、自分が最初にやりたかったやつです。共有サーバーではcronで5分おきに叩くことはできても、「常駐して非同期で監視する」ができない。botを作ろうとした瞬間に詰まります。VPSに移ってから、この手のスクリプトを躊躇なく動かせるようになって、体感として開発のストレスが全然違います。&lt;/p&gt;</description></item></channel></rss>
