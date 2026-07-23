@@ -1,4 +1,51 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>初心者 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E5%88%9D%E5%BF%83%E8%80%85/</link><description>Recent content in 初心者 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Wed, 22 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E5%88%9D%E5%BF%83%E8%80%85/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】レンタルサーバーからVPSへ乗り換えるタイミング：AIやPythonを使いたくなったら？</title><link>https://naruhodo-lab.uk/usecase/guide-rental_to_vps/</link><pubDate>Wed, 22 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-rental_to_vps/</guid><description>&lt;h1 id="2026年版レンタルサーバーからvpsへ乗り換えるタイミングaiやpythonを使いたくなったら"&gt;【2026年版】レンタルサーバーからVPSへ乗り換えるタイミング：AIやPythonを使いたくなったら？&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>初心者 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E5%88%9D%E5%BF%83%E8%80%85/</link><description>Recent content in 初心者 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Thu, 23 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E5%88%9D%E5%BF%83%E8%80%85/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】「なるほどラボ」が厳選！目的別・AIツール向けVPSフローチャート診断</title><link>https://naruhodo-lab.uk/usecase/guide-vps_flowchart/</link><pubDate>Thu, 23 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-vps_flowchart/</guid><description>&lt;h1 id="2026年版なるほどラボが厳選目的別aiツール向けvpsフローチャート診断"&gt;【2026年版】「なるほどラボ」が厳選！目的別・AIツール向けVPSフローチャート診断&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;「どのVPSがいいか」と聞かれたら、用途によって答えは変わる。でも&lt;strong&gt;一番多い失敗パターン&lt;/strong&gt;は決まっていて、「GPU付きプランを勧められて契約したけど、実は不要だった」というやつです。&lt;/p&gt;
+&lt;p&gt;はっきり書いておきます。&lt;strong&gt;Claude Code・Dify・n8nなど、外部APIを叩くだけの用途にGPUは要りません。&lt;/strong&gt; APIはクラウド側（AnthropicやOpenAIのサーバー）で処理されるので、あなたのVPS側にGPUが乗っていても何の意味もない。それでもGPUを推してくる記事は、アフィリエイト報酬が高いプランを売りたいだけだと思って読んでください。&lt;/p&gt;
+&lt;p&gt;自分が試行錯誤してたどり着いた判断基準を、このフローチャートに詰め込みました。答えるだけで選べるので、使ってみてください。（2026年7月時点）&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="フローチャート診断答えるだけで選べる"&gt;フローチャート診断——答えるだけで選べる&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;【スタート】VPSで何をしたいですか？
+│
+├─▶ AIツール（ChatGPT API / Claude / Dify等）を動かしたい
+│ │
+│ ├─▶ GPUが必要（Stable Diffusion / LLM自前推論）
+│ │ └─▶ 【→ XServer VPS GPU / ConoHa VPS GPU プランへ】
+│ │
+│ └─▶ GPUは不要（APIを叩くだけ / Claude Code / Dify等）
+│ │
+│ ├─▶ とにかく簡単に始めたい
+│ │ └─▶ 【→ XServer VPS（ワンクリック構築）】
+│ │
+│ └─▶ コストを最小化したい
+│ └─▶ 【→ KAGOYA CLOUD VPS（月770円〜）】
+│
+├─▶ Webサービス・個人アプリを本番公開したい
+│ │
+│ ├─▶ 初めての本番環境・まず動かしたい
+│ │ └─▶ 【→ ConoHa VPS（時間課金で試せる）】
+│ │
+│ └─▶ 長期安定運用・老舗の信頼感が欲しい
+│ └─▶ 【→ さくらのVPS（20年以上の実績）】
+│
+├─▶ プログラミング学習・開発環境を持ちたい
+│ │
+│ ├─▶ できるだけ安く始めたい（学生・副業）
+│ │ └─▶ 【→ KAGOYA CLOUD VPS（月770円〜）】
+│ │
+│ └─▶ Jupyterや開発ツールをすぐ使いたい
+│ └─▶ 【→ ConoHa VPS（テンプレート豊富）】
+│
+├─▶ ゲームサーバーを立てたい（Minecraft等）
+│ └─▶ メモリ重視で選ぶ
+│ ├─▶ 8GB以上 → XServer VPS（大容量プランあり）
+│ └─▶ 4GBで試したい → ConoHa VPS
+│
+└─▶ 複数サーバー・本番＋テスト環境を分けたい
+ └─▶ 【→ XServer VPS + KAGOYA CLOUD VPS の組み合わせ】
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;補足：「自分のPCを立ち上げっぱなし」では代替にならない&lt;/strong&gt;
+VPSを使わずに自宅PCでサーバーを立てている人もいると思いますが、正直これは「手放し」にならない。何かあったらリモートデスクトップで入らなきゃいけないし、PC電源が落ちてないか気になって精神的に消耗する。月770円でその心配が消えるなら、VPSを使った方が絶対にラクです。&lt;/p&gt;</description></item><item><title>【2026年版】レンタルサーバーからVPSへ乗り換えるタイミング：AIやPythonを使いたくなったら？</title><link>https://naruhodo-lab.uk/usecase/guide-rental_to_vps/</link><pubDate>Wed, 22 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-rental_to_vps/</guid><description>&lt;h1 id="2026年版レンタルサーバーからvpsへ乗り換えるタイミングaiやpythonを使いたくなったら"&gt;【2026年版】レンタルサーバーからVPSへ乗り換えるタイミング：AIやPythonを使いたくなったら？&lt;/h1&gt;
 &lt;h2 id="はっきり書いておきますpip-install-したいと思った瞬間が乗り換えどきです"&gt;はっきり書いておきます：「pip install したい」と思った瞬間が乗り換えどきです&lt;/h2&gt;
 &lt;p&gt;「XServerやさくらのレンタルサーバーでWordPressを動かしてたけど、PythonスクリプトやAI APIを常時動かしたい」——この欲求が出た瞬間、共有レンタルサーバーの役目は終わりです。&lt;/p&gt;
 &lt;p&gt;自分も最初はレンタルサーバーで粘ろうとしました。cronでPythonを動かそうとして「pipが使えない」「パッケージが入れられない」で詰まる。あの感覚、経験した人にはわかると思います。&lt;/p&gt;
