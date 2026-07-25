@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VPS 入門 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vps-%E5%85%A5%E9%96%80/</link><description>Recent content in VPS 入門 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 25 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vps-%E5%85%A5%E9%96%80/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】非エンジニアが初めてVPSを契約する前に知っておくべき「Linuxの基礎知識」5選</title><link>https://naruhodo-lab.uk/usecase/guide-linux_basics_for_vps/</link><pubDate>Sat, 25 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-linux_basics_for_vps/</guid><description>&lt;h1 id="2026年版非エンジニアが初めてvpsを契約する前に知っておくべきlinuxの基礎知識5選"&gt;【2026年版】非エンジニアが初めてVPSを契約する前に知っておくべき「Linuxの基礎知識」5選&lt;/h1&gt;
+&lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;この5つさえ頭に入っていれば、VPSは動かせます。全部暗記しなくていい。「こういう概念があるんだ」とわかっていれば、あとはチュートリアルをコピペしながら手を動かすだけで前に進めます。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;正直に言うと、自分も最初はターミナルを開いただけで閉じていました。「何これ、何も起きてない」みたいな。でもある時期にこの5つの概念がなんとなく頭に入ったタイミングから、急に「あ、これ読める」「この操作、意味がわかる」が増えました。だからVPS借りる前に先に知っておいて、絶対に損はないです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;「VPSを借りてみたいけど、Linuxってよくわからない」——そう感じている人、たぶん多いと思います。VPSの管理画面でサーバーを立ち上げた直後、真っ黒な画面（ターミナル）が現れて、何をすれば良いのか途方に暮れた経験はないでしょうか。&lt;/p&gt;
+&lt;p&gt;この記事では、VPSを使い始める前に知っておくと圧倒的に理解が早くなる&lt;strong&gt;Linuxの基礎知識5つ&lt;/strong&gt;を、同じように試行錯誤してきた目線で正直に書きます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜvpsにはlinuxの知識が必要なのか"&gt;なぜVPSにはLinuxの知識が必要なのか&lt;/h2&gt;
+&lt;p&gt;VPSのほとんどはLinuxが動いています。WindowsのようなGUI（グラフィカルな操作画面）がなく、コマンドを打って操作するのが基本です。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;はっきり書いておきます。「Linuxが得意」になる必要はないです。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;「読んで意味がわかる」「エラーが出たとき何を調べればいいかわかる」——この2つが最初のゴールで十分。この5つを理解するだけで、ネット上のチュートリアルを見ながら自分で操作できるようになります。その感覚が掴めるだけで全然ちがいます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="1-ファイルシステムの構造を知る"&gt;1. ファイルシステムの構造を知る&lt;/h2&gt;
+&lt;p&gt;Linuxのファイル構造はWindowsとは大きく異なります。すべての起点が &lt;code&gt;/&lt;/code&gt;（ルートディレクトリ）で、Cドライブのような概念はありません。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;ディレクトリ&lt;/th&gt;
+					&lt;th&gt;役割&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;/home/&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;一般ユーザーのホームフォルダ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;/etc/&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;設定ファイルの置き場所&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;/var/log/&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;ログファイルの置き場所&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;/usr/bin/&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;インストール済みコマンドの実行ファイル&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;/tmp/&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;一時ファイル（再起動で消える）&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 現在地を確認する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pwd
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ファイル一覧を表示（詳細付き）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ls -la
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ディレクトリを移動する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd /etc
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ホームディレクトリに戻る&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd ~
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;自分がつまずいたポイントをそのまま書くと：&lt;/strong&gt;「設定ファイルがどこにあるかわからない」問題、これは &lt;code&gt;/etc/&lt;/code&gt; を最初に見に行く癖をつけるだけで大体解決します。「なんかエラー出た → ログ見たい → &lt;code&gt;/var/log/&lt;/code&gt; を覗く」この2パターンを体で覚えるだけでも全然違う。覚えることはこれだけで最初はいいです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="2-パーミッション権限の仕組みを理解する"&gt;2. パーミッション（権限）の仕組みを理解する&lt;/h2&gt;
+&lt;p&gt;Linuxでは「誰がファイルに何をできるか」をパーミッションで管理します。&lt;code&gt;ls -la&lt;/code&gt; を実行すると &lt;code&gt;-rwxr-xr--&lt;/code&gt; のような文字列が見えます。&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;-rwxr-xr--
+ ↑ オーナー(rwx=読み書き実行OK)
+ ↑ グループ(r-x=読み実行のみ)
+ ↑ その他(r--=読みのみ)
+&lt;/code&gt;&lt;/pre&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ファイルを実行可能にする（シェルスクリプトを動かす前に必要）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;chmod +x setup.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ファイルのオーナーを変更する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;chown ubuntu:ubuntu myfile.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 設定ファイルに600を付けてオーナーのみ読み書き可能にする&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;chmod &lt;span style="color:#ae81ff"&gt;600&lt;/span&gt; ~/.ssh/authorized_keys
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;最初は &lt;code&gt;rwxr-xr--&lt;/code&gt; の読み方なんて覚えなくていいです。&lt;/strong&gt; 本当に。覚えるべきは「Permission denied が出たら chmod か chown を疑う」「SSH鍵ファイルは必ず chmod 600」この2つだけ。パーミッション設定のミスはセキュリティ事故につながるので、SSH鍵に関してだけは絶対に手を抜かないでください。ここだけは妥協なしです。&lt;/p&gt;</description></item></channel></rss>

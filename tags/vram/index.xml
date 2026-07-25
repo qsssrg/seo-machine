@@ -1,4 +1,59 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VRAM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vram/</link><description>Recent content in VRAM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 05 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vram/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】失敗しないGPUサーバー選び：VRAM 24GB以上を格安で確保できるVPSランキング</title><link>https://naruhodo-lab.uk/ranking/gpu_vps_ranking/</link><pubDate>Sun, 05 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/ranking/gpu_vps_ranking/</guid><description>&lt;h1 id="vram-24gb以上を格安で確保できるgpu-vpsランキング2026年版"&gt;VRAM 24GB以上を格安で確保できるGPU VPSランキング【2026年版】&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VRAM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/vram/</link><description>Recent content in VRAM on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 25 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/vram/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】VPSで「CUDA out of memory」が出た時の対処法とプラン変更の目安</title><link>https://naruhodo-lab.uk/usecase/guide-cuda_oom_fix/</link><pubDate>Sat, 25 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-cuda_oom_fix/</guid><description>&lt;h1 id="2026年版vpsでcuda-out-of-memoryが出た時の対処法とプラン変更の目安"&gt;【2026年版】VPSで「CUDA out of memory」が出た時の対処法とプラン変更の目安&lt;/h1&gt;
+&lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;OOMが出ても、いきなりプランを上げるのだけは待ってください。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;正直に言うと、int4量子化を試しただけで解決したケースが体感7〜8割です。Llama-3-8Bで言えば、fp32で約32GB必要だったVRAMがint4で約4GBになる。8倍近く減る。それだけで「足りなかったVRAM」が「余るVRAM」に化けることがある。&lt;/p&gt;
+&lt;p&gt;プランアップグレードを考えるのは、量子化・バッチサイズ調整・キャッシュ解放を全部やって、それでもOOMが出てから。この順番を間違えると、毎月数千円を不要に払い続けることになります。月7,000円のGPUプランを12ヶ月使えば84,000円。量子化5分で解決できたものに84,000円払うのはさすがにもったいない。これだけ最初に言わせてください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;GPU VPSでAIモデルを動かしていると、ある日突然こんなエラーが出ます。&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;torch.cuda.OutOfMemoryError: CUDA out of memory.
+Tried to allocate 2.50 GiB (GPU 0; 15.78 GiB total capacity;
+13.25 GiB already allocated; ...)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;「VRAMが足りない」というシンプルなエラーなんですが、対処の順番を間違えるとコストが跳ね上がります。この記事では原因の切り分けから、コードレベルの対処法、それでもダメなときのプランアップグレード判断まで、実際に試行錯誤した経験ベースで書きます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="cuda-oomが発生する主な原因"&gt;CUDA OOMが発生する主な原因&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;原因&lt;/th&gt;
+					&lt;th&gt;説明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;モデルサイズが大きすぎる&lt;/td&gt;
+					&lt;td&gt;7Bモデルでも fp32だと約28GBのVRAMが必要&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;バッチサイズが大きい&lt;/td&gt;
+					&lt;td&gt;一度に処理するデータが多すぎる&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;キャッシュが蓄積している&lt;/td&gt;
+					&lt;td&gt;推論後にGPUメモリが解放されていない&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;複数プロセスが競合&lt;/td&gt;
+					&lt;td&gt;他のプロセスがVRAMを占有している&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;はっきり書いておきます。「モデルサイズが大きすぎる」と「キャッシュが蓄積している」がほとんどのケースで原因です。複数プロセスの競合は、自分で意図して何かを立ち上げていなければまず関係ない。最初の2つを疑うだけで十分で、4番目まで全部調べようとするのは時間の無駄になりやすい。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="まず確認現在のvram使用状況"&gt;まず確認：現在のVRAM使用状況&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# GPUの使用状況を確認する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;nvidia-smi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 1秒ごとにリアルタイム監視する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;watch -n &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt; nvidia-smi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Pythonから確認する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python3 -c &lt;span style="color:#e6db74"&gt;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;import torch
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;print(f&amp;#39;VRAM総量: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f} GB&amp;#39;)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;print(f&amp;#39;使用中: {torch.cuda.memory_allocated() / 1024**3:.2f} GB&amp;#39;)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;print(f&amp;#39;予約済み: {torch.cuda.memory_reserved() / 1024**3:.2f} GB&amp;#39;)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;nvidia-smi&lt;/code&gt; を見て「VRAM総量の何%を使っているか」を最初に把握する。90%を超えていたらその時点で危険水域。安定して動かすなら50〜60%くらいに収まっているのが理想です。&lt;/p&gt;</description></item><item><title>【2026年版】失敗しないGPUサーバー選び：VRAM 24GB以上を格安で確保できるVPSランキング</title><link>https://naruhodo-lab.uk/ranking/gpu_vps_ranking/</link><pubDate>Sun, 05 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/ranking/gpu_vps_ranking/</guid><description>&lt;h1 id="vram-24gb以上を格安で確保できるgpu-vpsランキング2026年版"&gt;VRAM 24GB以上を格安で確保できるGPU VPSランキング【2026年版】&lt;/h1&gt;
 &lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;画像生成AI（Stable Diffusion、Flux等）やLoRA学習が目的なら、GPU VPSは必要です。&lt;/strong&gt;
 ただし「月数万円かかる」前提で使えるかどうかは、用途によって変わります。&lt;/p&gt;
