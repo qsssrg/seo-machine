@@ -1,4 +1,99 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>XServer VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/xserver-vps/</link><description>Recent content in XServer VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 25 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/xserver-vps/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】VPSで「CUDA out of memory」が出た時の対処法とプラン変更の目安</title><link>https://naruhodo-lab.uk/usecase/guide-cuda_oom_fix/</link><pubDate>Sat, 25 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-cuda_oom_fix/</guid><description>&lt;h1 id="2026年版vpsでcuda-out-of-memoryが出た時の対処法とプラン変更の目安"&gt;【2026年版】VPSで「CUDA out of memory」が出た時の対処法とプラン変更の目安&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>XServer VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/xserver-vps/</link><description>Recent content in XServer VPS on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 26 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/xserver-vps/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】VPSのIPアドレスがスパム認定された！？AIで大量アクセスする際のプロキシ・IP分散術</title><link>https://naruhodo-lab.uk/usecase/guide-vps_ip_proxy/</link><pubDate>Sun, 26 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-vps_ip_proxy/</guid><description>&lt;h1 id="2026年版vpsのipアドレスがスパム認定されたaiで大量アクセスする際のプロキシip分散術"&gt;【2026年版】VPSのIPアドレスがスパム認定された！？AIで大量アクセスする際のプロキシ・IP分散術&lt;/h1&gt;
+&lt;h2 id="結論から言う"&gt;結論から言う&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;まずレート制限を実装してください。これだけで大半のケースは解決します。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;プロキシサービスや複数VPS構成は「それでもダメだったとき」の話。いきなりそこに飛ぶ必要はない。自分も最初は複雑な構成を調べ回ったけど、結局「ちゃんと待機時間を入れてUser-Agentを回す」だけで解決したことが何度もあった。&lt;/p&gt;
+&lt;p&gt;この記事では、シンプルな順番で対処法を紹介する。コストをかけずに解決できるなら、そのほうがいい。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;AIツールを使ったWebスクレイピングやAPIの大量呼び出しをVPSで実行していると、ある日突然アクセスが弾かれることがある。「429 Too Many Requests」や「403 Forbidden」が返り続けている場合、VPSのIPアドレスがスパム認定されている可能性がある。&lt;/p&gt;
+&lt;p&gt;焦る気持ちはわかるけど、まず原因を整理してから動いたほうが遠回りにならない。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜvpsのipはブロックされやすいのか"&gt;なぜVPSのIPはブロックされやすいのか&lt;/h2&gt;
+&lt;p&gt;正直に言うと、VPSのIPは「最初からちょっと不利」な状況にある。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;理由&lt;/th&gt;
+					&lt;th&gt;詳細&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;データセンターIP判定&lt;/td&gt;
+					&lt;td&gt;VPSのIPは「商用サーバー」として識別されやすい&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;過去の悪用履歴&lt;/td&gt;
+					&lt;td&gt;前の契約者がスパムに使っていたIPを引き継いだ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;アクセス頻度の異常&lt;/td&gt;
+					&lt;td&gt;人間では不可能な速度でのリクエストが検出される&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;User-Agentの固定&lt;/td&gt;
+					&lt;td&gt;同じUA文字列が連続する&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;セッション情報なし&lt;/td&gt;
+					&lt;td&gt;Cookieやリファラーがないリクエスト&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;特に「前の契約者の悪用履歴」は自分には関係ない話なのに引き継いでしまうやつで、これが地味につらい。だから新しいVPSを契約したらまずIPの評判チェックを習慣にしておくと、あとで「なんでブロックされるんだろう」と悩む時間が減る。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="まずipの評判を確認する"&gt;まずIPの評判を確認する&lt;/h2&gt;
+&lt;p&gt;新しいVPSを契約したら、コードを動かす前にここから始めてほしい。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 自分のIPを確認する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;curl ifconfig.me
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# IPの評判チェック（ブラックリスト登録状況）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ブラウザで以下のサービスを使って確認する&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# - https://www.abuseipdb.com/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# - https://mxtoolbox.com/blacklists.aspx&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# - https://check.spamhaus.org/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# メール送信用にIPの評判を確認するコマンド&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dig +short YOUR_IP.zen.spamhaus.org
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 何も返ってこなければブラックリスト未登録&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow"&gt;XServer VPS →&lt;/a&gt;&lt;img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt=""&gt;では契約時に新しいIPアドレスが割り当てられるが、念のため確認する習慣をつけておくと安心。もしブラックリスト登録が出てきたら、そのまま使い続けても無駄に時間を溶かすだけなので、早めにサポートに相談するか再契約を検討したほうがいい。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="対処法1レート制限を適切に実装するまずここから"&gt;対処法1：レート制限を適切に実装する（まずここから）&lt;/h2&gt;
+&lt;p&gt;はっきり書いておく。&lt;strong&gt;ブロックされる原因の大半は「速すぎるリクエスト」と「User-Agentの固定」&lt;/strong&gt;。これを直すだけで解決するケースが本当に多い。&lt;/p&gt;
+&lt;p&gt;プロキシを契約する前に、まずこれを試してほしい。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; time
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; random
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; functools &lt;span style="color:#f92672"&gt;import&lt;/span&gt; wraps
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;rate_limit&lt;/span&gt;(min_wait: float &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1.0&lt;/span&gt;, max_wait: float &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;3.0&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;デコレータ形式のレート制限&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;decorator&lt;/span&gt;(func):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;@wraps&lt;/span&gt;(func)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;wrapper&lt;/span&gt;(&lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; func(&lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; wait_time &lt;span style="color:#f92672"&gt;=&lt;/span&gt; random&lt;span style="color:#f92672"&gt;.&lt;/span&gt;uniform(min_wait, max_wait)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; time&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sleep(wait_time)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; result
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; wrapper
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; decorator
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@rate_limit&lt;/span&gt;(min_wait&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2.0&lt;/span&gt;, max_wait&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;5.0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;fetch_page&lt;/span&gt;(url: str, session: requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Session) &lt;span style="color:#f92672"&gt;-&amp;gt;&lt;/span&gt; str:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; headers &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;User-Agent&amp;#34;&lt;/span&gt;: random&lt;span style="color:#f92672"&gt;.&lt;/span&gt;choice(USER_AGENTS),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Accept-Language&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;ja-JP,ja;q=0.9,en-US;q=0.8&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Referer&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;https://www.google.com/&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; session&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(url, headers&lt;span style="color:#f92672"&gt;=&lt;/span&gt;headers, timeout&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;raise_for_status()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;USER_AGENTS &lt;span style="color:#f92672"&gt;=&lt;/span&gt; [
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;min_wait=2.0, max_wait=5.0&lt;/code&gt; というのは「2〜5秒ランダムに待つ」という意味。「遅すぎる」と感じるかもしれないけど、これが一番ブロックされにくい。処理速度を上げたいなら、後述の複数VPS構成で並列化するほうが現実的。&lt;/p&gt;</description></item><item><title>【2026年版】VPSで「CUDA out of memory」が出た時の対処法とプラン変更の目安</title><link>https://naruhodo-lab.uk/usecase/guide-cuda_oom_fix/</link><pubDate>Sat, 25 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-cuda_oom_fix/</guid><description>&lt;h1 id="2026年版vpsでcuda-out-of-memoryが出た時の対処法とプラン変更の目安"&gt;【2026年版】VPSで「CUDA out of memory」が出た時の対処法とプラン変更の目安&lt;/h1&gt;
 &lt;h2 id="最初に結論を書きます"&gt;最初に結論を書きます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;OOMが出ても、いきなりプランを上げるのだけは待ってください。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;正直に言うと、int4量子化を試しただけで解決したケースが体感7〜8割です。Llama-3-8Bで言えば、fp32で約32GB必要だったVRAMがint4で約4GBになる。8倍近く減る。それだけで「足りなかったVRAM」が「余るVRAM」に化けることがある。&lt;/p&gt;
