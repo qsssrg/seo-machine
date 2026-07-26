@@ -1,0 +1,233 @@
+---
+title: "【2026年版】WebUI (AUTOMATIC1111) からForgeへ！最新UIをVPSに導入する手順まとめ"
+date: 2026-07-04T16:00:00+09:00
+description: "正直に言います。A1111を使い続ける理由はもうほぼない。速度・VRAM効率・FLUX.1対応を考えると今すぐ乗り換えていい。ただしGPU VPSは月数万円かかる現実も含めて、本音で解説します。"
+slug: "guide-forge_webui_vps"
+categories: ["用途別ガイド"]
+tags: ["Forge", "AUTOMATIC1111", "Stable Diffusion", "画像生成AI", "GPU VPS", "VPS 活用", "XServer VPS", "ConoHa VPS"]
+type: "usecase"
+---
+
+
+
+# WebUI (AUTOMATIC1111) からForgeへ！最新UIをVPSに導入する手順まとめ
+
+## 最初に結論を書いておきます
+
+**A1111を使い続ける理由は、もうほぼない。**
+
+同じGPUで速度が30〜70%上がって、VRAMの使い方も賢くなって、FLUX.1にも対応している。移行コストも低い。「どっちにするか迷ってる」なら、Forgeに乗り換えていい。これが自分の判断です。
+
+ただ、正直に言っておかないといけないことがひとつあって、**GPU VPSは月数万円かかります**。これは事実として受け止めてから検討してほしい。「立ち上げが楽でコスパが合うならあり」ではあるんだけど、コストを把握しないまま飛び込むと後悔する。その話も後半でちゃんとします。
+
+---
+
+2024年に登場した **Stable Diffusion WebUI Forge**（通称「Forge」）は、AUTOMATIC1111（A1111）の後継として急速に普及しています。**生成速度30〜70%向上・VRAMをより効率的に使用**という点で、同じGPUでも明らかにパフォーマンスが変わります。
+
+本記事では、A1111からForgeへ移行する理由と、VPS上へのインストール手順を解説します。
+
+---
+
+## A1111とForgeの主な違い
+
+| 比較項目 | AUTOMATIC1111 | Stable Diffusion WebUI Forge |
+|---|---|---|
+| 開発者 | AUTOMATIC1111 | lllyasviel（ControlNet作者） |
+| ベース | 独自実装 | A1111フォーク + 最適化 |
+| 生成速度 | 基準 | 30〜70%速い（GPU依存） |
+| VRAM効率 | 標準 | 大幅改善（同VRAMで高解像度可） |
+| 拡張機能互換性 | 高い | A1111の拡張の多くが動作 |
+| FLUX.1対応 | 部分的 | ネイティブ対応 |
+| ComfyUIノード連携 | なし | 一部実験的対応 |
+
+正直に言うと、この表を見て「A1111を使い続ける理由」を探そうとするほうが難しい。
+
+特に大きいのがControlNet。ForgeにはControlNetがネイティブ統合されているので、別途インストールすら不要になった。「ControlNetの拡張が重い」「バージョン管理が面倒」とずっと感じてた人ほど、移行後の体験がすっきりします。自分もそのひとりでした。
+
+**VRAM 8GBのGPUでSDXLを動かしたい**ユーザーや、**FLUX.1モデルを試したい**ユーザーにとっては、Forgeはもう「選択肢のひとつ」じゃなくて実質的な必須アップグレードです。「まだA1111でいいかな」と様子を見てる理由があるとすれば、特定の古い拡張への依存くらいだと思う。
+
+---
+
+## VPSに必要なスペック（とコストの現実）
+
+| 生成用途 | VRAM | RAM | ストレージ |
+|---|---|---|---|
+| SD 1.5 / SDXLモデル | 8 GB以上 | 16 GB以上 | 50 GB以上 |
+| FLUX.1-dev / schnell | 12 GB以上 | 32 GB以上 | 100 GB以上 |
+| 高解像度・Hires.fix | 16 GB以上 | 32 GB以上 | 100 GB以上 |
+
+ここははっきり書いておきます。**GPU VPS、月額で数万円かかります。**
+
+XServerやConoHaのGPUプランは、構成によって月2〜5万円のレンジ。「まぁまぁ高い」というのが正直な感想です。夢を見て契約した結果、毎月クレジットカードの明細を見て後悔する、というパターンは避けてほしい。
+
+ただ、自分のPCにGPUを積むより**初期費用ゼロで始められる**し、**使うときだけ起動できる時間課金プランもある**というメリットはある。「立ち上げが楽」というのも地味に大事で、自宅PCを立ち上げっぱなしにするのは電気代も気になるし、何かあったときにリモートで入らないといけないから全然手放しにならない。VPSならそのストレスがない。
+
+**月にどれくらい使うかを先に見積もってから契約する**のが絶対に正解。なんとなくで契約すると、気づいたら毎月数万円が飛んでいきます。
+
+<a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow">XServer VPS →</a><img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt="">
+
+<a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow">ConoHa VPS →</a><img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt="">
+
+---
+
+## VPSへのForgeインストール手順
+
+手順はA1111とほぼ同じ流れです。「A1111を一度でも入れたことがある」なら、詰まるところはほぼないはず。初めて触る人でも、コマンドをそのままコピーして流せる構成にしています。
+
+### Step 1: 依存パッケージのインストール
+
+```bash
+# Ubuntu 22.04 / 24.04 LTS ベースを想定
+apt update && apt upgrade -y
+apt install -y \
+  python3.11 python3.11-venv python3-pip \
+  git wget curl libgl1 libglib2.0-0 \
+  libsm6 libxext6 libxrender-dev
+
+# CUDA Toolkit（既にインストール済みの場合スキップ）
+nvidia-smi  # バージョン確認
+```
+
+`nvidia-smi` を叩いてGPUが認識されていることを確認してから進んでください。ここで認識されていないとこの先全部詰みます。
+
+### Step 2: Forgeのクローンとインストール
+
+```bash
+cd /root
+git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git
+cd stable-diffusion-webui-forge
+
+# 初回起動スクリプトで依存関係を自動インストール
+# ※初回は10〜20分かかる場合あり
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+
+bash webui.sh --listen --port 7860 --api
+```
+
+初回の依存関係インストールは地味に時間がかかります。10〜20分は普通にかかるので、放置して他のことしてていい。「止まってる？」と思っても、だいたいまだ動いてます。
+
+### Step 3: A1111からモデルを移行する
+
+既存のA1111インストールがある場合、モデルはシンボリックリンクで共有できます。**モデルを丸ごとコピーしなくていい**ので、ストレージの節約になるし時間もかかりません。これ知らないと数十GBのコピーを始めてしまうので、先に書いておきます。
+
+```bash
+# A1111のモデルディレクトリをForgeからリンク
+ln -s /root/stable-diffusion-webui/models/Stable-diffusion \
+      /root/stable-diffusion-webui-forge/models/Stable-diffusion
+
+ln -s /root/stable-diffusion-webui/models/Lora \
+      /root/stable-diffusion-webui-forge/models/Lora
+
+ln -s /root/stable-diffusion-webui/models/VAE \
+      /root/stable-diffusion-webui-forge/models/VAE
+
+echo "モデルリンク完了"
+ls -la /root/stable-diffusion-webui-forge/models/
+```
+
+### Step 4: systemdサービス登録
+
+毎回手動で起動するのは面倒なので、サービス登録しておくのが正解。VPS再起動後も自動で立ち上がります。「手動で起動し忘れた」ということがなくなるだけで、だいぶストレスが減ります。
+
+```bash
+cat > /etc/systemd/system/forge.service << 'EOF'
+[Unit]
+Description=Stable Diffusion WebUI Forge
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/stable-diffusion-webui-forge
+ExecStart=/bin/bash webui.sh --listen --port 7860 --api --xformers
+Restart=on-failure
+RestartSec=15
+Environment="PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable forge
+systemctl start forge
+systemctl status forge
+```
+
+### Step 5: 起動確認とアクセス
+
+```bash
+# ログ確認（エラーが出ていないか）
+journalctl -u forge -f
+
+# APIの疎通確認
+curl http://localhost:7860/sdapi/v1/sd-models | python3 -m json.tool | head -30
+```
+
+ブラウザで `http://<VPS_IP>:7860` を開くと、A1111とほぼ同じUIが表示されます。「あ、ほぼ同じだ」と思うはず。それがForgeのいいところで、**使い方を覚え直す必要がほとんどない**。移行コストが低いというのはこういうことです。
+
+---
+
+## Forgeでの速度改善を体感するための設定
+
+```
+# Forge UI上の推奨設定（Settings > Optimizations）
+- Unet storage dtype: fp8-e4m3fn（VRAM節約）
+- VAE dtype: bf16 
+- Forge preset: speed（速度優先の場合）
+```
+
+この設定を入れた上で生成してみると、A1111との差を実感しやすいです。特にVRAMがギリギリだったモデルで、余裕が出てくるのがわかります。「同じモデルなのになんか速い」という感覚は、試してみると普通にあります。
+
+---
+
+<div class="faq-section">
+<div class="faq-item">
+<button class="faq-question">Q. A1111の拡張機能（Extensions）はForgeでも使えますか？</button>
+<div class="faq-answer">多くのA1111拡張はForgeでも動作します。ControlNetはForgeにネイティブ統合されているため、別途インストール不要です。一部の古い拡張や独自フックを使う拡張は動作しない場合があります。Extensions > Install from URL から同じURLで試してみてください。</div>
+</div>
+<div class="faq-item">
+<button class="faq-question">Q. A1111とForgeを同じVPSに共存させられますか？</button>
+<div class="faq-answer">ポートを分けることで共存可能です（例: A1111は7860、Forgeは7861）。ただし同時起動するとVRAMを両方が使おうとしてOOMになる場合があります。どちらか一方のsystemdサービスを起動した状態で使うことを推奨します。</div>
+</div>
+<div class="faq-item">
+<button class="faq-question">Q. FLUX.1をForgeで使うために追加で必要なものはありますか？</button>
+<div class="faq-answer">FLUX.1-devまたはschnellのモデルファイル（約24GB）と、専用のVAE（ae.safetensors）、テキストエンコーダー（clip_l.safetensors、t5xxl_fp16.safetensors）が必要です。Forgeのモデルディレクトリにそれぞれ配置するとUIから選択できるようになります。</div>
+</div>
+</div>
+
+---
+
+## まとめ：あなたの使い方で選ぶ
+
+ForgeはA1111の使い勝手をそのままに、**速度・VRAM効率・FLUX.1対応**を大幅に強化した実質的な後継です。「移行しようか迷ってる」ならもう移行していい、というのが自分の判断です。
+
+ただ、GPU VPSのコストだけは現実を見てから判断してほしい。以下に用途別の判断をまとめます。
+
+| あなたの状況 | 判断 |
+|---|---|
+| A1111を使っていて速度に不満がある | → 今すぐForgeに移行していい。移行コストはほぼない |
+| FLUX.1を試してみたい | → ForgeのインストールとVRAM12GB以上のプランがセットで必要。モデルだけで24GB食うのを忘れずに |
+| SDXLをVRAM 8GBで動かしたい | → ForgeのVRAM最適化が効く。試す価値あり |
+| GPU VPSの月額が高く感じる | → 正直、高い。使う頻度を先に見積もること。月数時間程度なら時間課金プランが正解 |
+| 月にどれくらい使うか読めない | → まず時間課金で試す。固定料金に切り替えるのはコストが読めてから |
+| まずForgeを触ってみたい | → XServerかConoHaの無料お試し期間を使うのが損がない |
+
+GPU VPSは「立ち上げが楽でコスパが合うならあり」。でも月数万円が飛ぶ現実はちゃんと見てから契約してほしい。それだけ言えれば十分です。
+
+**「まずやってみる」が一番の近道です。** これが最終回答でも最適解でもない。使ってみて「自分には合わない」と気づくこともある。でも試さないまま迷い続けるのが一番もったいないし、完璧な選択なんてない。まず触ってみることが一番の近道だ。
+
+<a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow">XServer VPS →</a><img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt="">
+
+<a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow">ConoHa VPS →</a><img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt="">
+
+<!-- injected-related -->
+
+## あわせて読みたい
+
+- [AIツール（Claude Code / Codex）向けVPS比較ランキング初心…](/ranking/ai_vps_ranking/)
+- [失敗しないGPUサーバー選び：VRAM 24GB以上を格安で確保できるVPSラン…](/ranking/gpu_vps_ranking/)
+- [GPU搭載VPSを「必要な時だけ」時間単位で借りて画像生成AIをお試しする方法](/usecase/guide-gpu_hourly_vps/)
+- [あなたに合うVPSを30秒で診断する](/shindan/)

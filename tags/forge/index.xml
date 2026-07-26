@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Forge on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/forge/</link><description>Recent content in Forge on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 04 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/forge/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】WebUI (AUTOMATIC1111) からForgeへ！最新UIをVPSに導入する手順まとめ</title><link>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</link><pubDate>Sat, 04 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</guid><description>&lt;h1 id="webui-automatic1111-からforgeへ最新uiをvpsに導入する手順まとめ"&gt;WebUI (AUTOMATIC1111) からForgeへ！最新UIをVPSに導入する手順まとめ&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Forge on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/forge/</link><description>Recent content in Forge on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 04 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/forge/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】VPSでウェブUI（Forge/AUTOMATIC1111）を動かす完全手順：A1111からの移行まとめ</title><link>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</link><pubDate>Sat, 04 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</guid><description>&lt;h1 id="vpsでウェブuiforgeautomatic1111を動かす完全手順"&gt;VPSでウェブUI（Forge/AUTOMATIC1111）を動かす完全手順&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;A1111を使い続ける理由は、もうほぼない。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;同じGPUで速度が30〜70%上がって、VRAMの使い方も賢くなって、FLUX.1にも対応している。移行コストも低い。「どっちにするか迷ってる」なら、Forgeに乗り換えていい。これが自分の判断です。&lt;/p&gt;
@@ -6,6 +6,17 @@
 &lt;hr&gt;
 &lt;p&gt;2024年に登場した &lt;strong&gt;Stable Diffusion WebUI Forge&lt;/strong&gt;（通称「Forge」）は、AUTOMATIC1111（A1111）の後継として急速に普及しています。&lt;strong&gt;生成速度30〜70%向上・VRAMをより効率的に使用&lt;/strong&gt;という点で、同じGPUでも明らかにパフォーマンスが変わります。&lt;/p&gt;
 &lt;p&gt;本記事では、A1111からForgeへ移行する理由と、VPS上へのインストール手順を解説します。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="vpsでウェブuiを動かすとはどういうことか"&gt;VPSでウェブUIを動かすとはどういうことか&lt;/h2&gt;
+&lt;p&gt;「VPS ウェブUI」というキーワードで調べている人が気になるのは、&lt;strong&gt;ブラウザからアクセスできる画像生成環境をVPS上に構築できるか&lt;/strong&gt;、という点だと思います。答えは「できる」です。&lt;/p&gt;
+&lt;p&gt;Stable Diffusion系のウェブUI（WebUI）は、サーバー上で起動しておけばどのPCやスマホのブラウザからでも操作できます。&lt;code&gt;http://&amp;lt;VPS_IP&amp;gt;:7860&lt;/code&gt; にアクセスするだけで、A1111やForgeの生成画面が開く仕組みです。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VPSでウェブUIを動かすメリット&lt;/strong&gt;は主に3つです：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;自分のPCのスペックに関係なく動く&lt;/strong&gt;：ローカルにGPUがなくても、VPS側のGPUで生成できる&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;どこからでもアクセスできる&lt;/strong&gt;：自宅PCを持ち歩かなくてもブラウザさえあれば操作できる&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;サーバーが常時起動しているため生成が止まらない&lt;/strong&gt;：バッチ処理や長時間の連続生成に向いている&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ただし、&lt;strong&gt;「ウェブUI = 無料で動く」ではありません&lt;/strong&gt;。VPSでGPUを使う場合、月額数万円のコストがかかります。後のセクションで詳しく書きます。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="a1111とforgeの主な違い"&gt;A1111とForgeの主な違い&lt;/h2&gt;
 &lt;table&gt;
