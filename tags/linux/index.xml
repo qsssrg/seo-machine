@@ -1,4 +1,80 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/linux/</link><description>Recent content in Linux on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sat, 25 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】非エンジニアが初めてVPSを契約する前に知っておくべき「Linuxの基礎知識」5選</title><link>https://naruhodo-lab.uk/usecase/guide-linux_basics_for_vps/</link><pubDate>Sat, 25 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-linux_basics_for_vps/</guid><description>&lt;h1 id="2026年版非エンジニアが初めてvpsを契約する前に知っておくべきlinuxの基礎知識5選"&gt;【2026年版】非エンジニアが初めてVPSを契約する前に知っておくべき「Linuxの基礎知識」5選&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/linux/</link><description>Recent content in Linux on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 27 Jul 2026 16:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】Linuxコマンドがわからなくても大丈夫！AI（ChatGPT）に聞きながらVPSを構築するコツ</title><link>https://naruhodo-lab.uk/usecase/guide-chatgpt_vps_setup/</link><pubDate>Mon, 27 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-chatgpt_vps_setup/</guid><description>&lt;h1 id="2026年版linuxコマンドがわからなくても大丈夫aichatgptに聞きながらvpsを構築するコツ"&gt;【2026年版】Linuxコマンドがわからなくても大丈夫！AI（ChatGPT）に聞きながらVPSを構築するコツ&lt;/h1&gt;
+&lt;h2 id="筆者の結論先に書いておきます"&gt;筆者の結論（先に書いておきます）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;「Linuxよくわからないけど、ChatGPTと一緒に進めればVPSは構築できる」&lt;/strong&gt;――これが結論です。&lt;/p&gt;
+&lt;p&gt;自分もはじめはコマンドを一つ打つたびに「これ何してるんだろう」と思いながら進めていました。でも今はChatGPTに「このコマンドを一行ずつ日本語で説明して」と聞けばすぐわかる。正直、5年前と比べてVPS構築の難易度は相当下がっています。&lt;/p&gt;
+&lt;p&gt;ただし、ChatGPTの使い方を間違えると「コピペしたら動かない」「エラーで詰んだ」という沼にはまります。その落とし穴を具体的に書いておくので、参考にしてください。&lt;/p&gt;
+&lt;p&gt;あと、&lt;strong&gt;VPSをどこで借りるかについても先に書いておきます&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;とりあえず試したい・使う時間が読めない&lt;/strong&gt; → KAGOYAの時間課金＋14日無料お試しから入るのが精神的にラク&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;月76時間以上がっつり使う&lt;/strong&gt; → ConoHa VPSの固定料金（830円〜）のほうが損しない&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;この判断の根拠は後でちゃんと書きます。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="なぜchatgptはvps構築に向いているのか"&gt;なぜChatGPTはVPS構築に向いているのか&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;学習手段&lt;/th&gt;
+					&lt;th&gt;即時性&lt;/th&gt;
+					&lt;th&gt;状況対応&lt;/th&gt;
+					&lt;th&gt;説明の深さ&lt;/th&gt;
+					&lt;th&gt;コスト&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;書籍・記事&lt;/td&gt;
+					&lt;td&gt;低&lt;/td&gt;
+					&lt;td&gt;固定的&lt;/td&gt;
+					&lt;td&gt;深い&lt;/td&gt;
+					&lt;td&gt;書籍代&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;動画チュートリアル&lt;/td&gt;
+					&lt;td&gt;中&lt;/td&gt;
+					&lt;td&gt;固定的&lt;/td&gt;
+					&lt;td&gt;中程度&lt;/td&gt;
+					&lt;td&gt;無料〜有料&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;コミュニティ・フォーラム&lt;/td&gt;
+					&lt;td&gt;中&lt;/td&gt;
+					&lt;td&gt;やや柔軟&lt;/td&gt;
+					&lt;td&gt;ばらつきあり&lt;/td&gt;
+					&lt;td&gt;無料&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;ChatGPT&lt;/td&gt;
+					&lt;td&gt;高&lt;/td&gt;
+					&lt;td&gt;非常に柔軟&lt;/td&gt;
+					&lt;td&gt;調整可能&lt;/td&gt;
+					&lt;td&gt;無料〜月額&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ChatGPTの最大の強みは**「あなたの状況に合わせて答えが変わる」**点です。「Ubuntu 22.04でDockerをインストールしたい」と書くと、その環境に合ったコマンドが返ってきます。&lt;/p&gt;
+&lt;p&gt;本音を言えば、書籍やYouTubeのチュートリアルは「その人の環境で試したコマンド」なので、バージョンが違うだけで動かないことが普通にあります。自分も何回かこれで詰まりました。ChatGPTなら「Ubuntu 22.04、Docker最新版、sudo使いたい」と状況を細かく書ける。これが一番でかいです。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="効果的なプロンプトの書き方5つの型"&gt;効果的なプロンプトの書き方：5つの型&lt;/h2&gt;
+&lt;p&gt;はっきり書いておきます。ChatGPTへの聞き方が曖昧だと、返ってくる答えも曖昧になります。「VPSの設定を教えて」だけで聞いて「なんか違う答えが来た」というのは聞き方の問題です。自分もはじめはこれで無駄に時間を溶かしていました。&lt;/p&gt;
+&lt;h3 id="型1状況説明やりたいこと"&gt;型1：状況説明＋やりたいこと&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;ConoHa VPSでUbuntu 22.04を使っています。
+rootでログインした直後の状態から、Dockerをインストールして
+Open WebUIを起動したいです。
+順番にコマンドを教えてください。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;OS・バージョン・今の状態・ゴールをセットで書く。これだけで返ってくる答えの質が全然変わります。「VPSの設定教えて」と「上の質問」では、返ってくる内容の精度が段違いです。&lt;/p&gt;
+&lt;h3 id="型2エラーメッセージをそのまま貼る"&gt;型2：エラーメッセージをそのまま貼る&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;以下のエラーが出て先に進めません。原因と対処法を教えてください。
+
+E: Package &amp;#39;docker.io&amp;#39; has no installation candidate
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;エラーが出たとき、自分の言葉で「なんかdockerが入りません」と書いてしまう人がいます。もったいない。エラーテキストはそのままコピペするのが正解です。推測で書かない。AIは正確なエラー文字列があって初めて的確に答えられます。&lt;/p&gt;
+&lt;h3 id="型3コマンドの意味を聞く"&gt;型3：コマンドの意味を聞く&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;以下のコマンドの意味を一行ずつ日本語で説明してください。
+初心者でもわかるように。
+
+sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y
+sudo apt install -y ca-certificates curl gnupg lsb-release
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;意味がわからないコマンドを実行するのは、地雷を踏むのと同じです。この質問を追加で入れる習慣をつけるだけで、詰まったときの自己解決率が上がります。自分の場合、「動いたけど何をしたかわからない」という状態で次に進むと、だいたい後で痛い目を見ます。&lt;/p&gt;</description></item><item><title>【2026年版】非エンジニアが初めてVPSを契約する前に知っておくべき「Linuxの基礎知識」5選</title><link>https://naruhodo-lab.uk/usecase/guide-linux_basics_for_vps/</link><pubDate>Sat, 25 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-linux_basics_for_vps/</guid><description>&lt;h1 id="2026年版非エンジニアが初めてvpsを契約する前に知っておくべきlinuxの基礎知識5選"&gt;【2026年版】非エンジニアが初めてVPSを契約する前に知っておくべき「Linuxの基礎知識」5選&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;この5つさえ頭に入っていれば、VPSは動かせます。全部暗記しなくていい。「こういう概念があるんだ」とわかっていれば、あとはチュートリアルをコピペしながら手を動かすだけで前に進めます。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;正直に言うと、自分も最初はターミナルを開いただけで閉じていました。「何これ、何も起きてない」みたいな。でもある時期にこの5つの概念がなんとなく頭に入ったタイミングから、急に「あ、これ読める」「この操作、意味がわかる」が増えました。だからVPS借りる前に先に知っておいて、絶対に損はないです。&lt;/p&gt;
