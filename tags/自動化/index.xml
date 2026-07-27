@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/</link><description>Recent content in 自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Fri, 17 Jul 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する</title><link>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</link><pubDate>Fri, 17 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</guid><description>&lt;h1 id="動画の自動切り抜きaiをvps上で動かしてyoutube-shortsやtiktokを量産する"&gt;動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/</link><description>Recent content in 自動化 on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 27 Jul 2026 12:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E8%87%AA%E5%8B%95%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>【2026年版】VPSのバックアップを自動化する方法：もしもAIの学習データが消えた時の備え</title><link>https://naruhodo-lab.uk/usecase/guide-vps_backup/</link><pubDate>Mon, 27 Jul 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-vps_backup/</guid><description>&lt;h1 id="2026年版vpsのバックアップを自動化する方法もしもaiの学習データが消えた時の備え"&gt;【2026年版】VPSのバックアップを自動化する方法：もしもAIの学習データが消えた時の備え&lt;/h1&gt;
+&lt;h2 id="筆者の結論最初に読んでください"&gt;筆者の結論（最初に読んでください）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;はっきり書いておきます。バックアップを「いつかやろう」と思ったまま運用してる人は、一度消えてから後悔します。自分も経験済みです。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;優先順位をつけるとこうなります。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;まず rsync でローカルバックアップだけでも今日設定する&lt;/strong&gt;（30分あれば終わる）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;スナップショットは「大型変更の直前だけ」で十分&lt;/strong&gt;（毎回は料金がかさむ）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;クラウド転送（rclone）は週1でいい&lt;/strong&gt;（毎日やると転送コストが積み上がる）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;「全部完璧にやろう」と思うと何もやらないまま終わります。まず①だけ動かすのが正解です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;VPSにAIツールを構築して運用していると、ファインチューニング済みモデル・学習データ・設定ファイルといった&lt;strong&gt;再現が難しいデータ&lt;/strong&gt;が蓄積していきます。ハードウェア障害、操作ミスによる削除、ランサムウェアなどのリスクは常に存在します。&lt;/p&gt;
+&lt;p&gt;この記事では、rsync・rcloneを使ったバックアップスクリプトとcronによる自動化、さらに各VPSサービスのスナップショット機能を組み合わせた多層防御を解説します。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="バックアップ戦略の3層構造"&gt;バックアップ戦略の3層構造&lt;/h2&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;レイヤー&lt;/th&gt;
+					&lt;th&gt;方法&lt;/th&gt;
+					&lt;th&gt;頻度&lt;/th&gt;
+					&lt;th&gt;コスト&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;①VPS内バックアップ&lt;/td&gt;
+					&lt;td&gt;rsync（別ディレクトリ）&lt;/td&gt;
+					&lt;td&gt;毎時&lt;/td&gt;
+					&lt;td&gt;無料（ディスク消費）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;②別サーバー/NASへ転送&lt;/td&gt;
+					&lt;td&gt;rsync over SSH&lt;/td&gt;
+					&lt;td&gt;日次&lt;/td&gt;
+					&lt;td&gt;サーバー代のみ&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;③クラウドストレージ&lt;/td&gt;
+					&lt;td&gt;rclone（S3/GCS/Backblaze）&lt;/td&gt;
+					&lt;td&gt;週次&lt;/td&gt;
+					&lt;td&gt;ストレージ従量課金&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;④スナップショット&lt;/td&gt;
+					&lt;td&gt;VPS提供機能&lt;/td&gt;
+					&lt;td&gt;変更前に手動&lt;/td&gt;
+					&lt;td&gt;プラン依存&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;3-2-1ルール（3コピー・2種類のメディア・1つはオフサイト）を意識するのが鉄則です。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;正直に言うと、②の「別サーバーへ転送」はハードルが上がるので最初はスキップしてOKです。&lt;/strong&gt; ①と③だけでも3-2-1に近い構成は作れます。②はNASを持ってる人か、すでに別のVPSを契約してる人だけ考えてください。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="rsyncで同一サーバー内バックアップ"&gt;rsyncで同一サーバー内バックアップ&lt;/h2&gt;
+&lt;p&gt;まずはシンプルなrsyncによる同一サーバー内バックアップから始めましょう。&lt;strong&gt;これが一番コスパがいい。&lt;/strong&gt; 追加費用ゼロで、設定も一番シンプルです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# /usr/local/bin/backup_ai_data.sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 設定&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;SOURCE_DIR&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;/home/aiuser/models&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;BACKUP_DIR&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;/backup/ai_models&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;DATE&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M%S&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;LOG_FILE&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;/var/log/backup_ai.log&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# バックアップ実行&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;rsync -avz --delete &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --exclude&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;*.tmp&amp;#34;&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --exclude&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;__pycache__/&amp;#34;&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;SOURCE_DIR&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;/&amp;#34;&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;BACKUP_DIR&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;/latest/&amp;#34;&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &amp;gt;&amp;gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;LOG_FILE&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt; 2&amp;gt;&amp;amp;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 日次でスナップショット的なコピーを作成&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date +%H&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt; -eq &lt;span style="color:#e6db74"&gt;&amp;#34;02&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;]&lt;/span&gt;; &lt;span style="color:#66d9ef"&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cp -al &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;BACKUP_DIR&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;/latest&amp;#34;&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;BACKUP_DIR&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;/&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;DATE&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 30日より古いバックアップを削除&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; find &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;BACKUP_DIR&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt; -maxdepth &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt; -type d -mtime +30 -exec rm -rf &lt;span style="color:#f92672"&gt;{}&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;\;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;&lt;span style="color:#e6db74"&gt;: バックアップ完了&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;LOG_FILE&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# スクリプトに実行権限を付与&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo chmod +x /usr/local/bin/backup_ai_data.sh
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 動作確認&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo /usr/local/bin/backup_ai_data.sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;cp -al&lt;/code&gt; のところ、ハードリンクを使っているのがポイントです。30日分のバックアップを作るように見えて、変更のないファイルはディスクを消費しません。AIモデルみたいに「サイズが大きいけど変更は少ない」データとの相性が特にいい。&lt;/p&gt;</description></item><item><title>【2026年版】動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する</title><link>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</link><pubDate>Fri, 17 Jul 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-video_clip_ai/</guid><description>&lt;h1 id="動画の自動切り抜きaiをvps上で動かしてyoutube-shortsやtiktokを量産する"&gt;動画の自動切り抜きAIをVPS上で動かしてYouTube ShortsやTikTokを量産する&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;VPSで動かす。GPUは要らない。CPUで十分。&lt;/strong&gt;&lt;/p&gt;
