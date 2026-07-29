@@ -1732,3 +1732,22 @@ button:focus-visible {
   .shindan-article-cta-btn { display: block; font-size: 1.05rem; padding: 0.95rem 1rem; }
 }
 @media print { .shindan-inline-cta, .shindan-article-cta { display: none; } }
+
+/* ==== [格上げ v1 2026-07-29] Noto明朝見出し + 本文グレー ==== */
+:root{ --heading-serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho","YuMincho",serif; }
+body{ color:#363c46; }  /* 平文を少しグレー寄りに(見出しは下で濃色に戻す) */
+h1, h2, h3, h4,
+.hero h1, .section h2, .article h1, .article-content h2, .article-content h3,
+.ranking-body h3, .faq-section h2, .toc h3, .article-card h2, .article-card h3 {
+  font-family: var(--heading-serif);
+  color: var(--text);        /* 見出しは濃色を維持 */
+  letter-spacing: .01em;
+}
+/* ヘッダーの横はみ出し防止(ブランド名は org_name の短い表記に) */
+.site-header .container{ min-width:0; }
+.site-title{ max-width:100%; overflow-wrap:anywhere; }
+/* 診断CTAバナー: モバイルで導入文とボタンの間の空白を詰める */
+@media (max-width: 600px){
+  .shindan-cta-inner{ gap: .8rem; }
+  .shindan-cta-banner{ padding: 1.4rem 0; }
+}
