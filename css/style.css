@@ -1827,3 +1827,14 @@ h1, h2, h3, h4,
 .article-content tbody tr:nth-child(even){ background:var(--bg-light); }
 .article-content tbody tr:hover{ background:var(--primary-bg); }
 .article-content tbody td:first-child, .article-content tbody th:first-child{ font-weight:700; color:var(--text); white-space:nowrap; }
+
+/* ==== [P2-9 A2 2026-07-30] 背景巡回＋中央タイトルオーバーレイ ==== */
+.article-card.a2 .card-eye{ position:relative; display:block; aspect-ratio:1200/630; overflow:hidden; background:#0f1c33; }
+.article-card.a2 .card-eye img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease; }
+.article-card.a2:hover .card-eye img{ transform:scale(1.04); }
+.article-card.a2 .card-ov{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center;
+  background:linear-gradient(0deg,rgba(8,15,30,.55),rgba(8,15,30,.32)); padding:.7rem 1rem; }
+.article-card.a2 .card-ov-t{ font-family:var(--heading-serif); color:#fff; font-weight:700; font-size:1.05rem; line-height:1.42; margin:0;
+  text-shadow:0 2px 12px rgba(0,0,0,.55); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.article-card.a2 .card-body{ padding:.85rem 1.1rem 1.05rem; }
+.article-card.a2 .card-body p{ margin:0; color:var(--text-mid); font-size:.85rem; }
