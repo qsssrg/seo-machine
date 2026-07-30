@@ -1851,3 +1851,22 @@ h1, h2, h3, h4,
 .lf-chip.is-active{ background:var(--primary); border-color:var(--primary); color:#fff; }
 .lf-count{ margin:.7rem 0 0; font-family:ui-monospace,monospace; font-size:.72rem; color:var(--text-light); letter-spacing:.06em; }
 .lf-empty{ text-align:center; color:var(--text-light); padding:2rem 1rem; }
+
+/* ==== [P2-3 ホーム埋め込み診断 2026-07-30] ==== */
+.home-shindan{ margin:0 0 1.6rem; padding:1.5rem 1.6rem; border-radius:var(--radius);
+  background:linear-gradient(135deg,#0f1c33,#1d4ed8);
+  background-image:
+    repeating-linear-gradient(rgba(255,255,255,.05) 0 1px,transparent 1px 24px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 24px),
+    linear-gradient(135deg,#0f1c33,#1d4ed8);
+  box-shadow:var(--shadow-md); }
+.home-shindan .hs-kicker{ font-family:ui-monospace,monospace; font-size:.72rem; letter-spacing:.16em; color:#bcd4ff; margin:0 0 .4rem; }
+.home-shindan .hs-q{ font-family:var(--heading-serif); color:#fff; font-size:clamp(1.2rem,3.2vw,1.6rem); margin:0 0 1rem; line-height:1.4; }
+.home-shindan .hs-opts{ display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
+@media(max-width:600px){ .home-shindan .hs-opts{ grid-template-columns:1fr; } }
+.home-shindan .hs-opt{ display:flex; align-items:center; gap:.7rem; padding:.85rem 1rem; border-radius:var(--radius-sm);
+  background:rgba(255,255,255,.96); color:var(--ink,#0f1c33); font-weight:700; font-size:.92rem; text-decoration:none;
+  border:2px solid transparent; transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition); }
+.home-shindan .hs-opt:hover{ transform:translateY(-2px); border-color:var(--cta-orange); box-shadow:0 8px 20px rgba(0,0,0,.22); color:#0f1c33; }
+.home-shindan .hs-emoji{ font-size:1.35rem; line-height:1; flex:none; }
+.home-shindan .hs-note{ margin:.9rem 0 0; color:rgba(255,255,255,.9); font-size:.8rem; }
