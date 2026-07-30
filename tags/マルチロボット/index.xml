@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>マルチロボット on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/%E3%83%9E%E3%83%AB%E3%83%81%E3%83%AD%E3%83%9C%E3%83%83%E3%83%88/</link><description>Recent content in マルチロボット on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Fri, 31 Jul 2026 06:46:21 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/%E3%83%9E%E3%83%AB%E3%83%81%E3%83%AD%E3%83%9C%E3%83%83%E3%83%88/index.xml" rel="self" type="application/rss+xml"/><item><title>Google DeepMindが「Gemini Robotics 2」を発表——全身制御・高度な手先作業・複数ロボット連携を一挙実現</title><link>https://naruhodo-lab.uk/blog/gemini-robotics-2-whole-body-intelligence/</link><pubDate>Fri, 31 Jul 2026 06:46:21 +0900</pubDate><guid>https://naruhodo-lab.uk/blog/gemini-robotics-2-whole-body-intelligence/</guid><description>&lt;h1 id="google-deepmindがgemini-robotics-2を発表全身制御精密な手先動作複数ロボット連携を一挙実現"&gt;Google DeepMindが「Gemini Robotics 2」を発表——全身制御・精密な手先動作・複数ロボット連携を一挙実現&lt;/h1&gt;
+&lt;p&gt;2026年7月30日、Google DeepMindはロボット向けAIモデルの新世代「Gemini Robotics 2」を発表した。HackerNewsでも多数のコメントを集め、AIとロボット工学の境界線がまた一歩動いた瞬間として注目を集めている。&lt;/p&gt;
+&lt;h2 id="何が変わったのか3つのモデルで構成される新世代"&gt;何が変わったのか：3つのモデルで構成される新世代&lt;/h2&gt;
+&lt;p&gt;Gemini Robotics 2は単一のモデルではなく、役割の異なる3つのモデルで構成される。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Gemini Robotics 2&lt;/strong&gt;（フラッグシップVLA）は、カメラ映像と言語命令を受け取り、モーター制御信号に変換する「視覚・言語・行動モデル（VLA）」だ。VLAとは、目で見て、言葉を理解し、体を動かすという3つの処理を統合したAIの形式と理解すればよい。旧モデルが上半身の作業台レベルの動作にとどまっていたのに対し、今回は足先から指先まで全身を制御できるようになった。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Gemini Robotics ER 2&lt;/strong&gt;（推論モデル）は、ロボットの「高次判断を担う脳」として機能する視覚言語モデル（VLM）だ。ユーザーからの指示を受け取り、部屋の状況を観察し、複数ステップにわたる作業計画を立ててVLAに指示を送る。このモデルはすでにGoogle AI Studioで利用可能となっており、Gemini Enterprise Agent Platformでもプライベートプレビューが始まっている。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Gemini Robotics On-Device 2&lt;/strong&gt;（オンデバイス版VLA）は、クラウドに頼らずロボット本体上でローカル実行できるよう効率化されたモデルだ。新しいロボットの体に数時間のデータで適応できる「高速な機体適応」が特徴で、異なる形状のロボットへの展開コストを大幅に下げる可能性がある。VLAとOn-Device版はまだ早期アクセスパートナー向けの提供段階にある。&lt;/p&gt;
+&lt;h2 id="足先から指先まで全身制御の意味"&gt;「足先から指先まで」——全身制御の意味&lt;/h2&gt;
+&lt;p&gt;これまでのロボットの多くは、特定の動作だけ事前にプログラムされているか、人間がリアルタイムに遠隔操作するものだった。異なる場所・物の配置・状況への自律的な適応が難しく、「ある工場の同じ作業台の同じ作業」にしか対応できないケースが多かった。&lt;/p&gt;
+&lt;p&gt;Gemini Robotics 2が示したデモでは、Apptronik社のヒューマノイドロボット「Apollo 2」に「じょうろを棚の下段にある緑のビンに入れて」と指示すると、ロボットはテーブルまで歩き、じょうろを拾い上げ、棚まで数歩移動し、正確に目的の場所に置く動作を実現している。かがむ・伸び上がる・移動しながら物を掴むといった、人間であれば当然の動作の組み合わせを、AIが統合的に制御している点が今回の核心だ。&lt;/p&gt;
+&lt;h2 id="結び目を結べるロボット手先の精度"&gt;結び目を結べるロボット——手先の精度&lt;/h2&gt;
+&lt;p&gt;全身制御と並ぶもう一つの進化が手先の精緻さだ。Apollo 2に搭載された「SharpaWaveハンド」は5本指・22の自由度（関節の動かせる方向の数）を持つ。Gemini Robotics 2はこのハンドを制御してロープの結び目を作ったり、ジップロックバッグを閉じたりといった繊細な動作をこなす。また、標準的な2本指グリッパーを持つ「Franka Duo」プラットフォームでは、隙間の少ない密な荷詰め作業を実行している。&lt;/p&gt;
+&lt;p&gt;発表資料では、全身動作やグリッパーを使う精密作業では中〜高い成功率を記録しているとしつつ、多指での精密操作は「依然として難しい課題」と正直に述べている点も注目に値する。&lt;/p&gt;
+&lt;h2 id="複数のロボットが協調する"&gt;複数のロボットが協調する&lt;/h2&gt;
+&lt;p&gt;Gemini Robotics ER 2には「複数のロボットをチームとして動かす」機能も追加された。1台が作業し、もう1台が補助するといった役割分担を、AIが調整する仕組みだ。今回の発表では、同一のモデルのチェックポイントを使いながら、Apollo 2＋SharpaWaveハンド、Apollo 2＋Inspireハンド、Franka Duo＋Robotiqグリッパーという3種類の異なる機体を制御できることも示された。&lt;/p&gt;
+&lt;h2 id="なぜ今これが重要か"&gt;なぜ今、これが重要か&lt;/h2&gt;
+&lt;p&gt;ロボットに習得させたスキルを別の機体に移すことは、これまで非常に困難だった。形が変われば最初からやり直しに近い状態になるため、ロボット開発のコストと時間が膨らんできた。On-Device 2が示す「数時間のデータで新機体に適応できる」という方向性は、この壁を崩す可能性を持つ。&lt;/p&gt;
+&lt;p&gt;また、推論モデルのGemini Robotics ER 2がGoogle AI Studioで利用できるようになったことで、ロボットを実際に持っていない研究者や開発者でも「ロボットの思考部分」にアクセスして実験できる環境が生まれつつある。&lt;/p&gt;
+&lt;p&gt;Google DeepMindは今後、動作速度のさらなる向上と人間レベルの手先精度の実現を課題として挙げており、今回発表されたシステムは「実用化への重要な一歩」という段階の評価が妥当だろう。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;以上です。なるほどラボでは、こうしたAIを&amp;quot;自分の環境で動かしたい・24時間働かせ続けたい&amp;quot;という方向けの情報を発信しています。自分に合った動かし方が気になる方は、無料の&lt;a href="https://naruhodo-lab.uk/shindan/"&gt;診断&lt;/a&gt;をどうぞ。&lt;/p&gt;</description></item></channel></rss>
