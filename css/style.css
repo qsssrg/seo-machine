@@ -1870,3 +1870,5 @@ h1, h2, h3, h4,
 .home-shindan .hs-opt:hover{ transform:translateY(-2px); border-color:var(--cta-orange); box-shadow:0 8px 20px rgba(0,0,0,.22); color:#0f1c33; }
 .home-shindan .hs-emoji{ font-size:1.35rem; line-height:1; flex:none; }
 .home-shindan .hs-note{ margin:.9rem 0 0; color:rgba(255,255,255,.9); font-size:.8rem; }
+
+/* approve-path test */
