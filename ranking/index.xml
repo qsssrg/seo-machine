@@ -411,7 +411,7 @@ Claude CodeはAPI経由で動くのでGPUは一切不要です。GPU推しの記
 &lt;p&gt;あと、PC立ち上げっぱなしでAIを動かすのは精神的にきつい。何かあったらリモートデスクトップで入らなきゃいけないし、全然「手放し」にならない。VPSにするとその不安が全部消える。月830円でその安心を買えるなら安い。&lt;/p&gt;
 &lt;p&gt;※ 各社の料金は契約期間やキャンペーンにより変動します。最新の正確な料金は各社公式サイトでご確認ください。&lt;/p&gt;
 &lt;h2 id="そもそもvpsとははじめての方向け"&gt;そもそもVPSとは？（はじめての方向け）&lt;/h2&gt;
-&lt;div class="article-image"&gt;&lt;img src="https://naruhodo-lab.uk/images/ai-vps/what-is-vps.webp" alt="自宅PCとクラウドVPSの違いを説明する図解" width="1536" height="1024" loading="lazy"&gt;&lt;/div&gt;
+&lt;div class="article-image"&gt;&lt;img src="https://naruhodo-lab.uk/images/ai-vps/what-is-vps-v2.webp" alt="自宅PCとクラウドVPSの違いを説明する図解" width="1200" height="800" loading="lazy"&gt;&lt;/div&gt;
 &lt;p&gt;VPS（ブイピーエス）とは、インターネット上にある「自分専用のパソコン」のようなものです。データセンターにある高性能なサーバーを、月額料金を払って借りるイメージです。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;自宅PCの限界と、VPSなら解決できる理由：&lt;/strong&gt;&lt;/p&gt;
 &lt;table&gt;
