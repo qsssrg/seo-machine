@@ -1896,8 +1896,8 @@ h1, h2, h3, h4,
 .site-mark{ width:34px; height:34px; flex:none; display:block; border-radius:9px; }
 .site-title-text{ display:flex; flex-direction:column; line-height:1.25; }
 .site-title-name{
-  font-family:"Zen Old Mincho", var(--heading-serif); font-size:1.34rem; font-weight:900; color:#fff;
-  letter-spacing:.11em;
+  font-family:"Zen Kaku Gothic New","Noto Sans JP",sans-serif; font-size:1.3rem; font-weight:900; color:#fff;
+  letter-spacing:.08em;
 }
 .site-title-sub{
   font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;
