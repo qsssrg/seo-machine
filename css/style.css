@@ -1896,19 +1896,20 @@ h1, h2, h3, h4,
 .site-mark{ width:34px; height:34px; flex:none; display:block; border-radius:9px; }
 .site-title-text{ display:flex; flex-direction:column; line-height:1.25; }
 .site-title-name{
-  font-family:var(--heading-serif); font-size:1.22rem; font-weight:800; color:#fff;
-  letter-spacing:.06em;
+  font-family:"Zen Old Mincho", var(--heading-serif); font-size:1.34rem; font-weight:900; color:#fff;
+  letter-spacing:.11em;
 }
 .site-title-sub{
-  font-size:.68rem; font-weight:500; letter-spacing:.08em; color:rgba(189,214,255,.92);
-  white-space:nowrap;
+  font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;
+  font-size:.58rem; font-weight:500; letter-spacing:.34em; color:rgba(189,214,255,.86);
+  white-space:nowrap; margin-top:2px;
 }
 .site-header nav a{ color:rgba(255,255,255,.86); }
 .site-header nav a:hover{ color:#fff; background:rgba(255,255,255,.12); }
 @media(max-width:640px){
   .site-mark{ width:28px; height:28px; }
   .site-title-name{ font-size:1.05rem; }
-  .site-title-sub{ display:none; }         /* 幅が足りないと折れるので肩書きはスマホで隠す */
+  .site-title-sub{ font-size:.52rem; letter-spacing:.3em; }  /* 英字サブは短いのでスマホでも出す */
   .site-header::before{ background-position:center, right -60px center; }
   .site-header .container{ justify-content:center; }
   .site-header nav{ flex-wrap:wrap; justify-content:center; }
