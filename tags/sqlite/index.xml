@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SQLite on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/sqlite/</link><description>Recent content in SQLite on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Tue, 04 Aug 2026 07:45:09 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/sqlite/index.xml" rel="self" type="application/rss+xml"/><item><title>「SQLiteに深刻な脆弱性」→JFrogが調べたら全部でたらめだった話</title><link>https://naruhodo-lab.uk/blog/sqlite-fake-cves-llm-slop-jfrog/</link><pubDate>Tue, 04 Aug 2026 07:45:09 +0900</pubDate><guid>https://naruhodo-lab.uk/blog/sqlite-fake-cves-llm-slop-jfrog/</guid><description>&lt;h1 id="sqliteに深刻な脆弱性jfrogが調べたら全部でたらめだった話"&gt;「SQLiteに深刻な脆弱性」→JFrogが調べたら全部でたらめだった話&lt;/h1&gt;
+&lt;p&gt;2026年7月末、あるGitHubリポジトリが静かに公開された。アカウント名は &lt;code&gt;programmervuln&lt;/code&gt;、リポジトリ名は &lt;code&gt;cveadvisory-&lt;/code&gt;。中身は、誰もが使うデータベースライブラリ「SQLite」の脆弱性を報告するアドバイザリ（注意勧告文書）の束だった。&lt;/p&gt;
+&lt;p&gt;この投稿はすぐにセキュリティ界隈を動かした。アメリカの公的機関であるNVD（国家脆弱性データベース）がこれらのCVEをフラグ付けし、報告に「9.8 CRITICAL」という高スコアが並んだ。CISAのADP（アメリカのサイバーセキュリティ機関の分析チーム）も同意したとされている（ただし詳細なプロセスは元の報告からは不明だ）。&lt;/p&gt;
+&lt;p&gt;――ところが、報告の中身はほぼすべて嘘だった。&lt;/p&gt;
+&lt;h2 id="調べたら関数そのものが存在しなかった"&gt;「調べたら関数そのものが存在しなかった」&lt;/h2&gt;
+&lt;p&gt;JFrogのセキュリティ研究者チームが実際にソースコードを掘り起こして検証した。手順はこうだ。公式のSQLiteリポジトリから報告に書かれたバージョン（3.41.0、3.51.2、3.51.3）のソースを取得し、Dockerコンテナ（汚染のない独立した仮想環境）でビルド。報告に添付されたPoC（実際に脆弱性を再現するためのサンプルコード）を「ASan」と呼ばれる記憶管理バグ検出ツールを有効にした状態で実行した。&lt;/p&gt;
+&lt;p&gt;結果はことごとく「バグは存在しない」だった。&lt;/p&gt;
+&lt;p&gt;たとえば &lt;code&gt;CVE-2026-51302&lt;/code&gt;（深刻度スコア9.8）。報告では「&lt;code&gt;exprComputeOperands()&lt;/code&gt; という関数でメモリの解放後に不正アクセスが起きる」と主張していた。しかしこの関数、SQLite 3.41には&lt;strong&gt;存在しない&lt;/strong&gt;。2025年中頃のコミットで追加された比較的新しい関数であり、3.41.0が対象のはずの報告が参照できるわけがない。&lt;/p&gt;
+&lt;p&gt;なお、元のニュースによれば、Red Hatはこの脆弱性にいったん「10.0 Critical」（満点）のスコアを付与した。JFrogが調査を進める中でスコアが「7.6 High」に引き下げられたことが確認されているが、その変更の詳細については元の報告では言及されていない。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;CVE-2026-51303&lt;/code&gt;（同9.8）にいたっては「バージョン3.51.3でパッチが当てられた」と書いてあったが、3.51.2と3.51.3の差分を実際に見ると、報告が言及している &lt;code&gt;src/expr.c&lt;/code&gt; には一行も変更がない。「パッチ」は丸ごと捏造だった。&lt;/p&gt;
+&lt;p&gt;PoC（再現コード）を実行してもクラッシュどころかエラーすら出ない。「行番号1012と1026に問題がある」と書いてある箇所を見ると、1012行目はコメント行、1026行目はメモリ確保の命令で、脆弱性とは無関係。SQLiteの公式アドバイザリページ（実際の脆弱性を追う際の一次情報源として業界で信頼されている）にも、これらのCVEはひとつも載っていない。&lt;/p&gt;
+&lt;h2 id="aiが脆弱性報告を生成していた"&gt;AIが脆弱性報告を「生成」していた&lt;/h2&gt;
+&lt;p&gt;JFrogがさらに踏み込んだのは「なぜこんな報告が量産されたのか」という点だ。&lt;/p&gt;
+&lt;p&gt;チームはGPTZeroというAI生成文章の検出ツールを使い、このリポジトリのアドバイザリを検証した。すると、個別に検査しても、全アドバイザリをひとつのファイルにまとめて検査しても、「AI生成コンテンツ」の警告が出た。&lt;/p&gt;
+&lt;p&gt;GPTZeroはLLM（大規模言語モデル。ChatGPTやClaudeのような文章生成AIのこと）が書いた文章を統計的に検出するツールだ。完璧ではないが、文体の均質さや語彙の使われ方のパターンを手がかりにする。&lt;/p&gt;
+&lt;p&gt;JFrogのチームは「このリポジトリで公開された50件以上のCVEのうち、1件を除いてすべてがLLMスラップ（AIが雑に生成したコンテンツ）だと考えている」と結論づけた。&lt;/p&gt;
+&lt;p&gt;LLMは「もっともらしい文章」を生成する。SQLiteのソースコードは公開されているので、AIに「脆弱性の報告文を書いて」と頼めば、それらしい関数名・行番号・シナリオが出てくる。しかし「それらしさ」と「正確さ」は別物だ。AIは存在しない関数名を自信満々に書き、実際に動かないPoC SQLを添付し、それが本物の脆弱性報告のように見える文書を量産できる。&lt;/p&gt;
+&lt;h2 id="なぜ公式データベースが重大と判定したのか"&gt;なぜ公式データベースが「重大」と判定したのか&lt;/h2&gt;
+&lt;p&gt;ここで問題になるのは、JFrogが「嘘だ」と見抜けた内容を、なぜNVDやCISAは重大と扱ってしまったのか、という点だ。&lt;/p&gt;
+&lt;p&gt;背景には、CVEの処理量の問題がある。CVE（Common Vulnerabilities and Exposures）とは、発見されたセキュリティ上の欠陥に振られる共通の識別番号だ。世界中から毎日大量に報告が届くため、NVDがすべてを深く人力検証するのは現実的でない。一定の形式が整っていれば、内容の真偽を精査せずにデータベースへ登録・採点されることがある。&lt;/p&gt;
+&lt;p&gt;Red Hatが満点スコアをつけた後に引き下げが起きたという一連の流れは、「形式を見て採点したら後から誤りが判明した」という構造を示している。詳細な変更経緯はJFrogの元報告でも明らかではないが、こうした「後からの訂正」が必要になったこと自体が、査読の限界を物語っている。&lt;/p&gt;
+&lt;h2 id="信頼できる情報源が汚染されていく問題"&gt;「信頼できる情報源」が汚染されていく問題&lt;/h2&gt;
+&lt;p&gt;この一連の出来事が示す問題は、SQLite固有の話ではない。&lt;/p&gt;
+&lt;p&gt;セキュリティの現場では、CVEデータベースやNVDは「信頼できる情報源」として扱われる。企業のシステム担当者がソフトウェアの更新優先度を判断したり、脆弱性スキャナーがアラートを出したりするとき、多くはこれらのデータベースを参照している。&lt;/p&gt;
+&lt;p&gt;「9.8 Critical」のスコアがついたCVEを見れば、担当者は緊急対応を検討する。パッチを当てようとして「パッチ自体が存在しない」と気づく。調べると「報告された関数すら存在しない」とわかる。そこまで気づける組織はどれだけあるか。&lt;/p&gt;
+&lt;p&gt;JFrogのチームが「LLMスラップ」と呼んだこの現象——AIが体裁だけ整った偽情報を量産し、それが公式データベースに取り込まれていく流れ——は、今後も繰り返される可能性がある。CVEの申請プロセス自体に、AI生成コンテンツを弾くための仕組みはまだほとんど整っていないからだ。&lt;/p&gt;
+&lt;p&gt;今回JFrogが実施したような「実際にビルドしてPoCを動かす」という地道な検証が、逆説的に最も確実な防波堤になっている。&lt;/p&gt;
+&lt;p&gt;以上です。なるほどラボでは、こうしたAIを&amp;quot;自分の環境で動かしたい・24時間働かせ続けたい&amp;quot;という方向けの情報を発信しています。自分に合った動かし方が気になる方は、無料の&lt;a href="https://naruhodo-lab.uk/shindan/"&gt;診断&lt;/a&gt;をどうぞ。&lt;/p&gt;</description></item></channel></rss>
