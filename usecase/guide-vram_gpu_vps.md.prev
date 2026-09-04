@@ -1,0 +1,250 @@
+---
+title: "ローカルLLMに必要なVRAM容量とVPSのGPU対応表【2026年最新】"
+date: 2026-07-01T16:00:00+09:00
+description: "GPU推し記事には注意。ローカルLLMに必要なVRAM量を正直に整理し、用途別にGPU VPSが本当に必要かどうかを判断基準ごとに解説します。"
+slug: "guide-vram_gpu_vps"
+categories: ["用途別ガイド"]
+tags: ["VRAM", "GPU", "ローカルLLM", "VPS スペック", "AI 環境構築", "XServer VPS", "さくらのVPS"]
+type: "usecase"
+---
+
+
+# ローカルLLMを動かすのに必要なVRAM容量と、VPSのメモリ・GPU対応表
+
+---
+
+## 【最初に結論を書いておきます】
+
+**何をやりたいかによって、GPUが必要かどうかはっきり変わります。**
+
+- **Claude CodeやChatGPTのAPIを使う自動化がやりたい → GPUは不要。CPUのVPSで十分。**
+- **Llama・Mistralなどのモデルをローカルで動かしたい → GPUがあると快適。ただしモデルサイズ次第。**
+- **Stable Diffusionで画像生成したい → GPUほぼ必須。ただし月数万円かかる覚悟が必要。**
+
+正直に言うと、世の中には「とりあえずGPU搭載VPSを勧める」記事が多いです。アフィリエイト報酬が高いGPUプランに誘導したい、という動機が透けて見えるものもある。この記事では用途別にGPUが本当に必要なのかを整理します。
+
+---
+
+## 「VRAM不足」でLLMが動かない！その原因と解決策
+
+ローカルLLMに挑戦したものの「CUDA out of memory」「メモリ不足で起動できない」と詰まった経験はありませんか？
+
+ローカルLLM（Ollama・llama.cpp・vLLMなど）を動かす上で**最大の壁がVRAM**です。モデルのパラメータ数と量子化レベルによって必要なVRAM容量が変わるため、事前に知っておかないとVPSを契約しても無駄になります。
+
+ただし、ここで一度立ち止まって考えてほしい。
+
+**「ローカルLLMを動かす」というのは、APIで外部のモデルを呼ぶこととは全然別の話です。**
+
+Claude CodeやOpenAI APIを使った自動化・コーディング補助がやりたいだけなら、GPUは1バイトも関係ない。APIを叩くのはCPUの仕事です。それなのに「AI開発にはGPUが必要」みたいなくくり方で高額プランへ誘導する記事は、正直あまり信用しないほうがいい。
+
+この記事では「どのモデルに何GBのVRAMが必要か」を表で整理しつつ、**あなたの用途でGPUが本当に必要なのか**も合わせて判断できるように書きます。
+
+---
+
+## モデル別・必要VRAM早見表
+
+| モデル名 | パラメータ数 | 量子化 | 必要VRAM | 速度感 |
+|----------|-------------|--------|---------|--------|
+| Gemma 2B | 2B | Q4 | 約2GB | 爆速 |
+| Llama 3.2 3B | 3B | Q4 | 約3GB | 高速 |
+| Mistral 7B | 7B | Q4 | 約5GB | 快適 |
+| Llama 3.1 8B | 8B | Q4 | 約6GB | 快適 |
+| Llama 3.1 8B | 8B | Q8（高精度） | 約10GB | 普通 |
+| Llama 3.1 70B | 70B | Q4 | 約40GB | 遅め |
+| Llama 3.1 70B | 70B | Q8 | 約80GB | 低速 |
+
+**Q4/Q8とは**：量子化の精度設定。数字が大きいほど高精度ですが、その分VRAMをより多く消費します。まず試すならQ4で十分です。
+
+自分の感覚だと、7BのQ4あたりが「コストと実用性のバランスがいちばん取れてるライン」です。8BのQ8で10GBは、L4（24GB）なら余裕ですが、GPU VPSの料金と見合うかはちゃんと計算してから判断してください。
+
+---
+
+## GPU vs CPU：VPSでLLMを動かす2つの方法
+
+### GPU搭載プランを使う（推奨……ただし用途を選ぶ）
+
+GPUが使えるなら速いのは事実です。GPUはAI計算に特化したチップで、CPUの数十〜数百倍の速度が出ます。
+
+ただし「速い」だけで月数万円出す価値があるかどうかは別の話。後述の料金計算をちゃんと見てから判断してください。
+
+```bash
+# Ollamaでモデルを実行（GPU自動検出）
+ollama run llama3.1:8b
+
+# GPU使用状況を確認
+nvidia-smi
+
+# VRAM消費量をリアルタイム確認
+watch -n 1 nvidia-smi --query-gpu=memory.used,memory.free --format=csv
+```
+
+### CPUオンリーのVPSで動かす（低コスト代替）
+
+GPU搭載プランは高価なため、軽量モデルであればCPUだけでも動作します。ただし速度は大幅に落ちます。
+
+```bash
+# llama.cppでCPUのみ実行（スレッド数を指定）
+./llama-cli -m ./models/gemma-2b.Q4_K_M.gguf \
+  --threads 8 \
+  --ctx-size 2048 \
+  -p "あなたは優秀なアシスタントです。"
+
+# OllamaでCPUモード（GPU非搭載環境）
+OLLAMA_NUM_GPU=0 ollama run gemma2:2b
+```
+
+CPUモードでの目安：2Bモデルで1トークン/秒前後。実用には忍耐が必要ですが、テスト用途や小規模自動化タスクなら使えます。
+
+自分の場合、「とりあえず動作確認したい」「API代を節約したいけど品質は多少妥協できる」という用途でCPU VPSのOllamaを使っています。速さより「サーバーを立ち上げっぱなしにしておける」ことのほうが重要なので、PCを常時起動しておくよりVPSに任せるほうが精神的にラクです。
+
+---
+
+## 国内VPSのGPU対応比較
+
+| サービス | GPU種別 | VRAM | 料金（時間） | 24h試算 | 月30日フル稼働試算 |
+|---------|---------|------|------------|---------|-----------------|
+| XServer VPS | NVIDIA L4 | 24GB | 約150円 | 3,600円 | 約108,000円 |
+| さくらのVPS 高火力 | NVIDIA H100 | 80GB | 約1,320円 | 31,680円 | 約950,400円 |
+| ConoHa GPU | NVIDIA L4 | 24GB | 約178円 | 4,272円 | 約128,160円 |
+
+**はっきり書いておきます。**
+
+さくらのH100をフル稼働させたら月95万円です。これは個人が気軽に使うものじゃない。70Bモデルをどうしても動かしたい研究・業務用途で、「数時間だけ試したい」という使い方に限って検討するもの。
+
+L4（24GB）であれば時間課金で試しやすい。7B〜13BクラスをQ4で動かす分には十分で、個人の実験用途ならこっちです。
+
+### 損益分岐点で考える：時間課金 vs 月額固定
+
+XServer VPSで例を挙げると、L4プランの時間課金が約150円/時間。仮に月額固定プランが用意されている場合、月に何時間使うかで判断が変わります。
+
+**XServer VPS L4の場合**
+
+- 時間課金：150円 × 使用時間
+- 1日あたり換算：「週末2日×8時間」程度の使い方なら月64時間 = 9,600円
+
+毎日数時間使うような用途なら月額固定を探すか、Google ColabやRunPodのような専用サービスも視野に入れたほうがいい。
+
+**L4（VRAM 24GB）で動かせるモデル**：7B〜13BクラスをQ4で快適動作。30BモデルもQ4なら可。
+
+**H100（VRAM 80GB）で動かせるモデル**：70B以上の大規模モデルをQ8の高精度で動作可能。ただし料金を見てから判断してください。
+
+### XServer VPS を選ぶ理由
+
+XServer VPS のGPUプランはL4（VRAM 24GB）を搭載。Mistral 7BやLlama 3.1 8BをQ8で余裕をもって動かせます。コントロールパネルも日本語対応で使いやすく、初めてGPU VPSを試す方に向いています。
+
+時間課金なので「まず試してみる」ができる点も助かります。月にそこまで使わないなら固定費がかからないのは正直ありがたい。
+
+<div class="cta-section">
+  <span class="ad-label">広告</span>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow">XServer VPS →</a><img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt="">
+</div>
+
+### さくらのVPS 高火力を選ぶ理由
+
+70Bクラスの大規模モデルを扱いたいなら、H100 SXMを搭載したさくらのVPS「高火力」が国内最強クラスです。VRAM 80GBあれば70BモデルをQ8フル精度で動かせます。
+
+ただし自分から言わせてもらうと、これは「個人趣味でローカルLLMを試したい」用途じゃない。料金を計算した上で、業務や研究で70B以上が絶対必要、かつ短時間の利用に限るという場合の選択肢です。
+
+<div class="cta-section">
+  <span class="ad-label">広告</span>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BNQM9E+D8Y+C7DWH" class="affiliate-cta" target="_blank" rel="noopener nofollow">さくらのVPS →</a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B614H+BNQM9E+D8Y+C7DWH" alt="">
+</div>
+
+---
+
+## 実際のセットアップ手順（Ollama + GPU）
+
+```bash
+# Ubuntu 22.04前提
+# 1. NVIDIAドライバ確認
+nvidia-smi
+
+# 2. Ollama インストール
+curl -fsSL https://ollama.com/install.sh | sh
+
+# 3. サービス起動
+sudo systemctl start ollama
+sudo systemctl enable ollama
+
+# 4. モデルダウンロード＆実行
+ollama pull llama3.1:8b
+ollama run llama3.1:8b
+
+# 5. VRAMの空き容量を確認してから大きいモデルに挑戦
+nvidia-smi --query-gpu=memory.free --format=csv,noheader
+```
+
+手順としてはこれだけです。Ollamaはインストールが簡単なので、GPU VPSを契約してから動かすまでの時間は思ったより短い。詰まるとしたらNVIDIAドライバ周りですが、Ubuntu 22.04の最新イメージを使えばだいたい解決しています。
+
+---
+
+## VRAMが足りない時の対処法
+
+1. **量子化を下げる**：Q8 → Q4 に変更するだけでVRAM消費が約半分に
+2. **コンテキスト長を短縮**：`--ctx-size 1024` など短くするとVRAM節約
+3. **GPU + CPUハイブリッド**：Ollamaの `--num-gpu` でGPUに乗り切らない分をCPUにオフロード
+4. **より小さいモデルを選ぶ**：70B→13B→7B→3Bと段階的に試す
+
+```bash
+# GPUとCPUのハイブリッド実行（Ollamaの場合）
+OLLAMA_NUM_GPU=28 ollama run llama3.1:70b
+# 28レイヤーをGPU、残りをCPUで処理
+```
+
+自分の感覚では、まず小さいモデルから試してみるのが一番の近道です。「70Bじゃないと意味ない」と思い込んでいたけど、7BのQ4で十分だったというケースはかなり多い。いきなり大きいモデルを狙いに行って詰まるより、小さいところから確認していくほうが結果的に早い。
+
+---
+
+## よくある質問
+
+<div class="faq-section">
+<div class="faq-item">
+<button class="faq-question">Q. VPSのメモリ（RAM）とVRAMは別物ですか？</button>
+<div class="faq-answer">はい、別物です。RAM（メインメモリ）はCPUが使う汎用メモリで、VRAM（ビデオメモリ）はGPUが使う専用メモリです。LLMをGPUで動かす場合はVRAMの容量が決定的に重要です。RAMは8GB以上あれば多くのケースで問題ありません。</div>
+</div>
+<div class="faq-item">
+<button class="faq-question">Q. GPU非搭載の安いVPSでも実用的に使えますか？</button>
+<div class="faq-answer">2Bや3Bの軽量モデルであれば実用できます。ただし速度は遅く、7B以上のモデルは厳しいです。「テストや学習目的」ならCPUのみのVPSでも構いませんが、「実際に使う」ならGPUプランを選んでください。なお、Claude CodeやOpenAI APIを使った自動化が目的なら、そもそもGPUは不要です。APIを叩く処理はCPUで十分動きます。</div>
+</div>
+<div class="faq-item">
+<button class="faq-question">Q. 時間課金と月額固定、どちらがお得ですか？</button>
+<div class="faq-answer">週に数時間しか使わないなら時間課金が断然お得です。月に累計100時間以上使うなら月額固定が割安になります。まず時間課金で試してから必要に応じて月額プランへ切り替えるのがベストです。自分の場合、まず時間課金でどれくらい使うか確認してから判断するようにしています。</div>
+</div>
+</div>
+
+---
+
+## まとめ：あなたの使い方で選ぶ
+
+| あなたの用途 | GPUは必要？ | おすすめの構成 | 月コスト感 |
+|-------------|-----------|-------------|-----------|
+| Claude Code / OpenAI APIで自動化したい | **不要** | CPU VPS（月1,000〜2,000円） | 月1,000円〜 |
+| Llama 7B〜8Bを快適に動かしたい | **あると快適** | XServer VPS L4（時間課金） | 使った分だけ（週末のみなら月数千円） |
+| Llama 13B〜30Bを動かしたい | **ほぼ必須** | XServer VPS / ConoHa L4 | 月1〜3万円（使用時間次第） |
+| Llama 70BをQ8で動かしたい | **必須（H100）** | さくらのVPS 高火力 | 時間単位で使う前提。フル稼働は個人用途じゃない |
+| Stable Diffusion（画像生成）をやりたい | **必須** | L4以上のGPU VPS | 月数万円。立ち上げが楽なら「あり」 |
+| ゲームサーバーを立てたい | **不要** | CPU VPS | 月1,000〜3,000円。やってみたいなら一度やってみればいい |
+
+****、ローカルLLMを「ちょっと試したい」段階なら、いきなり高額なGPUプランを契約する必要はない。まずCPU VPSでOllamaを動かして2Bや3Bモデルを試してみる。速度に不満が出てきたタイミングでL4のGPU VPSに切り替えるのが、無駄なコストを出さない一番賢いルートだと思っています。
+
+<div class="cta-section">
+  <span class="ad-label">広告</span>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow">XServer VPS →</a><img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt="">
+</div>
+
+<div class="cta-section">
+  <span class="ad-label">広告</span>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BNQM9E+D8Y+C7DWH" class="affiliate-cta" target="_blank" rel="noopener nofollow">さくらのVPS →</a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B614H+BNQM9E+D8Y+C7DWH" alt="">
+</div>
+
+---
+
+悩んでいる暇があったら、手を動かしたほうが早い。動かしてみて「思ったより遅い」「もっと大きいモデルが使いたい」と感じてからスペックを上げればいい。最初からH100を借りる必要はないし、そもそもローカルLLMが自分の用途に合うかどうかも、試してみないとわからないです。
+
+---
+
+## 関連記事
+
+- [ローカルLLMをVPSで動かす入門ガイド](/usecase/guide-local_llm/)
+- [llama.cpp をCPUのみのVPSで動かす手順](/usecase/guide-llamacpp_cpu_vps/)
+- [AIツール向けVPS比較ランキング【2026年最新】](/ranking/ai_vps_ranking/)
