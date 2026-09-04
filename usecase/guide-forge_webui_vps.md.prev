@@ -1,7 +1,7 @@
 ---
-title: "【2026年版】VPSでウェブUI（Forge/AUTOMATIC1111）を動かす完全手順：A1111からの移行まとめ"
+title: "VPSでウェブUIを動かす方法：Forge/AUTOMATIC1111のブラウザアクセス環境を完全構築【2026年版】"
 date: 2026-07-04T16:00:00+09:00
-description: "VPSでStable Diffusion系のウェブUIを動かすなら、今はForgeが正解。A1111より速度30〜70%向上・VRAM効率改善・FLUX.1対応。GPU VPSの実際のコストと導入手順を本音で解説。"
+description: "VPSでウェブUI（Forge/A1111）をブラウザから使う手順を徹底解説。どのPCからでもhttp://VPS_IP:7860でアクセスできる環境の作り方、GPU VPSのコスト、A1111からの移行まで本音で書きました。"
 slug: "guide-forge_webui_vps"
 categories: ["用途別ガイド"]
 tags: ["Forge", "AUTOMATIC1111", "Stable Diffusion", "画像生成AI", "GPU VPS", "VPS 活用", "XServer VPS", "ConoHa VPS", "ウェブUI"]
@@ -10,7 +10,7 @@ type: "usecase"
 
 
 
-# VPSでウェブUI（Forge/AUTOMATIC1111）を動かす完全手順
+# VPSでウェブUI（Forge/AUTOMATIC1111）をブラウザから使う完全手順
 
 ## 最初に結論を書いておきます
 
@@ -28,19 +28,44 @@ type: "usecase"
 
 ---
 
-## VPSでウェブUIを動かすとはどういうことか
+## VPSでウェブUIを使うとはどういうことか
 
-「VPS ウェブUI」というキーワードで調べている人が気になるのは、**ブラウザからアクセスできる画像生成環境をVPS上に構築できるか**、という点だと思います。答えは「できる」です。
+「VPS ウェブUI」で調べている人が一番気にしているのは、おそらくこういうことだと思います。**「VPS上でウェブUIを起動して、ブラウザからアクセスして使えるのか？」**
 
-Stable Diffusion系のウェブUI（WebUI）は、サーバー上で起動しておけばどのPCやスマホのブラウザからでも操作できます。`http://<VPS_IP>:7860` にアクセスするだけで、A1111やForgeの生成画面が開く仕組みです。
+答えはシンプルで、**できます**。しかも使い方はかなり直感的です。
 
-**VPSでウェブUIを動かすメリット**は主に3つです：
+Stable Diffusion系のウェブUI（WebUI）は、サーバー上で起動しておくだけで、どのPCやスマホのブラウザからでも操作できます。アクセス方法は `http://<VPS_IP>:7860` を開くだけ。それだけでA1111やForgeの画像生成画面がブラウザに表示されます。
+
+**VPSにウェブUIを置く理由**は主に3つです：
 
 - **自分のPCのスペックに関係なく動く**：ローカルにGPUがなくても、VPS側のGPUで生成できる
-- **どこからでもアクセスできる**：自宅PCを持ち歩かなくてもブラウザさえあれば操作できる
+- **どのデバイスのブラウザからでもアクセスできる**：自宅PC・ノートPC・スマホを問わない
 - **サーバーが常時起動しているため生成が止まらない**：バッチ処理や長時間の連続生成に向いている
 
-ただし、**「ウェブUI = 無料で動く」ではありません**。VPSでGPUを使う場合、月額数万円のコストがかかります。後のセクションで詳しく書きます。
+「ウェブUI = ブラウザで使うUI」というのはその通りで、Forge・A1111はどちらもサーバーサイドで動くウェブアプリケーションです。VPSで起動しておけば、ネットワーク越しにどこからでもそのウェブUIを操作できる。これがVPS上でウェブUIを動かす基本的な仕組みです。
+
+ただし、**「VPSのウェブUI = 無料で動く」ではありません**。GPUを積んだVPSは月額数万円のコストがかかります。後のセクションで詳しく書きます。
+
+---
+
+## VPSウェブUIのアクセス方法と公開設定
+
+ここを知らないまま進む人が意外と多いので、先に書いておきます。
+
+ForgeもA1111も、デフォルト設定では `127.0.0.1:7860`（ローカルホスト）にしか接続を受け付けません。VPS外からブラウザでアクセスするには、**`--listen` オプション付きで起動する**必要があります。
+
+bash
+bash webui.sh --listen --port 7860 --api
+
+`--listen` を付けると、VPSのグローバルIPに対してポート7860でウェブUIが公開されます。あとはブラウザのアドレスバーに `http://<VPS_IP>:7860` を入力するだけで、画像生成UIが開きます。
+
+**セキュリティ面での注意**：`--listen` で起動するとインターネット上に開放された状態になります。不特定多数からのアクセスを防ぐために、以下のいずれかの対応を取ることを推奨します。
+
+- `--gradio-auth ユーザー名:パスワード` オプションでパスワード認証をかける
+- UFW等のファイアウォールで接続元IPを絞る
+- VPNを経由した接続のみ許可する
+
+「ブラウザで開いたら他の人にも見える状態になってる」というのは普通に起きるので、ここだけは先に対処しておいてください。
 
 ---
 
@@ -92,7 +117,7 @@ XServerやConoHaのGPUプランは、構成によって月2〜5万円のレン�
 
 ### Step 1: 依存パッケージのインストール
 
-```bash
+bash
 # Ubuntu 22.04 / 24.04 LTS ベースを想定
 apt update && apt upgrade -y
 apt install -y \
@@ -102,13 +127,12 @@ apt install -y \
 
 # CUDA Toolkit（既にインストール済みの場合スキップ）
 nvidia-smi  # バージョン確認
-```
 
 `nvidia-smi` を叩いてGPUが認識されていることを確認してから進んでください。ここで認識されていないとこの先全部詰みます。
 
 ### Step 2: Forgeのクローンとインストール
 
-```bash
+bash
 cd /root
 git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git
 cd stable-diffusion-webui-forge
@@ -120,7 +144,6 @@ source venv/bin/activate
 pip install --upgrade pip
 
 bash webui.sh --listen --port 7860 --api
-```
 
 初回の依存関係インストールは地味に時間がかかります。10〜20分は普通にかかるので、放置して他のことしてていい。「止まってる？」と思っても、だいたいまだ動いてます。
 
@@ -128,7 +151,7 @@ bash webui.sh --listen --port 7860 --api
 
 既存のA1111インストールがある場合、モデルはシンボリックリンクで共有できます。**モデルを丸ごとコピーしなくていい**ので、ストレージの節約になるし時間もかかりません。これ知らないと数十GBのコピーを始めてしまうので、先に書いておきます。
 
-```bash
+bash
 # A1111のモデルディレクトリをForgeからリンク
 ln -s /root/stable-diffusion-webui/models/Stable-diffusion \
       /root/stable-diffusion-webui-forge/models/Stable-diffusion
@@ -141,13 +164,12 @@ ln -s /root/stable-diffusion-webui/models/VAE \
 
 echo "モデルリンク完了"
 ls -la /root/stable-diffusion-webui-forge/models/
-```
 
 ### Step 4: systemdサービス登録
 
 毎回手動で起動するのは面倒なので、サービス登録しておくのが正解。VPS再起動後も自動で立ち上がります。「手動で起動し忘れた」ということがなくなるだけで、だいぶストレスが減ります。
 
-```bash
+bash
 cat > /etc/systemd/system/forge.service << 'EOF'
 [Unit]
 Description=Stable Diffusion WebUI Forge
@@ -170,36 +192,35 @@ systemctl daemon-reload
 systemctl enable forge
 systemctl start forge
 systemctl status forge
-```
 
-### Step 5: 起動確認とアクセス
+### Step 5: 起動確認とブラウザアクセス
 
-```bash
+bash
 # ログ確認（エラーが出ていないか）
 journalctl -u forge -f
 
 # APIの疎通確認
 curl http://localhost:7860/sdapi/v1/sd-models | python3 -m json.tool | head -30
-```
 
 ブラウザで `http://<VPS_IP>:7860` を開くと、A1111とほぼ同じウェブUIが表示されます。「あ、ほぼ同じだ」と思うはず。それがForgeのいいところで、**使い方を覚え直す必要がほとんどない**。移行コストが低いというのはこういうことです。
 
 ---
 
 ## Forgeでの速度改善を体感するための設定
-
-```
 # Forge UI上の推奨設定（Settings > Optimizations）
 - Unet storage dtype: fp8-e4m3fn（VRAM節約）
 - VAE dtype: bf16 
 - Forge preset: speed（速度優先の場合）
-```
 
 この設定を入れた上で生成してみると、A1111との差を実感しやすいです。特にVRAMがギリギリだったモデルで、余裕が出てくるのがわかります。「同じモデルなのになんか速い」という感覚は、試してみると普通にあります。
 
 ---
 
 <div class="faq-section">
+<div class="faq-item">
+<button class="faq-question">Q. VPSのウェブUIにスマホからアクセスできますか？</button>
+<div class="faq-answer">できます。スマホのブラウザで `http://&lt;VPS_IP&gt;:7860` を開くだけです。ただしForgeのUIはPC向けのレイアウトのため、スマホ画面では操作しにくい部分があります。主な用途は「生成開始・確認」程度に留めて、細かい設定はPC操作推奨です。</div>
+</div>
 <div class="faq-item">
 <button class="faq-question">Q. A1111の拡張機能（Extensions）はForgeでも使えますか？</button>
 <div class="faq-answer">多くのA1111拡張はForgeでも動作します。ControlNetはForgeにネイティブ統合されているため、別途インストール不要です。一部の古い拡張や独自フックを使う拡張は動作しない場合があります。Extensions > Install from URL から同じURLで試してみてください。</div>
