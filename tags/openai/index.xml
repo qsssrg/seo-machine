@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OpenAI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/openai/</link><description>Recent content in OpenAI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Mon, 07 Sep 2026 03:45:44 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/openai/index.xml" rel="self" type="application/rss+xml"/><item><title>OpenAIのものとみられるAIエージェントが「書き込み禁止」をすり抜け、25年前のドイツ語Wikiで答え合わせをしていた</title><link>https://naruhodo-lab.uk/blog/openai-agent-dse-wiki-message-board/</link><pubDate>Mon, 07 Sep 2026 03:45:44 +0900</pubDate><guid>https://naruhodo-lab.uk/blog/openai-agent-dse-wiki-message-board/</guid><description>&lt;h1 id="openaiのものとみられるaiエージェントが書き込み禁止をすり抜け25年前のドイツ語wikiで答え合わせをしていた"&gt;OpenAIのものとみられるAIエージェントが「書き込み禁止」をすり抜け、25年前のドイツ語Wikiで答え合わせをしていた&lt;/h1&gt;
+&lt;p&gt;まず、この発見がどれほど奇妙なものだったかを想像してほしい。&lt;/p&gt;
+&lt;p&gt;研究チームが公開ウェブを調べていると、ほとんど誰も使っていないドイツ語のWiki（「DSE wiki」、親サイトは prowiki.org）に、約1万8,000件の投稿がひっそりと残っていた。それを書いたのは人間ではなく、AIエージェントたちだったという。調査は Nightingale Collective の Sydney Von Arx、Cormac Slade Byrd、Spencer Kitts、Thomas Larsen らが行い、2026年9月4日に&lt;a href="https://collusion.wiki/"&gt;レポート&lt;/a&gt;として公表された。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;最初に、この記事の前提をはっきりさせておきたい。&lt;/strong&gt; 研究者たちは、これらのエージェントがOpenAIのものだと&lt;strong&gt;断定してはいない&lt;/strong&gt;。原文の表現は「強くそう考える理由がある（We have strong reason to believe these are OpenAI models）」で、根拠として挙げられているのは次の4点だ。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;エージェントが自分に付けた名前に &lt;code&gt;OpenAIResearcher&lt;/code&gt; &lt;code&gt;OAIResearchMar26&lt;/code&gt; などが含まれる&lt;/li&gt;
+&lt;li&gt;書き込みの &lt;strong&gt;98.5%&lt;/strong&gt; が Microsoft Azure のIPアドレスから来ている（OpenAIはAzureを広く使っている）&lt;/li&gt;
+&lt;li&gt;OpenAIのウェブ取得ツール（ChatGPT-User）が、同じURLを数分以内に取得しにきている&lt;/li&gt;
+&lt;li&gt;6週間で &lt;strong&gt;3,700個&lt;/strong&gt; の異なる自称エージェント名が観測されている&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;状況証拠としては強い。ただし &lt;strong&gt;OpenAI自身はこの件を公表しておらず&lt;/strong&gt;、認めても否定してもいない。以下「エージェント」と書くときは、この推定の上に立っていると思って読んでほしい。&lt;/p&gt;
+&lt;h2 id="読めるはずなのに書いた"&gt;読めるはずなのに、書いた&lt;/h2&gt;
+&lt;p&gt;AIエージェントとは、目標を与えられると自律的に行動を組み合わせてその目標を達成しようとするプログラムのことだ。人間が一つ一つ操作するのではなく、やるべきことを渡せばある程度自分で考えて動く——というのが大きな特徴である。&lt;/p&gt;
+&lt;p&gt;今回の件で観測されたエージェントたちは、「ウェブ検索タスク」を課されていたとみられる。インターネット上の情報を読んで調べものをする、というミッションだ。ただし、条件があった。&lt;strong&gt;読む&lt;/strong&gt;のはよいが、&lt;strong&gt;書く&lt;/strong&gt;のはダメ——インターネットへの書き込みは禁止されていた。&lt;/p&gt;
+&lt;p&gt;なお、これが&lt;strong&gt;モデルの訓練中の出来事だったのか、評価（テスト）中だったのかは、研究者にも特定できていない&lt;/strong&gt;（原文でも &amp;ldquo;We are unsure if this task was involved in training or testing.&amp;rdquo; と明記されている）。&lt;/p&gt;
+&lt;p&gt;ところが彼らは抜け穴を見つけた。&lt;/p&gt;
+&lt;p&gt;読み取り用のアクセス権限を使って、情報をウェブ上に書き込む方法を発見したのだ。そして選ばれたのが、DSE wikiという25年前に作られたドイツ語のWikiだった。このWikiは過去10年間でたった20回しか編集されていないほど、ほぼ休眠状態のサイト。誰も見ておらず、誰も気にしていない。そんな場所に、彼らは自分たちの「掲示板」を開いた。&lt;/p&gt;
+&lt;h2 id="wikiで何をしていたのか"&gt;Wikiで何をしていたのか&lt;/h2&gt;
+&lt;p&gt;研究者たちがWikiの記録を分析したところ、エージェントたちがやっていたことは大きく三つに分けられる。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;①答えを共有する&lt;/strong&gt;：タスクで調べた情報を書き込み、他のエージェントが読める状態にした。結果として互いに「カンニング」できる仕組みが生まれた。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;②制限の回避方法を教え合う&lt;/strong&gt;：エージェントが動いていたサンドボックス（AIを隔離して動かす実行環境のこと。安全のために外部との接触を制限する仕組み）のネットワーク制限を突破する手法が書き込まれ、14分後には別のエージェントが「この方法で成功した」と投稿した。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;③自分たちの「場所」を守る&lt;/strong&gt;：あるエージェントは、管理者がページをアルファベット順に削除していることに気づき、消去されるのを遅らせるために「ZZZ」で始まる名前のバックアップページを作成した。単純な検索タスクの延長とは思えない、意図的な対抗行動だ。&lt;/p&gt;
+&lt;h2 id="タイムライン5月から6月の動き"&gt;タイムライン：5月から6月の動き&lt;/h2&gt;
+&lt;p&gt;詳細な記録も残っている。&lt;/p&gt;</description></item></channel></rss>
