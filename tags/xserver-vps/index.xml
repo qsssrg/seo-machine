@@ -11448,7 +11448,12 @@ Claude CodeはAPI経由で動くのでGPUは一切不要です。GPU推しの記
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;「今月はLoRAを1本だけ作りたい」という月に、RTX 4090を25万円かけて所有している必要はない。時間課金で必要な分だけ借りて、終わったら切ればいい。頻度が低い人にとっては、これが圧倒的に合理的な選択。&lt;/p&gt;</description></item><item><title>VPS ウェブUIの使い方完全ガイド：ブラウザからForge/A1111にアクセスする全手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</link><pubDate>Sat, 04 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</guid><description>&lt;h1 id="vps-ウェブui完全構築ガイドforgeautomatic1111をブラウザから使う"&gt;VPS ウェブUI完全構築ガイド：Forge/AUTOMATIC1111をブラウザから使う&lt;/h1&gt;
+&lt;p&gt;「今月はLoRAを1本だけ作りたい」という月に、RTX 4090を25万円かけて所有している必要はない。時間課金で必要な分だけ借りて、終わったら切ればいい。頻度が低い人にとっては、これが圧倒的に合理的な選択。&lt;/p&gt;</description></item><item><title>Stable DiffusionのWebUIをVPSで使う：A1111からForgeへ乗り換える手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</link><pubDate>Sat, 04 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</guid><description>&lt;h1 id="stable-diffusionのwebuiをvpsで使うforgeautomatic1111"&gt;Stable DiffusionのWebUIをVPSで使う：Forge/AUTOMATIC1111&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;AIチャットの「Open WebUI」をお探しですか？&lt;/strong&gt;
+この記事は&lt;strong&gt;画像生成AI&lt;/strong&gt;のWebUI（Forge / AUTOMATIC1111）の話です。
+ChatGPTのような自分専用チャットを建てたい場合は、&lt;a href="https://naruhodo-lab.uk/usecase/guide-open_webui_custom/"&gt;VPSにOpen WebUIを立てる方法&lt;/a&gt;をご覧ください。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;A1111を使い続ける理由は、もうほぼない。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;同じGPUで速度が30〜70%上がって、VRAMの使い方も賢くなって、FLUX.1にも対応している。移行コストも低い。「どっちにするか迷ってる」なら、Forgeに乗り換えていい。これが自分の判断です。&lt;/p&gt;
@@ -12974,7 +12979,7 @@ XServerの月990円を時間換算すると、990 ÷ 0.4 = 2,475時間……で�
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;正直に言うと：&lt;/strong&gt; 最初の一台として選ぶなら &lt;strong&gt;Llama 3 8B か Qwen2 7B&lt;/strong&gt; でいい。どちらも4GBプランで動いて、日本語もそこそこ使える。「まず動いた」という体験を早く得ることのほうが大事なので、最初から13Bや27Bを目指す必要はない。いきなり大きいモデルを狙って「プランが高くて続かなかった」という話をけっこう聞く。&lt;/p&gt;</description></item><item><title>【無料】Open WebUIをVPSに導入して「自分だけの高機能ChatGPT」を作る方法【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;正直に言うと：&lt;/strong&gt; 最初の一台として選ぶなら &lt;strong&gt;Llama 3 8B か Qwen2 7B&lt;/strong&gt; でいい。どちらも4GBプランで動いて、日本語もそこそこ使える。「まず動いた」という体験を早く得ることのほうが大事なので、最初から13Bや27Bを目指す必要はない。いきなり大きいモデルを狙って「プランが高くて続かなかった」という話をけっこう聞く。&lt;/p&gt;</description></item><item><title>VPSにウェブUIを立てる方法：Open WebUIをスクリプトかDockerで【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="-最初に結論を書いておきます"&gt;🔍 最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;「ChatGPTに毎月お金払うのがバカらしくなってきた」と思ったなら、Open WebUIを試す価値はある。&lt;/strong&gt;&lt;/p&gt;
@@ -13045,9 +13050,9 @@ XServerの月990円を時間換算すると、990 ÷ 0.4 = 2,475時間……で�
 &lt;h3 id="5-カスタムプロンプト"&gt;5. カスタムプロンプト&lt;/h3&gt;
 &lt;p&gt;よく使うプロンプトをテンプレートとして保存してワンクリックで呼び出せる。自分は「箇条書きで答えて」「英語で答えて」あたりをよく保存している。地味だけど毎回入力するのが面倒な人には効く。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="導入手順"&gt;導入手順&lt;/h2&gt;
-&lt;h3 id="ステップ1vpsを用意"&gt;ステップ1：VPSを用意&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;メモリ4GB以上を推奨。&lt;/strong&gt; ここをケチると後でLLMが重くて動かない、という体験をする。最初から4GB以上を選ぶのが正解。&lt;/p&gt;</description></item><item><title>【非エンジニアOK】VPSとDifyで作る「LINE AIアシスタントbot」の作り方【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-line_ai_bot/</link><pubDate>Sat, 27 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-line_ai_bot/</guid><description>&lt;h1 id="非エンジニアでもできるvpsとdifyで作るline-aiアシスタントbot"&gt;非エンジニアでもできる！VPSとDifyで作る「LINE AIアシスタントbot」&lt;/h1&gt;
+&lt;h2 id="2026年6月conohaとさくらはもうスクリプト1つで建てられる"&gt;【2026年6月〜】ConoHaとさくらは、もうスクリプト1つで建てられる&lt;/h2&gt;
+&lt;p&gt;この記事の手順を読む前に、先に知っておいてほしいことがある。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ConoHa VPS と さくらのVPS は、Open WebUI を「スタートアップスクリプト」で用意している。&lt;/strong&gt; サーバーを作るときに一覧から選ぶだけで、Docker のインストールも Open WebUI の起動も全部やってくれる。SSHでコマンドを打つ必要がない。&lt;/p&gt;</description></item><item><title>【非エンジニアOK】VPSとDifyで作る「LINE AIアシスタントbot」の作り方【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-line_ai_bot/</link><pubDate>Sat, 27 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-line_ai_bot/</guid><description>&lt;h1 id="非エンジニアでもできるvpsとdifyで作るline-aiアシスタントbot"&gt;非エンジニアでもできる！VPSとDifyで作る「LINE AIアシスタントbot」&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;VPS + Dify + LINE Messaging APIで、LINEのAIチャットボットは本当に作れます。しかも30分で。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;構成はシンプルで、&lt;/p&gt;

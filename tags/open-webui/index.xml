@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Open WebUI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/open-webui/</link><description>Recent content in Open WebUI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 28 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/open-webui/index.xml" rel="self" type="application/rss+xml"/><item><title>【無料】Open WebUIをVPSに導入して「自分だけの高機能ChatGPT」を作る方法【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Open WebUI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</title><link>https://naruhodo-lab.uk/tags/open-webui/</link><description>Recent content in Open WebUI on AIツール向けVPS比較ガイド【2026年最新】初心者でもわかる選び方</description><generator>Hugo</generator><language>ja</language><lastBuildDate>Sun, 28 Jun 2026 08:00:00 +0900</lastBuildDate><atom:link href="https://naruhodo-lab.uk/tags/open-webui/index.xml" rel="self" type="application/rss+xml"/><item><title>VPSにウェブUIを立てる方法：Open WebUIをスクリプトかDockerで【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="-最初に結論を書いておきます"&gt;🔍 最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;「ChatGPTに毎月お金払うのがバカらしくなってきた」と思ったなら、Open WebUIを試す価値はある。&lt;/strong&gt;&lt;/p&gt;
@@ -69,9 +69,9 @@
 &lt;h3 id="5-カスタムプロンプト"&gt;5. カスタムプロンプト&lt;/h3&gt;
 &lt;p&gt;よく使うプロンプトをテンプレートとして保存してワンクリックで呼び出せる。自分は「箇条書きで答えて」「英語で答えて」あたりをよく保存している。地味だけど毎回入力するのが面倒な人には効く。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="導入手順"&gt;導入手順&lt;/h2&gt;
-&lt;h3 id="ステップ1vpsを用意"&gt;ステップ1：VPSを用意&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;メモリ4GB以上を推奨。&lt;/strong&gt; ここをケチると後でLLMが重くて動かない、という体験をする。最初から4GB以上を選ぶのが正解。&lt;/p&gt;</description></item><item><title>【非エンジニア向け】Ollama＋Open WebUIをVPSに10分で立ち上げる魔法のコマンド集【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-ollama_openwebui/</link><pubDate>Thu, 25 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-ollama_openwebui/</guid><description>&lt;h1 id="非エンジニアでもokollamaopen-webuiで自分だけのchatgptを10分で構築"&gt;非エンジニアでもOK！Ollama＋Open WebUIで「自分だけのChatGPT」を10分で構築&lt;/h1&gt;
+&lt;h2 id="2026年6月conohaとさくらはもうスクリプト1つで建てられる"&gt;【2026年6月〜】ConoHaとさくらは、もうスクリプト1つで建てられる&lt;/h2&gt;
+&lt;p&gt;この記事の手順を読む前に、先に知っておいてほしいことがある。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ConoHa VPS と さくらのVPS は、Open WebUI を「スタートアップスクリプト」で用意している。&lt;/strong&gt; サーバーを作るときに一覧から選ぶだけで、Docker のインストールも Open WebUI の起動も全部やってくれる。SSHでコマンドを打つ必要がない。&lt;/p&gt;</description></item><item><title>【非エンジニア向け】Ollama＋Open WebUIをVPSに10分で立ち上げる魔法のコマンド集【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-ollama_openwebui/</link><pubDate>Thu, 25 Jun 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-ollama_openwebui/</guid><description>&lt;h1 id="非エンジニアでもokollamaopen-webuiで自分だけのchatgptを10分で構築"&gt;非エンジニアでもOK！Ollama＋Open WebUIで「自分だけのChatGPT」を10分で構築&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="筆者の結論先に言います"&gt;【筆者の結論】先に言います&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;VPS代だけ払えば、ChatGPT的なAI環境がコピペ6行で完成します。月770円〜。&lt;/strong&gt;&lt;/p&gt;

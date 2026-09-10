@@ -94,7 +94,7 @@ conda create -n ai_env ... # → またenv増殖、管理が煩雑に
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;crontab -e
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 毎日3時にバックアップ実行&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt; * * * cd /root/dify/docker &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; docker compose exec -T db pg_dump -U postgres dify &amp;gt; /root/backups/dify_&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date +&lt;span style="color:#ae81ff"&gt;\%&lt;/span&gt;Y&lt;span style="color:#ae81ff"&gt;\%&lt;/span&gt;m&lt;span style="color:#ae81ff"&gt;\%&lt;/span&gt;d&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;.sql
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;VPSで動かす最大のメリットがここで活きます。&lt;strong&gt;VPSはサーバーが24時間稼働しているので、cronがちゃんと動く&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>【無料】Open WebUIをVPSに導入して「自分だけの高機能ChatGPT」を作る方法【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;VPSで動かす最大のメリットがここで活きます。&lt;strong&gt;VPSはサーバーが24時間稼働しているので、cronがちゃんと動く&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>VPSにウェブUIを立てる方法：Open WebUIをスクリプトかDockerで【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="-最初に結論を書いておきます"&gt;🔍 最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;「ChatGPTに毎月お金払うのがバカらしくなってきた」と思ったなら、Open WebUIを試す価値はある。&lt;/strong&gt;&lt;/p&gt;
@@ -165,9 +165,9 @@ conda create -n ai_env ... # → またenv増殖、管理が煩雑に
 &lt;h3 id="5-カスタムプロンプト"&gt;5. カスタムプロンプト&lt;/h3&gt;
 &lt;p&gt;よく使うプロンプトをテンプレートとして保存してワンクリックで呼び出せる。自分は「箇条書きで答えて」「英語で答えて」あたりをよく保存している。地味だけど毎回入力するのが面倒な人には効く。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="導入手順"&gt;導入手順&lt;/h2&gt;
-&lt;h3 id="ステップ1vpsを用意"&gt;ステップ1：VPSを用意&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;メモリ4GB以上を推奨。&lt;/strong&gt; ここをケチると後でLLMが重くて動かない、という体験をする。最初から4GB以上を選ぶのが正解。&lt;/p&gt;</description></item><item><title>【完全無料】DifyをVPSにセルフホスト（Docker版）して社内ChatGPTを作る手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-dify_selfhost/</link><pubDate>Thu, 25 Jun 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-dify_selfhost/</guid><description>&lt;h1 id="difyをvpsにセルフホストして社内chatgptを作る完全手順"&gt;DifyをVPSにセルフホストして「社内ChatGPT」を作る完全手順&lt;/h1&gt;
+&lt;h2 id="2026年6月conohaとさくらはもうスクリプト1つで建てられる"&gt;【2026年6月〜】ConoHaとさくらは、もうスクリプト1つで建てられる&lt;/h2&gt;
+&lt;p&gt;この記事の手順を読む前に、先に知っておいてほしいことがある。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ConoHa VPS と さくらのVPS は、Open WebUI を「スタートアップスクリプト」で用意している。&lt;/strong&gt; サーバーを作るときに一覧から選ぶだけで、Docker のインストールも Open WebUI の起動も全部やってくれる。SSHでコマンドを打つ必要がない。&lt;/p&gt;</description></item><item><title>【完全無料】DifyをVPSにセルフホスト（Docker版）して社内ChatGPTを作る手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-dify_selfhost/</link><pubDate>Thu, 25 Jun 2026 12:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-dify_selfhost/</guid><description>&lt;h1 id="difyをvpsにセルフホストして社内chatgptを作る完全手順"&gt;DifyをVPSにセルフホストして「社内ChatGPT」を作る完全手順&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="結論から書きますdifyはセルフホスト一択vpsは月990円で十分動く"&gt;【結論から書きます】Difyはセルフホスト一択。VPSは月990円で十分動く&lt;/h2&gt;
 &lt;p&gt;はっきり書いておきます。&lt;/p&gt;

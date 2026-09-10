@@ -208,7 +208,12 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mkdir -p models/Stable-diffusion
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;wget -O models/Stable-diffusion/v1-5-pruned-emaonly.safetensors &lt;span style="color:#ae81ff"&gt;\
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;モデルのダウンロードに時間がかかる。VPS側でwgetが動いてるのでスマホを閉じてても問題ない。これがVPSの良いところ。&lt;/p&gt;</description></item><item><title>VPS ウェブUIの使い方完全ガイド：ブラウザからForge/A1111にアクセスする全手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</link><pubDate>Sat, 04 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</guid><description>&lt;h1 id="vps-ウェブui完全構築ガイドforgeautomatic1111をブラウザから使う"&gt;VPS ウェブUI完全構築ガイド：Forge/AUTOMATIC1111をブラウザから使う&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;モデルのダウンロードに時間がかかる。VPS側でwgetが動いてるのでスマホを閉じてても問題ない。これがVPSの良いところ。&lt;/p&gt;</description></item><item><title>Stable DiffusionのWebUIをVPSで使う：A1111からForgeへ乗り換える手順【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</link><pubDate>Sat, 04 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-forge_webui_vps/</guid><description>&lt;h1 id="stable-diffusionのwebuiをvpsで使うforgeautomatic1111"&gt;Stable DiffusionのWebUIをVPSで使う：Forge/AUTOMATIC1111&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;AIチャットの「Open WebUI」をお探しですか？&lt;/strong&gt;
+この記事は&lt;strong&gt;画像生成AI&lt;/strong&gt;のWebUI（Forge / AUTOMATIC1111）の話です。
+ChatGPTのような自分専用チャットを建てたい場合は、&lt;a href="https://naruhodo-lab.uk/usecase/guide-open_webui_custom/"&gt;VPSにOpen WebUIを立てる方法&lt;/a&gt;をご覧ください。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;A1111を使い続ける理由は、もうほぼない。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;同じGPUで速度が30〜70%上がって、VRAMの使い方も賢くなって、FLUX.1にも対応している。移行コストも低い。「どっちにするか迷ってる」なら、Forgeに乗り換えていい。これが自分の判断です。&lt;/p&gt;
