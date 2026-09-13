@@ -1,7 +1,9 @@
+ページを読んで強化版を作成します。
+
 ---
-title: "【VPSが重い・遅い原因を切り分けたい】おすすめVPS比較ガイド【2026年6月時点】"
+title: "VPSが遅いと感じたら【30秒で原因特定】`top`コマンドで診断してからプランを変える"
 date: 2026-07-06T11:57:42+09:00
-description: "VPSが重い・遅い原因、正直に言うとCPU/メモリ/ストレージのどれかです。topとvmstatで30秒で特定できる。プラン変更すべきかの判断基準と、用途別のVPS選びを筆者の本音で解説。"
+description: "VPSが遅い原因はCPU・メモリ・ストレージのどれかです。`top`と`vmstat`で30秒以内に特定できます。原因を確認せずプランを上げるのはお金の無駄。診断手順とプラン変更の判断基準を本音で解説。"
 slug: "guide-vps_slow_diagnose"
 categories: ["用途別ガイド"]
 tags: ["XServer VPS", "さくらのVPS", "ConoHa VPS", "Claude Code", "AI開発", "VPS選び方"]
@@ -9,11 +11,11 @@ type: "usecase"
 ---
 
 
-# VPSが重い・遅い原因を特定して、最適なプランを選ぶ方法
+# VPSが遅い原因を特定して、最適なプランを選ぶ方法
 
 ## 筆者の結論（まずここだけ読んでください）
 
-正直に言うと、VPSが重い原因は**ほぼ100%「CPU・メモリ・ストレージのどれか」**です。`top`コマンド1本で30秒以内に判断できる。それをやらずにプランをアップグレードするのはお金の無駄です。
+正直に言うと、VPSが遅い原因は**ほぼ100%「CPU・メモリ・ストレージのどれか」**です。`top`コマンド1本で30秒以内に判断できる。それをやらずにプランをアップグレードするのはお金の無駄です。
 
 あと、これも先に言っておきます。**Claude CodeにGPUは不要です。** APIを叩くだけなので、GPU積んだプランを推してくる記事は料金が高いプランを売りたいだけと思って読んでください。
 
@@ -21,32 +23,17 @@ type: "usecase"
 
 ---
 
-AIツールを使い始めると、ローカルPCよりも強力なVPSが欲しくなりますよね。で、実際に借りてみると「あれ、なんか重い…」ってなる。自分もそれで何度か無駄にプランを変えました。
+AIツールを使い始めると、ローカルPCよりも強力なVPSが欲しくなりますよね。で、実際に借りてみると「あれ、なんか遅い…」ってなる。自分もそれで何度か無駄にプランを変えました。
 
 **問題は、原因がわからないまま動いてしまうことです。** CPUが足りないのか、メモリが足りないのか、それとも設定がそもそもおかしいのか。ここを切り分けずにプランを上げても、同じことになる可能性が普通にあります。
 
-この記事では、VPSの重さ・遅さの原因を自分で特定する手順を解説して、その上で「じゃあどのVPSを選ぶか」という判断をお伝えします。
+この記事では、VPSが遅い・重い原因を自分で特定する手順を解説して、その上で「じゃあどのVPSを選ぶか」という判断をお伝えします。
 
 ---
 
-## VPSが「重い・遅い」原因は、だいたいこの3つ
+## VPSが遅いとき、最初にやること【30秒診断】
 
-先に結論を言います。原因は3つで、どれかです。
-
-**1. CPU不足**
-処理が詰まっているパターン。AIツールの推論（データから答えを出す処理）はCPUを食います。`top`コマンドで`%CPU`が常時80〜100%に張り付いていたらここです。
-
-**2. メモリ不足**
-作業台が狭すぎるパターン。メモリが足りなくなると、OSがストレージを「仮のメモリ」として使い始めます（スワップと呼びます）。これが起きると体感が一気に重くなる。`top`でswapの使用量を見てください。
-
-**3. ストレージの読み書き速度**
-SSDかHDDか、あるいは同じSSDでも品質によって速度差があります。`vmstat`で`wa`（I/O待ち）が高ければここが詰まっています。
-
----
-
-### 診断の手順（コピペで使えます）
-
-VPSのターミナルにSSHで入って、以下を順番に実行するだけです。
+「VPSが遅い」と感じたら、プラン変更の前にまずこれをやってください。SSHで接続してコマンドを2つ打つだけです。
 
 ```bash
 # CPU・メモリをリアルタイムで確認
@@ -57,13 +44,28 @@ vmstat 2 5
 ```
 
 **`top`の見方：**
-- `%CPU`が高い → CPUプランをアップグレード
+- `%CPU`が常時80〜100% → CPUプランをアップグレード
 - `Swap`の使用量が増えている → メモリプランをアップグレード
 
 **`vmstat`の見方：**
-- `wa`（waiting）が10以上になっている → ストレージがボトルネック
+- `wa`（waiting）が10以上 → ストレージがボトルネック
 
 **はっきり書いておきます。** この診断をせずにプランを上げるのは、「どこが痛いかわからないまま薬を飲む」みたいなものです。まず原因を特定してください。
+
+---
+
+## VPSが「遅い・重い」原因は、だいたいこの3つ
+
+先に結論を言います。原因は3つで、どれかです。
+
+**1. CPU不足**
+処理が詰まっているパターン。AIツールの推論（データから答えを出す処理）はCPUを食います。`top`コマンドで`%CPU`が常時80〜100%に張り付いていたらここです。
+
+**2. メモリ不足**
+作業台が狭すぎるパターン。メモリが足りなくなると、OSがストレージを「仮のメモリ」として使い始めます（スワップと呼びます）。これが起きると体感が一気に遅くなる。`top`でswapの使用量を見てください。
+
+**3. ストレージの読み書き速度**
+SSDかHDDか、あるいは同じSSDでも品質によって速度差があります。`vmstat`で`wa`（I/O待ち）が高ければここが詰まっています。
 
 ---
 
@@ -95,7 +97,7 @@ GPU VPSが必要なのは、**Stable DiffusionなどのローカルAI（VPS上�
 
 ## まとめ：あなたの使い方で選ぶ
 
-VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定する。** それをせずにプランを変えるのはお金の無駄です。これが大前提。
+VPSが遅い・重いときは、**まず`top`と`vmstat`で原因を特定する。** それをせずにプランを変えるのはお金の無駄です。これが大前提。
 
 その上で、プランを選ぶ判断基準を整理しました。
 
@@ -139,7 +141,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
 
 <div class="pros-cons">
   <div class="pros-cons-box pros">
-    <h4>✓ 良い点</h4>
+    <h4>良い点</h4>
     <ul>
       <li>ワンクリックでClaude Code / Codex環境が完成、専門知識不要</li>
       <li>月830円〜の固定料金で費用が予測しやすい（1日あたり約27円）</li>
@@ -147,7 +149,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
     </ul>
   </div>
   <div class="pros-cons-box cons">
-    <h4>✗ 気になる点</h4>
+    <h4>気になる点</h4>
     <ul>
       <li>GPUプランは時間課金のみ（月額固定なし）</li>
     </ul>
@@ -156,7 +158,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
 
 <div class="cta-section">
   <span class="ad-label">広告</span>
-  <a href="https://vps.xserver.ne.jp/" class="affiliate-cta" target="_blank" rel="noopener nofollow">XServer VPS 公式サイトを見る →</a>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BGLF02+CO4+25EKCY" class="affiliate-cta" target="_blank" rel="noopener nofollow">XServer VPS 公式サイトを見る →</a><img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B614H+BGLF02+CO4+25EKCY" alt="">
 </div>
 
 ### 2位: さくらのVPS（評価 4.5/5.0）
@@ -175,7 +177,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
 
 <div class="pros-cons">
   <div class="pros-cons-box pros">
-    <h4>✓ 良い点</h4>
+    <h4>良い点</h4>
     <ul>
       <li>20年以上の実績があり安心して長期利用できる</li>
       <li>月1,738円〜の低価格でAIツール環境を持てる</li>
@@ -183,7 +185,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
     </ul>
   </div>
   <div class="pros-cons-box cons">
-    <h4>✗ 気になる点</h4>
+    <h4>気になる点</h4>
     <ul>
       <li>高火力プランは上級者向けで初心者には敷居が高い</li>
       <li>セットアップに一部手動作業が必要な場面がある</li>
@@ -193,7 +195,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
 
 <div class="cta-section">
   <span class="ad-label">広告</span>
-  <a href="https://vps.sakura.ad.jp/" class="affiliate-cta" target="_blank" rel="noopener nofollow">さくらのVPS 公式サイトを見る →</a>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BNQM9E+D8Y+C7DWH" class="affiliate-cta" target="_blank" rel="noopener nofollow">さくらのVPS 公式サイトを見る →</a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B614H+BNQM9E+D8Y+C7DWH" alt="">
 </div>
 
 ### 3位: ConoHa VPS（評価 4.4/5.0）
@@ -212,7 +214,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
 
 <div class="pros-cons">
   <div class="pros-cons-box pros">
-    <h4>✓ 良い点</h4>
+    <h4>良い点</h4>
     <ul>
       <li>時間課金なので「ちょっと試す」だけでも気軽に始められる</li>
       <li>直感的なコントロールパネルで操作に迷いにくい</li>
@@ -220,7 +222,7 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
     </ul>
   </div>
   <div class="pros-cons-box cons">
-    <h4>✗ 気になる点</h4>
+    <h4>気になる点</h4>
     <ul>
       <li>使い方次第では月額が読みにくくなることがある</li>
     </ul>
@@ -229,18 +231,18 @@ VPSが重い・遅いときは、**まず`top`と`vmstat`で原因を特定す�
 
 <div class="cta-section">
   <span class="ad-label">広告</span>
-  <a href="https://www.conoha.jp/vps/" class="affiliate-cta" target="_blank" rel="noopener nofollow">ConoHa VPS 公式サイトを見る →</a>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B614H+BKRG8I+50+4Z0M6A" class="affiliate-cta" target="_blank" rel="noopener nofollow">ConoHa VPS 公式サイトを見る →</a><img border="0" width="1" height="1" src="https://www15.a8.net/0.gif?a8mat=4B614H+BKRG8I+50+4Z0M6A" alt="">
 </div>
 
 ---
 
-最後に一言。これが最終回答じゃないです。VPSは乗り換えられるし、プランも変えられる。まずは`top`コマンドで原因を確認して、必要最小限のプランから始めてみてください。失敗しても取り返しはつきます。
+最後に一言。これが最終回答じゃないです。VPSは乗り換えられるし、プランも変えられる。まずは`top`コマンドで遅い原因を確認して、必要最小限のプランから始めてみてください。失敗しても取り返しはつきます。
 
 <!-- injected-related -->
 
 ## あわせて読みたい
 
+- [XServer VPS vs KAGOYA CLOUD VPS 徹底比較Clau…](/comparison/xserver_vps-vs-kagoya_vps/)
 - [AIツール（Claude Code / Codex）向けVPS比較ランキング初心…](/ranking/ai_vps_ranking/)
 - [失敗しないGPUサーバー選び：VRAM 24GB以上を格安で確保できるVPSラン…](/ranking/gpu_vps_ranking/)
-- [GPU搭載VPSを「必要な時だけ」時間単位で借りて画像生成AIをお試しする方法](/usecase/guide-gpu_hourly_vps/)
 - [あなたに合うVPSを30秒で診断する](/shindan/)
