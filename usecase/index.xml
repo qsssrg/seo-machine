@@ -7921,7 +7921,7 @@ GPU摩耗コスト: RTX 3080（12万円）を3年で償却
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;自分の判断をはっきり言う。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>【2026年版】AnimateDiffで動画生成！重い処理をクラウドGPU/VPSに任せる設定ガイド</title><link>https://naruhodo-lab.uk/usecase/guide-animatediff_vps/</link><pubDate>Mon, 06 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-animatediff_vps/</guid><description>&lt;h1 id="animatediffで動画生成重い処理をクラウドgpuvpsに任せる設定ガイド"&gt;AnimateDiffで動画生成！重い処理をクラウドGPU/VPSに任せる設定ガイド&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;自分の判断をはっきり言う。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>AnimateDiffをGPU VPSで動かす設定ガイド【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-animatediff_vps/</link><pubDate>Mon, 06 Jul 2026 16:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-animatediff_vps/</guid><description>&lt;h1 id="animatediffで動画生成重い処理をクラウドgpuvpsに任せる設定ガイド"&gt;AnimateDiffで動画生成！重い処理をクラウドGPU/VPSに任せる設定ガイド&lt;/h1&gt;
 &lt;h2 id="最初に結論を書いておきます"&gt;最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;AnimateDiffをVPSで動かすのは&lt;strong&gt;あり&lt;/strong&gt;。ただし条件付き。&lt;/p&gt;
 &lt;ul&gt;
