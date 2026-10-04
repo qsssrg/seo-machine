@@ -5355,7 +5355,7 @@ curl -L &lt;br&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;正直に言うと：&lt;/strong&gt; 最初の一台として選ぶなら &lt;strong&gt;Llama 3 8B か Qwen2 7B&lt;/strong&gt; でいい。どちらも4GBプランで動いて、日本語もそこそこ使える。「まず動いた」という体験を早く得ることのほうが大事なので、最初から13Bや27Bを目指す必要はない。いきなり大きいモデルを狙って「プランが高くて続かなかった」という話をけっこう聞く。&lt;/p&gt;</description></item><item><title>VPSにウェブUIを立てる方法：Open WebUIをスクリプトかDockerで【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;正直に言うと：&lt;/strong&gt; 最初の一台として選ぶなら &lt;strong&gt;Llama 3 8B か Qwen2 7B&lt;/strong&gt; でいい。どちらも4GBプランで動いて、日本語もそこそこ使える。「まず動いた」という体験を早く得ることのほうが大事なので、最初から13Bや27Bを目指す必要はない。いきなり大きいモデルを狙って「プランが高くて続かなかった」という話をけっこう聞く。&lt;/p&gt;</description></item><item><title>Open WebUIをVPSで動かす完全ガイド【2026年版】</title><link>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</link><pubDate>Sun, 28 Jun 2026 08:00:00 +0900</pubDate><guid>https://naruhodo-lab.uk/usecase/guide-open_webui_custom/</guid><description>&lt;h1 id="open-webuiで自分だけの高機能chatgptを作る"&gt;Open WebUIで「自分だけの高機能ChatGPT」を作る&lt;/h1&gt;
 &lt;hr&gt;
 &lt;h2 id="-最初に結論を書いておきます"&gt;🔍 最初に結論を書いておきます&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;「ChatGPTに毎月お金払うのがバカらしくなってきた」と思ったなら、Open WebUIを試す価値はある。&lt;/strong&gt;&lt;/p&gt;
